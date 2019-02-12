@@ -44,6 +44,9 @@ class TestSa_int(TestCase):
         with self.assertRaises(Exception):
             _test('abc')
 
+        with self.assertRaises(Exception):
+            _test(3.2)
+
     def test_rule_gte(self):
         @sa_int('a', gte=2)
         def _test(a):
