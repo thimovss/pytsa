@@ -42,14 +42,23 @@ def _string_not_empty(arg_name, rule_val, func):
 def _string_not_blank(arg_name, rule_val, func):
     """ensure there is one or more non-whitespace characters in the string"""
     def _check(val):
-        print(val.isspace(), val)
         assert not rule_val or (len(val) > 0 and not val.isspace()),\
             f'string argument \'{arg_name}\' with value \'{val}\' did not contain at least one character'
+        func(val)
+    return _check
+
+@sa_string('rule_val')
+def _string_ends_with(arg_name, rule_val, func):
+    """ensure the string ends with the given string"""
+    def _check(val):
+        assert val.endswith(rule_val),\
+            f'string argument \'{arg_name}\' with value \'{val}\' did not end with \'{rule_val}\''
         func(val)
     return _check
 
 
 STRING_RULES = {
     'not_empty': _string_not_empty,
-    'not_blank': _string_not_blank
+    'not_blank': _string_not_blank,
+    'ends_with': _string_ends_with
 }

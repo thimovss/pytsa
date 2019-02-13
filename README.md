@@ -1,16 +1,17 @@
 Simple, human readable decorators to ensure your method abides to it's contract for Python
 
 ## Rules
-| Rule                      | sa_int            | sa_float          | sa_bool | sa_string          |
-|:--------------------------|:------------------|:------------------|:--------|:-------------------|
-| **not zero**              | `non_zero` (bool) | `non_zero` (bool) |         |                    |
-| **greater than**          | `gt` (int)        | `gt` (float)      |         |                    |
-| **greater than or equal** | `gte` (int)       | `gte` (float)     |         |                    |
-| **lesser than**           | `lt` (int)        | `lt` (float)      |         |                    |
-| **lesser than or equal**  | `lte` (int)       | `lte` (float)     |         |                    |
-| **modulo**                | `mod` (int)       | `mod` (float)     |         |                    |
-| **not empty**             |                   |                   |         | `not_empty` (bool) |
-| **not blank**             |                   |                   |         | `not_blank` (bool) |
+| Rule                      | sa_int            | sa_float          | sa_bool | sa_string            |
+|:--------------------------|:------------------|:------------------|:--------|:---------------------|
+| **not zero**              | `non_zero` (bool) | `non_zero` (bool) |         |                      |
+| **greater than**          | `gt` (int)        | `gt` (float)      |         |                      |
+| **greater than or equal** | `gte` (int)       | `gte` (float)     |         |                      |
+| **lesser than**           | `lt` (int)        | `lt` (float)      |         |                      |
+| **lesser than or equal**  | `lte` (int)       | `lte` (float)     |         |                      |
+| **modulo**                | `mod` (int)       | `mod` (float)     |         |                      |
+| **not empty**             |                   |                   |         | `not_empty` (bool)   |
+| **not blank**             |                   |                   |         | `not_blank` (bool)   |
+| **ends with**             |                   |                   |         | `ends_with` (string) |
 
 | Rule                      | Description                                                                                                                                                                                                                                                                                                                                                                    |
 |:--------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -22,6 +23,7 @@ Simple, human readable decorators to ensure your method abides to it's contract 
 | **modulo**                | ensure the argument is a multiple of the rule value.<br>with rule `mod=4` and `call(6)` => Exception<br>with rule `mod=4` and `call(4)` => Accepted<br>with rule `mod=4` and `call(-4)` => Accepted<br>with rule `mod=4` and `call(0)` => Accepted                                                                                                                             |
 | **not empty**             | ensure the argument is not an empty string.<br>with rule `not_empty=True` and `call('')` => Exception<br>with rule `not_empty=True` and `call(' ')` => Accepted<br>with rule `not_empty=True` and `call('abc')` => Accepted                                                                                                                                                    |
 | **not blank**             | ensure the argument is not an empty string, or contains only whitespace characters, according to `Python String.isspace()`.<br>with rule `not_empty=True` and `call('')` => Exception<br>with rule `not_empty=True` and `call(' ')` => Exception<br>with rule `not_empty=True` and `call('\t \n   ')` => Exception<br>with rule `not_empty=True` and `call('abc')` => Accepted |
+| **ends with**             | ensure the argument ends with the rule value, according to `Python String.endswith()`.<br>with rule `ends_with='bc'` and `call('abcd')` => Exception<br>with rule `ends_with='bc'` and `call('abc')` => Accepted<br>with rule `ends_with='1'` and `call('1')` => Accepted  <br>with rule `ends_with=''` and `call('')` => Accepted                                             |
 
 ## Demo
 Want a demo of other rules? check out the test directory, it has an example for every rule there is!

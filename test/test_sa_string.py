@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from src.strictargs import sa_string
-from test.utils import test_boolean_parameter
+from test.utils import test_boolean_parameter, test_string_parameter
 
 
 class TestSaStringParameters(TestCase):
@@ -12,6 +12,9 @@ class TestSaStringParameters(TestCase):
 
     def test_rule_non_blank_takes_boolean(self):
         test_boolean_parameter(self, sa_string, 'not_blank')
+
+    def test_rule_ends_with_takes_string(self):
+        test_string_parameter(self, sa_string, 'ends_with')
 
 
 class TestSaStringRules(TestCase):
@@ -73,6 +76,23 @@ class TestSaStringRules(TestCase):
         _test(' ')
         _test('\t')
         _test('\t \n  ')
+
+    def test_rule_ends_with(self):
+        @sa_string('a', ends_with='bc')
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('abc')
+        _test('123bc')
+        _test('bc')
+        _test(' \n bc')
+
+        # Incorrect usage, doesn't end with 'bc'
+        with self.assertRaises(Exception):
+            _test('abcd')
+        with self.assertRaises(Exception):
+            _test('')
 
 
 class TestSaStringBase(TestCase):
