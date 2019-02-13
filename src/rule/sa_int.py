@@ -1,19 +1,19 @@
 import inspect
 
-def _int_gte(arg_name, rule_val, val):
+def _int_gte(arg_name, val, rule_val):
     assert val >= rule_val, f'int argument \'{arg_name}\' with value {val} was not greater than or equal to {rule_val}'
 
-def _int_lte(arg_name, rule_val, val):
+def _int_lte(arg_name, val, rule_val):
     assert val <= rule_val, f'int argument \'{arg_name}\' with value {val} was not lesser than or equal to {rule_val}'
 
-def _int_gt(arg_name, rule_val, val):
+def _int_gt(arg_name, val, rule_val):
     assert val > rule_val, f'int argument \'{arg_name}\' with value {val} was not equal to {rule_val}'
 
-def _int_lt(arg_name, rule_val, val):
+def _int_lt(arg_name, val, rule_val):
     assert val < rule_val, f'int argument \'{arg_name}\' with value {val} was not equal to {rule_val}'
 
-def _int_nonzero(arg_name, rule_val, val):
-    assert val != 0, f'int argument \'{arg_name}\' with value {val} was 0'
+def _int_nonzero(arg_name, val, rule_val):
+    assert rule_val == False or val != 0, f'int argument \'{arg_name}\' with value {val} was 0'
 
 INT_RULES = {
     'gte': _int_gte,
@@ -25,7 +25,7 @@ INT_RULES = {
 
 def sa_int(arg_name, **rules):
     """
-    Ensures the given parameter is of type int and not None
+    Ensures the given parameter is of type int and not None, and abides by all given rules
     """
     def _sa_int(func):
         args_spec = inspect.getfullargspec(func).args
@@ -41,7 +41,7 @@ def sa_int(arg_name, **rules):
             assert val is not None, f'int argument \'{arg_name}\' with value {val} was None'
             assert isinstance(val, int), f'int argument \'{arg_name}\' with value {val} was of type {type(val)}, not of type \'int\''
             for rule in rules:
-                INT_RULES[rule](arg_name, rules[rule], val)
+                INT_RULES[rule](arg_name, val, rules[rule])
             return func(*args, **kwargs)
 
         return wrapper
