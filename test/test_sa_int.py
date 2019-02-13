@@ -63,6 +63,33 @@ class TestSa_int(TestCase):
         with self.assertRaises(Exception):
             _test(3.2)
 
+    def test_rule_gte_takes_int(self):
+        @sa_int('a', gte=2)
+        def _test(a):
+            return a
+
+        @sa_int('a', gte=0)
+        def _test(a):
+            return a
+
+        # should not accept None
+        with self.assertRaises(Exception):
+            @sa_int('a', gte=None)
+            def _test(a):
+                return a
+
+        # should not accept float
+        with self.assertRaises(Exception):
+            @sa_int('a', gte=4.3)
+            def _test(a):
+                return a
+
+        # should not accept string
+        with self.assertRaises(Exception):
+            @sa_int('a', gte='acd')
+            def _test(a):
+                return a
+
 
     def test_rule_lte(self):
         @sa_int('a', lte=2)
