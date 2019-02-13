@@ -1,3 +1,4 @@
+# PYThon StrictArguments
 Simple, human readable decorators to ensure your method abides to it's contract for Python
 
 ## Rules
