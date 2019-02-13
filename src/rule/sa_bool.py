@@ -15,7 +15,8 @@ def sa_bool(arg_name, **rules):
         def _checker(*args, **kwargs):
             val = args[arg_index]
             assert val is not None, f'bool argument \'{arg_name}\' was None'
-            assert isinstance(val, bool), f'bool argument \'{arg_name}\' with value {val} was of type {type(val)}, not of type \'bool\''
+            assert isinstance(val,
+                              bool), f'bool argument \'{arg_name}\' with value {val} was of type {type(val)}, not of type \'bool\''
             return func(*args, **kwargs)
 
         for rule in rules:
@@ -25,6 +26,7 @@ def sa_bool(arg_name, **rules):
         return _checker
 
     return _sa_bool
+
 
 BOOL_RULES = {
 }

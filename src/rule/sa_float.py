@@ -1,5 +1,7 @@
 import inspect
+
 from src.strictargs import sa_bool
+
 
 def sa_float(arg_name, **rules):
     """
@@ -34,6 +36,7 @@ def _float_gte(arg_name, rule_val, func):
     def _check(val):
         assert val >= rule_val, f'float argument \'{arg_name}\' with value {val} was not greater than or equal to {rule_val}'
         func(val)
+
     return _check
 
 
@@ -42,6 +45,7 @@ def _float_lte(arg_name, rule_val, func):
     def _check(val):
         assert val <= rule_val, f'float argument \'{arg_name}\' with value {val} was not lesser than or equal to {rule_val}'
         func(val)
+
     return _check
 
 
@@ -50,6 +54,7 @@ def _float_gt(arg_name, rule_val, func):
     def _check(val):
         assert val > rule_val, f'float argument \'{arg_name}\' with value {val} was not greater than {rule_val}'
         func(val)
+
     return _check
 
 
@@ -58,6 +63,7 @@ def _float_lt(arg_name, rule_val, func):
     def _check(val):
         assert val < rule_val, f'float argument \'{arg_name}\' with value {val} was not larger than {rule_val}'
         func(val)
+
     return _check
 
 
@@ -66,13 +72,16 @@ def _float_nonzero(arg_name, rule_val, func):
     def _check(val):
         assert rule_val == False or val != 0, f'float argument \'{arg_name}\' with value {val} was 0'
         func(val)
+
     return _check
+
 
 @sa_float('rule_val')
 def _float_modulo(arg_name, rule_val, func):
     def _check(val):
         assert val % rule_val == 0, f'float argument \'{arg_name}\' with value {val} was not a multiple of {rule_val}'
         func(val)
+
     return _check
 
 

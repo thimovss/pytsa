@@ -17,7 +17,8 @@ def sa_string(arg_name, **rules):
         def _checker(*args, **kwargs):
             val = args[arg_index]
             assert val is not None, f'string argument \'{arg_name}\' was None'
-            assert isinstance(val, str), f'string argument \'{arg_name}\' with value \'{val}\' was of type {type(val)}, not of type \'str\''
+            assert isinstance(val,
+                              str), f'string argument \'{arg_name}\' with value \'{val}\' was of type {type(val)}, not of type \'str\''
 
             return func(*args, **kwargs)
 
@@ -29,54 +30,71 @@ def sa_string(arg_name, **rules):
 
     return _sa_string
 
+
 @sa_bool('rule_val')
 def _string_not_empty(arg_name, rule_val, func):
     """ensure there is one or more character in the string"""
+
     def _check(val):
-        assert not rule_val or len(val) > 0,\
+        assert not rule_val or len(val) > 0, \
             f'string argument \'{arg_name}\' with value \'{val}\' did not contain at least one non-whitespace character'
         func(val)
+
     return _check
+
 
 @sa_bool('rule_val')
 def _string_not_blank(arg_name, rule_val, func):
     """ensure there is one or more non-whitespace characters in the string"""
+
     def _check(val):
-        assert not rule_val or (len(val) > 0 and not val.isspace()),\
+        assert not rule_val or (len(val) > 0 and not val.isspace()), \
             f'string argument \'{arg_name}\' with value \'{val}\' did not contain at least one character'
         func(val)
+
     return _check
+
 
 @sa_string('rule_val')
 def _string_ends_with(arg_name, rule_val, func):
     """ensure the string ends with the given string"""
+
     def _check(val):
-        assert val.endswith(rule_val),\
+        assert val.endswith(rule_val), \
             f'string argument \'{arg_name}\' with value \'{val}\' did not end with \'{rule_val}\''
         func(val)
+
     return _check
+
 
 @sa_string('rule_val')
 def _string_starts_with(arg_name, rule_val, func):
     """ensure the string starts with the given string"""
+
     def _check(val):
-        assert val.startswith(rule_val),\
+        assert val.startswith(rule_val), \
             f'string argument \'{arg_name}\' with value \'{val}\' did not start with \'{rule_val}\''
         func(val)
+
     return _check
+
 
 @sa_string('rule_val')
 def _string_contains(arg_name, rule_val, func):
     """ensure the string contains the given string at least once"""
+
     def _check(val):
-        assert val.find(rule_val) != -1,\
+        assert val.find(rule_val) != -1, \
             f'string argument \'{arg_name}\' with value \'{val}\' did not contain \'{rule_val}\''
         func(val)
+
     return _check
+
 
 @sa_bool('rule_val')
 def _string_is_lower(arg_name, rule_val, func):
     """ensure all characters in the string are lowercase"""
+
     def _check(val):
         if not rule_val:
             func(val)
@@ -91,11 +109,14 @@ def _string_is_lower(arg_name, rule_val, func):
             func(val)
             return
         raise AssertionError(f'not all characters in string argument \'{arg_name}\' with value \'{val}\' are lowercase')
+
     return _check
+
 
 @sa_bool('rule_val')
 def _string_is_upper(arg_name, rule_val, func):
     """ensure all characters in the string are uppercase"""
+
     def _check(val):
         if not rule_val:
             func(val)
@@ -110,6 +131,7 @@ def _string_is_upper(arg_name, rule_val, func):
             func(val)
             return
         raise AssertionError(f'not all characters in string argument \'{arg_name}\' with value \'{val}\' are uppercase')
+
     return _check
 
 

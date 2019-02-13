@@ -1,4 +1,5 @@
 import inspect
+
 from src.strictargs import sa_bool
 
 
@@ -16,7 +17,8 @@ def sa_int(arg_name, **rules):
         def _checker(*args, **kwargs):
             val = args[arg_index]
             assert val is not None, f'int argument \'{arg_name}\' was None'
-            assert isinstance(val, int) and not isinstance(val, bool), f'int argument \'{arg_name}\' with value {val} was of type {type(val)}, not of type \'int\''
+            assert isinstance(val, int) and not isinstance(val,
+                                                           bool), f'int argument \'{arg_name}\' with value {val} was of type {type(val)}, not of type \'int\''
 
             return func(*args, **kwargs)
 
@@ -34,6 +36,7 @@ def _int_gte(arg_name, rule_val, func):
     def _check(val):
         assert val >= rule_val, f'int argument \'{arg_name}\' with value {val} was not greater than or equal to {rule_val}'
         func(val)
+
     return _check
 
 
@@ -42,6 +45,7 @@ def _int_lte(arg_name, rule_val, func):
     def _check(val):
         assert val <= rule_val, f'int argument \'{arg_name}\' with value {val} was not lesser than or equal to {rule_val}'
         func(val)
+
     return _check
 
 
@@ -50,6 +54,7 @@ def _int_gt(arg_name, rule_val, func):
     def _check(val):
         assert val > rule_val, f'int argument \'{arg_name}\' with value {val} was not greater than {rule_val}'
         func(val)
+
     return _check
 
 
@@ -58,20 +63,25 @@ def _int_lt(arg_name, rule_val, func):
     def _check(val):
         assert val < rule_val, f'int argument \'{arg_name}\' with value {val} was not larger than {rule_val}'
         func(val)
+
     return _check
+
 
 @sa_bool('rule_val')
 def _int_nonzero(arg_name, rule_val, func):
     def _check(val):
         assert rule_val == False or val != 0, f'int argument \'{arg_name}\' with value {val} was 0'
         func(val)
+
     return _check
+
 
 @sa_int('rule_val')
 def _int_modulo(arg_name, rule_val, func):
     def _check(val):
         assert val % rule_val == 0, f'int argument \'{arg_name}\' with value {val} was not a multiple of {rule_val}'
         func(val)
+
     return _check
 
 
