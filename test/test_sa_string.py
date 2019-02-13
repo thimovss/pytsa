@@ -154,6 +154,7 @@ class TestSaStringRules(TestCase):
         _test('\n \t ab \n ')
         _test(' ')
         _test('')
+        _test(' ! ')
 
         # Incorrect usage, doesn't end with 'bc'
         with self.assertRaises(Exception):
@@ -178,6 +179,7 @@ class TestSaStringRules(TestCase):
         _test('ABC')
         _test('A')
         _test('aBc')
+        _test(' ! ')
 
     def test_rule_is_upper_true(self):
         @sa_string('a', is_upper=True)
@@ -191,6 +193,7 @@ class TestSaStringRules(TestCase):
         _test('\n \t AB \n ')
         _test('')
         _test(' ')
+        _test(' ! ')
 
         # Incorrect usage, doesn't end with 'bc'
         with self.assertRaises(Exception):
@@ -215,6 +218,7 @@ class TestSaStringRules(TestCase):
         _test('abc')
         _test('a')
         _test('AbC')
+        _test(' ! ')
 
 
 class TestSaStringBase(TestCase):
@@ -263,3 +267,56 @@ class TestSaStringBase(TestCase):
         # not int
         with self.assertRaises(Exception):
             _test(2)
+
+class TestSaStringMultipleRules(TestCase):
+
+    def test_multiple_rules_case1(self):
+        @sa_string('a', starts_with='a', ends_with='c', is_lower=True, contains='1')
+        def _test(a):
+            return a
+
+        correct_strings = ['a1c', 'abc123defc', 'a  1  c']
+        incorrect_strings = ['a1Vc', ' ', 'c1a', 'A1C', ' a1c', 'a1c ']
+
+        # correct strings should not throw exception
+        for correct_string in correct_strings:
+            _test(correct_string)
+
+        # incorrect strings should all throw exception
+        for incorrect_string in incorrect_strings:
+            with self.assertRaises(Exception):
+                _test(incorrect_string)
+
+    def test_multiple_rules_case2(self):
+        @sa_string('a', is_upper=True, is_lower=False, not_blank=True)
+        def _test(a):
+            return a
+
+        correct_strings = ['A', ' BC', '\tD\n!B']
+        incorrect_strings = [' ', 'AbC', '', '\t\n']
+
+        # correct strings should not throw exception
+        for correct_string in correct_strings:
+            _test(correct_string)
+
+        # incorrect strings should all throw exception
+        for incorrect_string in incorrect_strings:
+            with self.assertRaises(Exception):
+                _test(incorrect_string)
+
+    def test_multiple_rules_case3(self):
+        @sa_string('a', is_upper=True, ends_with='\t', not_blank=True)
+        def _test(a):
+            return a
+
+        correct_strings = [' !\t', 'A\t']
+        incorrect_strings = ['', '  ', 'AbC', '\t', '\t\n']
+
+        # correct strings should not throw exception
+        for correct_string in correct_strings:
+            _test(correct_string)
+
+        # incorrect strings should all throw exception
+        for incorrect_string in incorrect_strings:
+            with self.assertRaises(Exception):
+                _test(incorrect_string)

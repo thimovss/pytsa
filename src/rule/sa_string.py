@@ -1,6 +1,10 @@
 import inspect
+import re
 
 from src.strictargs import sa_bool
+
+LOWER_CASE = re.compile('.*[a-z].*')
+UPPER_CASE = re.compile('.*[A-Z].*')
 
 
 def sa_string(arg_name, **rules):
@@ -96,19 +100,9 @@ def _string_is_lower(arg_name, rule_val, func):
     """ensure all characters in the string are lowercase"""
 
     def _check(val):
-        if not rule_val:
-            func(val)
-            return
-        if len(val) == 0:
-            func(val)
-            return
-        if val.isspace():
-            func(val)
-            return
-        if val.islower():
-            func(val)
-            return
-        raise AssertionError(f'not all characters in string argument \'{arg_name}\' with value \'{val}\' are lowercase')
+        assert not rule_val or not UPPER_CASE.match(
+            val), f'not all characters in string argument \'{arg_name}\' with value \'{val}\' are lowercase'
+        func(val)
 
     return _check
 
@@ -118,19 +112,9 @@ def _string_is_upper(arg_name, rule_val, func):
     """ensure all characters in the string are uppercase"""
 
     def _check(val):
-        if not rule_val:
-            func(val)
-            return
-        if len(val) == 0:
-            func(val)
-            return
-        if val.isspace():
-            func(val)
-            return
-        if val.isupper():
-            func(val)
-            return
-        raise AssertionError(f'not all characters in string argument \'{arg_name}\' with value \'{val}\' are uppercase')
+        assert not rule_val or not LOWER_CASE.match(
+            val), f'not all characters in string argument \'{arg_name}\' with value \'{val}\' are uppercase'
+        func(val)
 
     return _check
 
