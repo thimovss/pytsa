@@ -56,9 +56,69 @@ def _string_ends_with(arg_name, rule_val, func):
         func(val)
     return _check
 
+@sa_string('rule_val')
+def _string_starts_with(arg_name, rule_val, func):
+    """ensure the string starts with the given string"""
+    def _check(val):
+        assert val.startswith(rule_val),\
+            f'string argument \'{arg_name}\' with value \'{val}\' did not start with \'{rule_val}\''
+        func(val)
+    return _check
+
+@sa_string('rule_val')
+def _string_contains(arg_name, rule_val, func):
+    """ensure the string contains the given string at least once"""
+    def _check(val):
+        assert val.find(rule_val) != -1,\
+            f'string argument \'{arg_name}\' with value \'{val}\' did not contain \'{rule_val}\''
+        func(val)
+    return _check
+
+@sa_bool('rule_val')
+def _string_is_lower(arg_name, rule_val, func):
+    """ensure all characters in the string are lowercase"""
+    def _check(val):
+        if not rule_val:
+            func(val)
+            return
+        if len(val) == 0:
+            func(val)
+            return
+        if val.isspace():
+            func(val)
+            return
+        if val.islower():
+            func(val)
+            return
+        raise AssertionError(f'not all characters in string argument \'{arg_name}\' with value \'{val}\' are lowercase')
+    return _check
+
+@sa_bool('rule_val')
+def _string_is_upper(arg_name, rule_val, func):
+    """ensure all characters in the string are uppercase"""
+    def _check(val):
+        if not rule_val:
+            func(val)
+            return
+        if len(val) == 0:
+            func(val)
+            return
+        if val.isspace():
+            func(val)
+            return
+        if val.isupper():
+            func(val)
+            return
+        raise AssertionError(f'not all characters in string argument \'{arg_name}\' with value \'{val}\' are uppercase')
+    return _check
+
 
 STRING_RULES = {
     'not_empty': _string_not_empty,
     'not_blank': _string_not_blank,
-    'ends_with': _string_ends_with
+    'ends_with': _string_ends_with,
+    'starts_with': _string_starts_with,
+    'contains': _string_contains,
+    'is_lower': _string_is_lower,
+    'is_upper': _string_is_upper
 }

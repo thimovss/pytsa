@@ -16,6 +16,18 @@ class TestSaStringParameters(TestCase):
     def test_rule_ends_with_takes_string(self):
         test_string_parameter(self, sa_string, 'ends_with')
 
+    def test_rule_starts_with_takes_string(self):
+        test_string_parameter(self, sa_string, 'starts_with')
+
+    def test_rule_contains_takes_string(self):
+        test_string_parameter(self, sa_string, 'contains')
+
+    def test_rule_is_lower_takes_boolean(self):
+        test_boolean_parameter(self, sa_string, 'is_lower')
+
+    def test_rule_is_upper_takes_boolean(self):
+        test_boolean_parameter(self, sa_string, 'is_upper')
+
 
 class TestSaStringRules(TestCase):
     # Test that the rules for sa_string works as specified
@@ -93,6 +105,116 @@ class TestSaStringRules(TestCase):
             _test('abcd')
         with self.assertRaises(Exception):
             _test('')
+
+    def test_rule_starts_with(self):
+        @sa_string('a', starts_with='ab')
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('abc')
+        _test('ab123')
+        _test('ab')
+        _test('ab \n ')
+
+        # Incorrect usage, doesn't start with 'bc'
+        with self.assertRaises(Exception):
+            _test('1ab')
+        with self.assertRaises(Exception):
+            _test('')
+
+    def test_rule_contains(self):
+        @sa_string('a', contains='ab')
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('abcd')
+        _test('12ab34')
+        _test('ab')
+        _test('\n \t ab \n ')
+
+        # Incorrect usage, doesn't contain 'bc'
+        with self.assertRaises(Exception):
+            _test('a1b')
+        with self.assertRaises(Exception):
+            _test('a b')
+        with self.assertRaises(Exception):
+            _test('')
+
+    def test_rule_is_lower_true(self):
+        @sa_string('a', is_lower=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('abcd')
+        _test('12ab34')
+        _test('ab')
+        _test('\n \t ab \n ')
+        _test(' ')
+        _test('')
+
+        # Incorrect usage, doesn't end with 'bc'
+        with self.assertRaises(Exception):
+            _test('ABC')
+        with self.assertRaises(Exception):
+            _test('A')
+        with self.assertRaises(Exception):
+            _test('aBc')
+
+    def test_rule_is_lower_false(self):
+        @sa_string('a', is_lower=False)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('abcd')
+        _test('12ab34')
+        _test('ab')
+        _test('\n \t ab \n ')
+        _test('')
+        _test(' ')
+        _test('ABC')
+        _test('A')
+        _test('aBc')
+
+    def test_rule_is_upper_true(self):
+        @sa_string('a', is_upper=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('ABCD')
+        _test('12AB34')
+        _test('AB')
+        _test('\n \t AB \n ')
+        _test('')
+        _test(' ')
+
+        # Incorrect usage, doesn't end with 'bc'
+        with self.assertRaises(Exception):
+            _test('abc')
+        with self.assertRaises(Exception):
+            _test('a')
+        with self.assertRaises(Exception):
+            _test('AbC')
+
+    def test_rule_is_upper_false(self):
+        @sa_string('a', is_upper=False)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('ABCD')
+        _test('12AB34')
+        _test('AB')
+        _test('\n \t AB \n ')
+        _test('')
+        _test(' ')
+        _test('abc')
+        _test('a')
+        _test('AbC')
 
 
 class TestSaStringBase(TestCase):
