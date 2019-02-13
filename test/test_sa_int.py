@@ -51,6 +51,7 @@ class TestSa_int(TestCase):
         @sa_int('a', gte=2)
         def _test(a):
             return a
+
         # Correct usage
         _test(3)
         _test(2)
@@ -67,6 +68,7 @@ class TestSa_int(TestCase):
         @sa_int('a', lte=2)
         def _test(a):
             return a
+
         # Correct usage
         _test(1)
         _test(2)
@@ -82,6 +84,7 @@ class TestSa_int(TestCase):
         @sa_int('a', gt=2)
         def _test(a):
             return a
+
         # Correct usage
         _test(3)
         _test(4)
@@ -100,6 +103,7 @@ class TestSa_int(TestCase):
         @sa_int('a', lt=2)
         def _test(a):
             return a
+
         # Correct usage
         _test(0)
         _test(1)
@@ -113,4 +117,31 @@ class TestSa_int(TestCase):
         # Incorrect usage, float given instead of int
         with self.assertRaises(Exception):
             _test(1.2)
+
+    def test_rule_non_zero_true(self):
+        @sa_int('a', non_zero=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(1)
+        _test(-1)
+
+        # Incorrect usage, is 0
+        with self.assertRaises(Exception):
+            _test(0)
+
+        # Incorrect usage, float given instead of int
+        with self.assertRaises(Exception):
+            _test(0.0)
+
+    def test_rule_non_zero_false(self):
+        @sa_int('a', non_zero=False)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(1)
+        _test(0)
+        _test(-1)
 

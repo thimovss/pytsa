@@ -12,11 +12,15 @@ def _int_gt(arg_name, rule_val, val):
 def _int_lt(arg_name, rule_val, val):
     assert val < rule_val, f'int argument \'{arg_name}\' with value {val} was not equal to {rule_val}'
 
+def _int_nonzero(arg_name, rule_val, val):
+    assert val != 0, f'int argument \'{arg_name}\' with value {val} was 0'
+
 INT_RULES = {
     'gte': _int_gte,
     'lte': _int_lte,
     'gt': _int_gt,
-    'lt': _int_lt
+    'lt': _int_lt,
+    'non_zero': _int_nonzero
 }
 
 def sa_int(arg_name, **rules):
