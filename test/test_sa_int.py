@@ -62,3 +62,55 @@ class TestSa_int(TestCase):
         with self.assertRaises(Exception):
             _test(3.2)
 
+
+    def test_rule_lte(self):
+        @sa_int('a', lte=2)
+        def _test(a):
+            return a
+        # Correct usage
+        _test(1)
+        _test(2)
+
+        # Incorrect usage, int lower than value
+        with self.assertRaises(Exception):
+            _test(3)
+        # Incorrect usage, float given instead of int
+        with self.assertRaises(Exception):
+            _test(1.2)
+
+    def test_rule_gt(self):
+        @sa_int('a', gt=2)
+        def _test(a):
+            return a
+        # Correct usage
+        _test(3)
+        _test(4)
+
+        # Incorrect usage, int lower than value
+        with self.assertRaises(Exception):
+            _test(1)
+        # Incorrect usage, int equal to value
+        with self.assertRaises(Exception):
+            _test(2)
+        # Incorrect usage, float given instead of int
+        with self.assertRaises(Exception):
+            _test(3.2)
+
+    def test_rule_lt(self):
+        @sa_int('a', lt=2)
+        def _test(a):
+            return a
+        # Correct usage
+        _test(0)
+        _test(1)
+
+        # Incorrect usage, int higher than value
+        with self.assertRaises(Exception):
+            _test(3)
+        # Incorrect usage, int equal to value
+        with self.assertRaises(Exception):
+            _test(2)
+        # Incorrect usage, float given instead of int
+        with self.assertRaises(Exception):
+            _test(1.2)
+

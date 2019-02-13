@@ -3,8 +3,20 @@ import inspect
 def _int_gte(arg_name, rule_val, val):
     assert val >= rule_val, f'int argument \'{arg_name}\' with value {val} was not greater than or equal to {rule_val}'
 
+def _int_lte(arg_name, rule_val, val):
+    assert val <= rule_val, f'int argument \'{arg_name}\' with value {val} was not lesser than or equal to {rule_val}'
+
+def _int_gt(arg_name, rule_val, val):
+    assert val > rule_val, f'int argument \'{arg_name}\' with value {val} was not equal to {rule_val}'
+
+def _int_lt(arg_name, rule_val, val):
+    assert val < rule_val, f'int argument \'{arg_name}\' with value {val} was not equal to {rule_val}'
+
 INT_RULES = {
-    'gte': _int_gte
+    'gte': _int_gte,
+    'lte': _int_lte,
+    'gt': _int_gt,
+    'lt': _int_lt
 }
 
 def sa_int(arg_name, **rules):
