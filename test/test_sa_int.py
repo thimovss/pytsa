@@ -165,7 +165,6 @@ class TestSaIntRules(TestCase):
         with self.assertRaises(Exception):
             _test(2.0)
 
-
 class TestSaIntBase(TestCase):
     # Test that the sa_int works as specified
 
