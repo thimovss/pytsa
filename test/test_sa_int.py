@@ -4,28 +4,27 @@ from src.strictargs import sa_int
 from test.utils import test_int_parameter, test_boolean_parameter
 
 
-class TestSa_int(TestCase):
+class TestSaIntParameters(TestCase):
+    # Test that the decorator only accepts the correct parameters
 
-    def test(self):
-        # no exceptions should be thrown with correct usage
-        @sa_int('a')
-        def _test(a):
-            return a
+    def test_rule_lte_takes_int(self):
+        test_int_parameter(self, sa_int, 'lte')
 
-    def test_args_name_missing(self):
-        # the annotation should throw an exception if the name passed in the decorator is not present in the argument
-        with self.assertRaises(Exception):
-            @sa_int('b')
-            def _test(a):
-                return a
+    def test_rule_gte_takes_int(self):
+        test_int_parameter(self, sa_int, 'gte')
 
-    def test_incorrect_rule(self):
-        # if an unknown rule is provided, throw an exception
-        with self.assertRaises(Exception):
-            @sa_int('a', unknown_rule=True)
-            def _test(a):
-                return a
-        return
+    def test_rule_gt_takes_int(self):
+        test_int_parameter(self, sa_int, 'gt')
+
+    def test_rule_lt_takes_int(self):
+        test_int_parameter(self, sa_int, 'lt')
+
+    def test_rule_non_zero_takes_boolean(self):
+        test_boolean_parameter(self, sa_int, 'non_zero')
+
+
+class TestSaIntRules(TestCase):
+    # Test that the rules for sa_int works as specified
 
     def test_none(self):
         # if the passed argument is None, throw an exception
@@ -64,9 +63,6 @@ class TestSa_int(TestCase):
         with self.assertRaises(Exception):
             _test(3.2)
 
-    def test_rule_gte_takes_int(self):
-        test_int_parameter(self, sa_int, 'gte')
-
     def test_rule_lte(self):
         @sa_int('a', lte=2)
         def _test(a):
@@ -82,9 +78,6 @@ class TestSa_int(TestCase):
         # Incorrect usage, float given instead of int
         with self.assertRaises(Exception):
             _test(1.2)
-
-    def test_rule_lte_takes_int(self):
-        test_int_parameter(self, sa_int, 'lte')
 
     def test_rule_gt(self):
         @sa_int('a', gt=2)
@@ -105,9 +98,6 @@ class TestSa_int(TestCase):
         with self.assertRaises(Exception):
             _test(3.2)
 
-    def test_rule_gt_takes_int(self):
-        test_int_parameter(self, sa_int, 'gt')
-
     def test_rule_lt(self):
         @sa_int('a', lt=2)
         def _test(a):
@@ -127,9 +117,6 @@ class TestSa_int(TestCase):
         with self.assertRaises(Exception):
             _test(1.2)
 
-    def test_rule_lt_takes_int(self):
-        test_int_parameter(self, sa_int, 'lt')
-
     def test_rule_non_zero_true(self):
         @sa_int('a', non_zero=True)
         def _test(a):
@@ -147,9 +134,6 @@ class TestSa_int(TestCase):
         with self.assertRaises(Exception):
             _test(0.0)
 
-    def test_rule_non_zero_takes_boolean(self):
-        test_boolean_parameter(self, sa_int, 'non_zero')
-
     def test_rule_non_zero_false(self):
         @sa_int('a', non_zero=False)
         def _test(a):
@@ -160,3 +144,27 @@ class TestSa_int(TestCase):
         _test(0)
         _test(-1)
 
+
+class TestSaIntBase(TestCase):
+    # Test that the sa_int works as specified
+
+    def test(self):
+        # no exceptions should be thrown with correct usage
+        @sa_int('a')
+        def _test(a):
+            return a
+
+    def test_args_name_missing(self):
+        # the annotation should throw an exception if the name passed in the decorator is not present in the argument
+        with self.assertRaises(Exception):
+            @sa_int('b')
+            def _test(a):
+                return a
+
+    def test_incorrect_rule(self):
+        # if an unknown rule is provided, throw an exception
+        with self.assertRaises(Exception):
+            @sa_int('a', unknown_rule=True)
+            def _test(a):
+                return a
+        return
