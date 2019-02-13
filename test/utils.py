@@ -22,6 +22,12 @@ def test_int_parameter(self, deco, rule):
         def _test(a):
             return a
 
+    # should not accept Boolean
+    with self.assertRaises(Exception):
+        @deco('a', **{rule: True})
+        def _test(a):
+            return a
+
     # should not accept float
     with self.assertRaises(Exception):
         @deco('a', **{rule: 4.3})
@@ -58,6 +64,12 @@ def test_float_parameter(self, deco, rule):
         def _test(a):
             return a
 
+    # should not accept boolean
+    with self.assertRaises(Exception):
+        @deco('a', **{rule: True})
+        def _test(a):
+            return a
+
     # should not accept int
     with self.assertRaises(Exception):
         @deco('a', **{rule: 4})
@@ -73,12 +85,12 @@ def test_float_parameter(self, deco, rule):
 def test_boolean_parameter(self, deco, rule):
     """Make sure the rule for this decorator only accepts a boolean"""
 
-    # accepts int
+    # accepts boolean True
     @deco('a', **{rule: True})
     def _test(a):
         return a
 
-    # accepts 0
+    # accepts boolean False
     @deco('a', **{rule: False})
     def _test(a):
         return a
@@ -92,6 +104,12 @@ def test_boolean_parameter(self, deco, rule):
     # should not accept float
     with self.assertRaises(Exception):
         @deco('a', **{rule: 4.3})
+        def _test(a):
+            return a
+
+    # should not accept int
+    with self.assertRaises(Exception):
+        @deco('a', **{rule: 4})
         def _test(a):
             return a
 

@@ -15,8 +15,7 @@ def sa_int(arg_name, **rules):
         def _checker(*args, **kwargs):
             val = args[arg_index]
             assert val is not None, f'int argument \'{arg_name}\' was None'
-            assert isinstance(val,
-                              int), f'int argument \'{arg_name}\' with value {val} was of type {type(val)}, not of type \'int\''
+            assert isinstance(val, int) and not isinstance(val, bool), f'int argument \'{arg_name}\' with value {val} was of type {type(val)}, not of type \'int\''
 
             return func(*args, **kwargs)
 
@@ -60,8 +59,7 @@ def _int_lt(arg_name, rule_val, func):
         func(val)
     return _check
 
-
-@sa_int('rule_val')
+#TODO: sa_bool('rule_var')
 def _int_nonzero(arg_name, rule_val, func):
     def _check(val):
         assert rule_val == False or val != 0, f'int argument \'{arg_name}\' with value {val} was 0'
