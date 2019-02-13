@@ -19,6 +19,9 @@ class TestSaIntParameters(TestCase):
     def test_rule_lt_takes_int(self):
         test_int_parameter(self, sa_int, 'lt')
 
+    def test_rule_mod_takes_int(self):
+        test_int_parameter(self, sa_int, 'mod')
+
     def test_rule_non_zero_takes_boolean(self):
         test_boolean_parameter(self, sa_int, 'non_zero')
 
@@ -143,6 +146,24 @@ class TestSaIntRules(TestCase):
         _test(1)
         _test(0)
         _test(-1)
+
+    def test_rule_mod(self):
+        @sa_int('a', mod=2)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(0)
+        _test(2)
+        _test(4)
+        _test(-2)
+
+        # Incorrect usage, 3 % 2 results in 1
+        with self.assertRaises(Exception):
+            _test(3)
+        # Incorrect usage, float given instead of int
+        with self.assertRaises(Exception):
+            _test(2.0)
 
 
 class TestSaIntBase(TestCase):

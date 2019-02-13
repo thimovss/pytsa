@@ -68,11 +68,19 @@ def _int_nonzero(arg_name, rule_val, func):
         func(val)
     return _check
 
+@sa_int('rule_val')
+def _int_modulo(arg_name, rule_val, func):
+    def _check(val):
+        assert val % rule_val == 0, f'int argument \'{arg_name}\' with value {val} was not a multiple of {rule_val}'
+        func(val)
+    return _check
+
 
 INT_RULES = {
     'gte': _int_gte,
     'lte': _int_lte,
     'gt': _int_gt,
     'lt': _int_lt,
-    'non_zero': _int_nonzero
+    'non_zero': _int_nonzero,
+    'mod': _int_modulo
 }
