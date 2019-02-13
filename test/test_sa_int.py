@@ -29,27 +29,6 @@ class TestSaIntParameters(TestCase):
 class TestSaIntRules(TestCase):
     # Test that the rules for sa_int works as specified
 
-    def test_none(self):
-        # if the passed argument is None, throw an exception
-        @sa_int('a')
-        def _test(a):
-            return a
-
-        with self.assertRaises(Exception):
-            _test(None)
-
-    def test_not_int(self):
-        # if the passed argument is not of type int, throw an exception
-        @sa_int('a')
-        def _test(a):
-            return a
-
-        with self.assertRaises(Exception):
-            _test('abc')
-
-        with self.assertRaises(Exception):
-            _test(3.2)
-
     def test_rule_gte(self):
         @sa_int('a', gte=2)
         def _test(a):
@@ -187,4 +166,26 @@ class TestSaIntBase(TestCase):
             @sa_int('a', unknown_rule=True)
             def _test(a):
                 return a
-        return
+
+    def test_type(self):
+        @sa_int('a')
+        def _test(a):
+            return a
+
+        # correct
+        _test(1)
+        _test(0)
+        _test(-1)
+
+        # not None
+        with self.assertRaises(Exception):
+            _test(None)
+        # not bool
+        with self.assertRaises(Exception):
+            _test(True)
+        # not float
+        with self.assertRaises(Exception):
+            _test(3.0)
+        # not string
+        with self.assertRaises(Exception):
+            _test('abc')

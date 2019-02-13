@@ -4,7 +4,7 @@ from src.strictargs import sa_float
 from test.utils import test_float_parameter, test_boolean_parameter
 
 
-class TestSaIntParameters(TestCase):
+class TestSaFloatParameters(TestCase):
     # Test that the decorator only accepts the correct parameters
 
     def test_rule_lte_takes_float(self):
@@ -26,29 +26,8 @@ class TestSaIntParameters(TestCase):
         test_boolean_parameter(self, sa_float, 'non_zero')
 
 
-class TestSaIntRules(TestCase):
+class TestSaFloatRules(TestCase):
     # Test that the rules for sa_float works as specified
-
-    def test_none(self):
-        # if the passed argument is None, throw an exception
-        @sa_float('a')
-        def _test(a):
-            return a
-
-        with self.assertRaises(Exception):
-            _test(None)
-
-    def test_not_float(self):
-        # if the passed argument is not of type float, throw an exception
-        @sa_float('a')
-        def _test(a):
-            return a
-
-        with self.assertRaises(Exception):
-            _test('abc')
-
-        with self.assertRaises(Exception):
-            _test(3)
 
     def test_rule_gte(self):
         @sa_float('a', gte=2.0)
@@ -187,4 +166,26 @@ class TestSaIntBase(TestCase):
             @sa_float('a', unknown_rule=True)
             def _test(a):
                 return a
-        return
+
+    def test_type(self):
+        @sa_float('a')
+        def _test(a):
+            return a
+
+        # correct
+        _test(1.2)
+        _test(0.0)
+        _test(-1.0)
+
+        # not None
+        with self.assertRaises(Exception):
+            _test(None)
+        # not bool
+        with self.assertRaises(Exception):
+            _test(True)
+        # not int
+        with self.assertRaises(Exception):
+            _test(3)
+        # not string
+        with self.assertRaises(Exception):
+            _test('abc')
