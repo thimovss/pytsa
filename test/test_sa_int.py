@@ -144,6 +144,7 @@ class TestSaIntRules(TestCase):
         with self.assertRaises(Exception):
             _test(2.0)
 
+
 class TestSaIntBase(TestCase):
     # Test that the sa_int works as specified
 
@@ -189,3 +190,38 @@ class TestSaIntBase(TestCase):
         # not string
         with self.assertRaises(Exception):
             _test('abc')
+
+
+class TestSaIntMultipleRules(TestCase):
+
+    def test_multiple_rules_case1(self):
+        @sa_int('a', gt=-4, lte=4, non_zero=True, mod=2)
+        def _test(a):
+            return a
+        correct_ints = [-2, 2, 4]
+        incorrect_ints = [-4, -3, -1, 0, 1, 3]
+
+        # correct ints should not throw exception
+        for correct_int in correct_ints:
+            _test(correct_int)
+
+        # incorrect ints should all throw exception
+        for incorrect_int in incorrect_ints:
+            with self.assertRaises(Exception):
+                _test(incorrect_int)
+
+    def test_multiple_rules_case2(self):
+        @sa_int('a', gte=-6, lt=7, non_zero=False, mod=3)
+        def _test(a):
+            return a
+        correct_ints = [-6, -3, 0, 3, 6]
+        incorrect_ints = [-5, -4, -2, -1, 1, 2, 4, 5]
+
+        # correct ints should not throw exception
+        for correct_int in correct_ints:
+            _test(correct_int)
+
+        # incorrect ints should all throw exception
+        for incorrect_int in incorrect_ints:
+            with self.assertRaises(Exception):
+                _test(incorrect_int)
