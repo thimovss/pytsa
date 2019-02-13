@@ -1,6 +1,9 @@
 # PYThon StrictArguments
 Simple, human readable decorators to ensure your method abides to it's contract for Python
 
+## Install
+```$ pip install pytsa```
+
 ## Rules
 | Rule                      | sa_int            | sa_float          | sa_bool | sa_string              |
 |:--------------------------|:------------------|:------------------|:--------|:-----------------------|
