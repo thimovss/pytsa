@@ -119,6 +119,21 @@ def _string_is_upper(arg_name, rule_val, func):
     return _check
 
 
+@sa_string('rule_val')
+def _string_regex(arg_name, rule_val, func):
+    """ensure the string matches the provided regex"""
+    try:
+        compiled_regex = re.compile(rule_val)
+        def _check(val):
+            assert compiled_regex.search(val),\
+                f'string argument \'{arg_name}\' with value \'{val}\' did not match regex \'{rule_val}\''
+            func(val)
+    except re.error as e:
+        raise AssertionError(f'regex could not compile, got exception: {e}')
+
+    return _check
+
+
 STRING_RULES = {
     'not_empty': _string_not_empty,
     'not_blank': _string_not_blank,
@@ -126,5 +141,6 @@ STRING_RULES = {
     'starts_with': _string_starts_with,
     'contains': _string_contains,
     'is_lower': _string_is_lower,
-    'is_upper': _string_is_upper
+    'is_upper': _string_is_upper,
+    'regex': _string_regex
 }

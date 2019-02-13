@@ -220,6 +220,26 @@ class TestSaStringRules(TestCase):
         _test('AbC')
         _test(' ! ')
 
+    def test_rule_regex(self):
+        @sa_string('a', regex='test[12]')
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('test1')
+        _test('test2')
+
+        # Incorrect usage, doesn't match regex
+        with self.assertRaises(Exception):
+            _test('test3')
+
+    def test_rule_regex_incorrect(self):
+        # incorrect regex should raise exception
+        with self.assertRaises(Exception):
+            @sa_string('a', regex='[')
+            def _test(a):
+                return a
+
 
 class TestSaStringBase(TestCase):
     # Test that the sa_string works as specified
