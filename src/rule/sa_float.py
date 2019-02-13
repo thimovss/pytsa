@@ -1,5 +1,5 @@
 import inspect
-
+from src.strictargs import sa_bool
 
 def sa_float(arg_name, **rules):
     """
@@ -61,7 +61,7 @@ def _float_lt(arg_name, rule_val, func):
     return _check
 
 
-#TODO: @sa_bool('rule_val')
+@sa_bool('rule_val')
 def _float_nonzero(arg_name, rule_val, func):
     def _check(val):
         assert rule_val == False or val != 0, f'float argument \'{arg_name}\' with value {val} was 0'

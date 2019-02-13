@@ -1,14 +1,14 @@
 Simple, human readable decorators to ensure your method abides to it's contract
 
 ## Rules
-| Rule                      | sa_int               | sa_float             | sa_string | sa_boolean |
-|:--------------------------|:---------------------|:---------------------|:----------|:-----------|
-| **not zero**              | `non_zero` (boolean) | `non_zero` (boolean) |           |            |
-| **greater than**          | `gt` (int)           | `gt` (int)           |           |            |
-| **greater than or equal** | `gte` (int)          | `gte` (int)          |           |            |
-| **lesser than**           | `lt` (int)           | `lt` (int)           |           |            |
-| **lesser than or equal**  | `lte` (int)          | `lte` (int)          |           |            |
-| **modulo**                | `mod` (int)          | `mod` (int)          |           |            |
+| Rule                      | sa_int               | sa_float             | sa_bool | sa_string |
+|:--------------------------|:---------------------|:---------------------|:--------|:----------|
+| **not zero**              | `non_zero` (boolean) | `non_zero` (boolean) |         |           |
+| **greater than**          | `gt` (int)           | `gt` (float)         |         |           |
+| **greater than or equal** | `gte` (int)          | `gte` (float)        |         |           |
+| **lesser than**           | `lt` (int)           | `lt` (float)         |         |           |
+| **lesser than or equal**  | `lte` (int)          | `lte` (float)        |         |           |
+| **modulo**                | `mod` (int)          | `mod` (float)        |         |           |
 
 | Rule                      | Description                                                                                                                                                                                                                                        |
 |:--------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

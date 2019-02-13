@@ -1,4 +1,5 @@
 import inspect
+from src.strictargs import sa_bool
 
 
 def sa_int(arg_name, **rules):
@@ -59,7 +60,7 @@ def _int_lt(arg_name, rule_val, func):
         func(val)
     return _check
 
-#TODO: sa_bool('rule_var')
+@sa_bool('rule_val')
 def _int_nonzero(arg_name, rule_val, func):
     def _check(val):
         assert rule_val == False or val != 0, f'int argument \'{arg_name}\' with value {val} was 0'
