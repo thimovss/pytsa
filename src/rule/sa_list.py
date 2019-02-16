@@ -1,6 +1,7 @@
 import inspect
 
-from src.pytsa import sa_int
+
+from src.pytsa import sa_int, sa_bool
 
 
 def _format_list(val):
@@ -46,7 +47,30 @@ def _list_len(arg_name, rule_val, func):
 
     return _check
 
+def _list_type(arg_name, rule_val, func):
+    #TODO: these 2 assertions should be replaced with sa_type once introduced
+    assert rule_val is not None, 'rule_val was None, expected a type'
+    assert isinstance(rule_val, type), 'rule_val was of type {}, expected'.format(type(rule_val))
+
+    def _check(val):
+        for i, v in enumerate(val):
+            assert isinstance(v, rule_val), 'list argument \'{}\' with type {} had value with type {} on index {}'.format(
+            arg_name, rule_val, type(v), i)
+        func(val)
+
+    return _check
+
+
+@sa_bool('rule_val')
+def _list_not_empty(arg_name, rule_val, func):
+    def _check(val):
+        assert not rule_val or len(val) != 0, 'list argument \'{}\' was an empty array'.format(arg_name)
+        func(val)
+
+    return _check
 
 LIST_RULES = {
     'len': _list_len,
+    'type': _list_type,
+    'not_empty': _list_not_empty,
 }

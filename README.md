@@ -263,6 +263,43 @@ call(-4.0) => Accepted
 call(0.0) => Accepted
 ```
 
+### List `sa_list`
+**len(int)**: ensure the argument has the given length. None is counted in the length.
+```
+@sa_list('x', len=3)
+call(x):
+    return x
+
+call([1, 2, 3]) => Accepted
+call([1, 2]) => Exception
+call([1, 2, 3, None]) => Exception
+```
+**type(type)**: ensure all the values in the list are of the given type.
+
+**! Warning: this will iterate the whole list everytime the method is called, this could cause performance issues.**  
+*Tip: make sure not to call as type=type(int), as this will check if everything is of type type, instead of int*
+```
+@sa_list('x', type=3)
+call(x):
+    return x
+
+call([1.0, 2.0]) => Exception
+call([1, None, 3]) => Exception
+call([1, 2, 3]) => Accepted
+call([]) => Accepted
+```
+**not_empty(bool)**: ensure the argument is not an empty list
+```
+@sa_list('x', not_empty=True)
+call(x):
+    return x
+
+call([]) => Exception
+call([1, 2, 3]) => Accepted
+call([None]) => Accepted
+call(['a', 1.2, 3]) => Accepted
+```
+
 ## Demo
 Want a demo of other rules? check out the test directory, it has an example for every rule there is!
 ```

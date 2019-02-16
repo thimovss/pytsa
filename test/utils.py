@@ -160,3 +160,46 @@ def test_string_parameter(self, deco, rule):
         @deco('a', **{rule: True})
         def _test(a):
             return a
+
+def test_type_parameter(self, deco, rule):
+    """Make sure the rule for this decorator only accepts a type"""
+
+    # accepts Type
+    @deco('a', **{rule: type(int)})
+    def _test(a):
+        return a
+
+    # accepts Type
+    @deco('a', **{rule: type(str)})
+    def _test(a):
+        return a
+
+    # should not accepts string
+    with self.assertRaises(Exception):
+        @deco('a', **{rule: 'abc'})
+        def _test(a):
+            return a
+
+    # should not accept None
+    with self.assertRaises(Exception):
+        @deco('a', **{rule: None})
+        def _test(a):
+            return a
+
+    # should not accept float
+    with self.assertRaises(Exception):
+        @deco('a', **{rule: 4.3})
+        def _test(a):
+            return a
+
+    # should not accept int
+    with self.assertRaises(Exception):
+        @deco('a', **{rule: 4})
+        def _test(a):
+            return a
+
+    # should not accept bool
+    with self.assertRaises(Exception):
+        @deco('a', **{rule: True})
+        def _test(a):
+            return a

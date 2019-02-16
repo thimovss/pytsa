@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from test.utils import test_int_parameter
+from test.utils import test_int_parameter, test_type_parameter, test_boolean_parameter
 
 from src.pytsa import sa_list
 
@@ -10,6 +10,12 @@ class TestSaListParameters(TestCase):
 
     def test_rule_len_takes_int(self):
         test_int_parameter(self, sa_list, 'len')
+
+    def test_rule_type_takes_type(self):
+        test_type_parameter(self, sa_list, 'type')
+
+    def test_rule_type_takes_type(self):
+        test_boolean_parameter(self, sa_list, 'not_empty')
 
 class TestSaListRules(TestCase):
     # Test that the rules for sa_list works as specified
@@ -33,6 +39,52 @@ class TestSaListRules(TestCase):
         # Incorrect usage, None should be counted
         with self.assertRaises(Exception):
             _test([None, 1, 2, 3])
+
+    def test_rule_type(self):
+        @sa_list('a', type=int)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test([1, 2, 3])
+        _test([])
+        _test([-19])
+
+        # Incorrect usage, should not accept None
+        with self.assertRaises(Exception):
+            _test([1, None, 3])
+        # Incorrect usage, got floats
+        with self.assertRaises(Exception):
+            _test([1.0, 2.0, 3.0])
+
+    def test_rule_not_empty_true(self):
+        @sa_list('a', not_empty=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test([1, 2, 3])
+        _test(['a', 1.2, 3])
+        _test([None])
+
+        # Incorrect usage, empty list
+        with self.assertRaises(Exception):
+            _test([])
+        # Incorrect usage, empty list
+        with self.assertRaises(Exception):
+            _test(list())
+
+    def test_rule_not_empty_false(self):
+        @sa_list('a', not_empty=False)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test([1, 2, 3])
+        _test(['a', 1.2, 3])
+        _test([None])
+        _test([])
+        _test(list())
 
 class TestSaListBase(TestCase):
     # Test that the sa_list works as specified
