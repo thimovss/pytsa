@@ -5,7 +5,6 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='pytsa',
-    version='0.1',
     author="Thimo Visser",
     author_email="thimo.visser@gmail.com",
     description="simple, human readable decorators package to ensure your method abides to it's contract",
