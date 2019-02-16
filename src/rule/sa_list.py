@@ -1,6 +1,6 @@
 import inspect
 
-from src.pytsa import sa_int, sa_bool
+from src.pytsa import sa_int, sa_bool, sa_type
 
 
 def _format_list(val):
@@ -47,11 +47,8 @@ def _list_len(arg_name, rule_val, func):
     return _check
 
 
+@sa_type('rule_val')
 def _list_type(arg_name, rule_val, func):
-    # TODO: these 2 assertions should be replaced with sa_type once introduced
-    assert rule_val is not None, 'rule_val was None, expected a type'
-    assert isinstance(rule_val, type), 'rule_val was of type {}, expected'.format(type(rule_val))
-
     def _check(val):
         for i, v in enumerate(val):
             assert isinstance(v,
