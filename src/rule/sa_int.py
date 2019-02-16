@@ -76,8 +76,10 @@ def _int_lt(arg_name, rule_val, func):
 
 @sa_bool('rule_val')
 def _int_nonzero(arg_name, rule_val, func):
+    if not rule_val:
+        return func
     def _check(val):
-        assert rule_val == False or val != 0, 'int argument \'{}\' with value {} was 0'.format(arg_name, val)
+        assert val != 0, 'int argument \'{}\' with value {} was 0'.format(arg_name, val)
         func(val)
 
     return _check

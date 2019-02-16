@@ -61,8 +61,10 @@ def _list_type(arg_name, rule_val, func):
 
 @sa_bool('rule_val')
 def _list_not_empty(arg_name, rule_val, func):
+    if not rule_val:
+        return func
     def _check(val):
-        assert not rule_val or len(val) != 0, 'list argument \'{}\' was an empty array'.format(arg_name)
+        assert len(val) != 0, 'list argument \'{}\' was an empty array'.format(arg_name)
         func(val)
 
     return _check

@@ -40,9 +40,11 @@ def sa_string(arg_name, **rules):
 @sa_bool('rule_val')
 def _string_not_empty(arg_name, rule_val, func):
     """ensure there is one or more character in the string"""
+    if not rule_val:
+        return func
 
     def _check(val):
-        assert not rule_val or len(val) > 0, \
+        assert len(val) > 0, \
             'string argument \'{}\' with value \'{}\' did not contain at least one non-whitespace character'.format(
                 arg_name, val)
         func(val)
@@ -53,9 +55,11 @@ def _string_not_empty(arg_name, rule_val, func):
 @sa_bool('rule_val')
 def _string_not_blank(arg_name, rule_val, func):
     """ensure there is one or more non-whitespace characters in the string"""
+    if not rule_val:
+        return func
 
     def _check(val):
-        assert not rule_val or (len(val) > 0 and not val.isspace()), \
+        assert len(val) > 0 and not val.isspace(), \
             'string argument \'{}\' with value \'{}\' did not contain at least one character'.format(arg_name, val)
         func(val)
 
@@ -101,9 +105,11 @@ def _string_contains(arg_name, rule_val, func):
 @sa_bool('rule_val')
 def _string_is_lower(arg_name, rule_val, func):
     """ensure all characters in the string are lowercase"""
+    if not rule_val:
+        return func
 
     def _check(val):
-        assert not rule_val or not UPPER_CASE.match(
+        assert not UPPER_CASE.match(
             val), 'not all characters in string argument \'{}\' with value \'{}\' are lowercase'.format(arg_name, val)
         func(val)
 
@@ -113,9 +119,11 @@ def _string_is_lower(arg_name, rule_val, func):
 @sa_bool('rule_val')
 def _string_is_upper(arg_name, rule_val, func):
     """ensure all characters in the string are uppercase"""
+    if not rule_val:
+        return func
 
     def _check(val):
-        assert not rule_val or not LOWER_CASE.match(
+        assert not LOWER_CASE.match(
             val), 'not all characters in string argument \'{}\' with value \'{}\' are uppercase'.format(arg_name, val)
         func(val)
 
