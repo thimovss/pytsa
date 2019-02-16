@@ -14,15 +14,23 @@ The arguments after the first one specify the rules this parameter has to follow
 For example,
 ```
 @sa_string('a', starts_with='a', ends_with='c', is_lower=True, contains='1')
+def foo(a):
+    ...
 ```
 ```
 @sa_path('b', is_dir=True, is_abs=True)
+def bar(b):
+    ...
 ```
 ```
 @sa_list('c', len=8, type=float)
+def foo(a, b, c):
+    ...
 ```
 ```
 @sa_int('d', gt=-4, lte=4, non_zero=True, mod=2)
+def bar(d):
+    ...
 ```
 ## Demo
 Want a demo of other rules? check out the test directory, it has an example for every rule there is!
