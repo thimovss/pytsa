@@ -287,6 +287,9 @@ class TestSaStringBase(TestCase):
         # not int
         with self.assertRaises(Exception):
             _test(2)
+        # not list
+        with self.assertRaises(Exception):
+            _test([1, 'a'])
 
 class TestSaStringMultipleRules(TestCase):
 

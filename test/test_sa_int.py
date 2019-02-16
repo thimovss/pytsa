@@ -190,6 +190,9 @@ class TestSaIntBase(TestCase):
         # not string
         with self.assertRaises(Exception):
             _test('abc')
+        # not list
+        with self.assertRaises(Exception):
+            _test([1, 'a'])
 
 
 class TestSaIntMultipleRules(TestCase):
