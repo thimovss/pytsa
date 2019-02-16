@@ -193,6 +193,9 @@ class TestSaIntBase(TestCase):
         # not list
         with self.assertRaises(Exception):
             _test([1, 'a'])
+        # not type
+        with self.assertRaises(Exception):
+            _test(int)
 
 
 class TestSaIntMultipleRules(TestCase):

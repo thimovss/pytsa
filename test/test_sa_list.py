@@ -140,3 +140,6 @@ class TestSaListBase(TestCase):
         # not bool
         with self.assertRaises(Exception):
             _test(True)
+        # not type
+        with self.assertRaises(Exception):
+            _test(list)

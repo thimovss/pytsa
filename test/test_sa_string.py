@@ -290,6 +290,9 @@ class TestSaStringBase(TestCase):
         # not list
         with self.assertRaises(Exception):
             _test([1, 'a'])
+        # not type
+        with self.assertRaises(Exception):
+            _test(str)
 
 
 class TestSaStringMultipleRules(TestCase):
