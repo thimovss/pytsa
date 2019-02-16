@@ -1,5 +1,13 @@
 import inspect
 
+from src.pytsa import sa_int
+
+
+def _format_list(val):
+    if len(val) <= 3:
+        return str(val)
+    return '[{}, {}, {}, ...]'.format(val[0], val[1], val[2])
+
 
 def sa_list(arg_name, **rules):
     """
@@ -16,7 +24,8 @@ def sa_list(arg_name, **rules):
             val = args[arg_index]
             assert val is not None, 'list argument \'{}\' was None'.format(arg_name)
             assert isinstance(val,
-                              list), 'list argument \'{}\' with value {} was of type {)}, not of type \'list\''.format(arg_name, val, type(val))
+                              list), 'list argument \'{}\' with value {} was of type {)}, not of type \'list\''.format(
+                arg_name, val, type(val))
             return func(*args, **kwargs)
 
         for rule in rules:
@@ -28,5 +37,16 @@ def sa_list(arg_name, **rules):
     return _sa_list
 
 
+@sa_int('rule_val')
+def _list_len(arg_name, rule_val, func):
+    def _check(val):
+        assert len(val) == rule_val, 'list argument \'{}\' with value {} and length of {} was not equal to {}'.format(
+            arg_name, _format_list(val), len(val), rule_val)
+        func(val)
+
+    return _check
+
+
 LIST_RULES = {
+    'len': _list_len,
 }
