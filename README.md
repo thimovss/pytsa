@@ -33,6 +33,7 @@ def assign_score(val)
     score = val
 
 assign_score(5)
+> set score to 5
 
 assign_score(0)
 > Error: int argument val with value 0 was not greater than 0
