@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.strictargs import sa_bool
+from src.pytsa import sa_bool
 
 class TestSaBoolBase(TestCase):
     # Test that the sa_bool works as specified

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.strictargs import sa_int
+from src.pytsa import sa_int
 from test.utils import test_int_parameter, test_boolean_parameter
 
 

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.strictargs import sa_float
+from src.pytsa import sa_float
 from test.utils import test_float_parameter, test_boolean_parameter
 
 

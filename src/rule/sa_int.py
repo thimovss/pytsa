@@ -1,6 +1,6 @@
 import inspect
 
-from src.strictargs import sa_bool
+from src.pytsa import sa_bool
 
 
 def sa_int(arg_name, **rules):
@@ -10,20 +10,20 @@ def sa_int(arg_name, **rules):
 
     def _sa_int(func):
         args_spec = inspect.getfullargspec(func).args
-        assert arg_name in args_spec, f'int argument name \'{arg_name}\' not found in argument specification'
+        assert arg_name in args_spec, 'int argument name \'{}\' not found in argument specification'.format(arg_name)
 
         arg_index = args_spec.index(arg_name)
 
         def _checker(*args, **kwargs):
             val = args[arg_index]
-            assert val is not None, f'int argument \'{arg_name}\' was None'
+            assert val is not None, 'int argument \'{}\' was None'.format(arg_name)
             assert isinstance(val, int) and not isinstance(val,
-                                                           bool), f'int argument \'{arg_name}\' with value {val} was of type {type(val)}, not of type \'int\''
+                                                           bool), 'int argument \'{}\' with value {} was of type {}, not of type \'int\''.format(arg_name, val, type(val))
 
             return func(*args, **kwargs)
 
         for rule in rules:
-            assert rule in INT_RULES, f'rule \'{rule}\' is unknown for sa_int'
+            assert rule in INT_RULES, 'rule \'{}\' is unknown for sa_int'.format(rule)
             _checker = INT_RULES[rule](arg_name, rules[rule], _checker)
 
         return _checker
@@ -34,7 +34,7 @@ def sa_int(arg_name, **rules):
 @sa_int('rule_val')
 def _int_gte(arg_name, rule_val, func):
     def _check(val):
-        assert val >= rule_val, f'int argument \'{arg_name}\' with value {val} was not greater than or equal to {rule_val}'
+        assert val >= rule_val, 'int argument \'{}\' with value {} was not greater than or equal to {}'.format(arg_name, val, rule_val)
         func(val)
 
     return _check
@@ -43,7 +43,7 @@ def _int_gte(arg_name, rule_val, func):
 @sa_int('rule_val')
 def _int_lte(arg_name, rule_val, func):
     def _check(val):
-        assert val <= rule_val, f'int argument \'{arg_name}\' with value {val} was not lesser than or equal to {rule_val}'
+        assert val <= rule_val, 'int argument \'{}\' with value {} was not lesser than or equal to {}'.format(arg_name, val, rule_val)
         func(val)
 
     return _check
@@ -52,7 +52,7 @@ def _int_lte(arg_name, rule_val, func):
 @sa_int('rule_val')
 def _int_gt(arg_name, rule_val, func):
     def _check(val):
-        assert val > rule_val, f'int argument \'{arg_name}\' with value {val} was not greater than {rule_val}'
+        assert val > rule_val, 'int argument \'{}\' with value {} was not greater than {}'.format(arg_name, val, rule_val)
         func(val)
 
     return _check
@@ -61,7 +61,7 @@ def _int_gt(arg_name, rule_val, func):
 @sa_int('rule_val')
 def _int_lt(arg_name, rule_val, func):
     def _check(val):
-        assert val < rule_val, f'int argument \'{arg_name}\' with value {val} was not larger than {rule_val}'
+        assert val < rule_val, 'int argument \'{}\' with value {} was not larger than {}'.format(arg_name, val, rule_val)
         func(val)
 
     return _check
@@ -70,7 +70,7 @@ def _int_lt(arg_name, rule_val, func):
 @sa_bool('rule_val')
 def _int_nonzero(arg_name, rule_val, func):
     def _check(val):
-        assert rule_val == False or val != 0, f'int argument \'{arg_name}\' with value {val} was 0'
+        assert rule_val == False or val != 0, 'int argument \'{}\' with value {} was 0'.format(arg_name, val)
         func(val)
 
     return _check
@@ -79,7 +79,7 @@ def _int_nonzero(arg_name, rule_val, func):
 @sa_int('rule_val')
 def _int_modulo(arg_name, rule_val, func):
     def _check(val):
-        assert val % rule_val == 0, f'int argument \'{arg_name}\' with value {val} was not a multiple of {rule_val}'
+        assert val % rule_val == 0, 'int argument \'{}\' with value {} was not a multiple of {}'.format(arg_name, val, rule_val)
         func(val)
 
     return _check
