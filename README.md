@@ -5,43 +5,269 @@ Simple, human readable decorators to ensure your method abides to it's contract 
 ```$ pip install pytsa```   
 https://pypi.org/project/pytsa
 ## Rules
-| Rule                      | sa_int            | sa_float          | sa_bool | sa_string              |
-|:--------------------------|:------------------|:------------------|:--------|:-----------------------|
-| **not zero**              | `non_zero` (bool) | `non_zero` (bool) |         |                        |
-| **greater than**          | `gt` (int)        | `gt` (float)      |         |                        |
-| **greater than or equal** | `gte` (int)       | `gte` (float)     |         |                        |
-| **lesser than**           | `lt` (int)        | `lt` (float)      |         |                        |
-| **lesser than or equal**  | `lte` (int)       | `lte` (float)     |         |                        |
-| **modulo**                | `mod` (int)       | `mod` (float)     |         |                        |
-| **not empty**             |                   |                   |         | `not_empty` (bool)     |
-| **not blank**             |                   |                   |         | `not_blank` (bool)     |
-| **ends with**             |                   |                   |         | `ends_with` (string)   |
-| **starts with**           |                   |                   |         | `starts_with` (string) |
-| **contains**              |                   |                   |         | `contains` (string)    |
-| **is lower**              |                   |                   |         | `is_lower` (string)    |
-| **is upper**              |                   |                   |         | `is_upper` (string)    |
-| **regex**                 |                   |                   |         | `regex` (string)       |
+String **`@sa_string`**
 
-| Rule                      | Description                                                                                                                                                                                                                                                                                                                                                                     |
-|:--------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **not zero**              | ensure the argument does not equal 0.<br>with rule `non_zero=True` and `call(0)` => Exception<br>with rule `non_zero=True` and `call(1)` => Accepted                                                                                                                                                                                                                            |
-| **greater than**          | ensure the argument is greater than the rule value.<br>with rule `gt=3` and `call(2)` => Exception<br>with rule `gt=3` and `call(3)` => Exception<br>with rule `gt=3` and `call(4)` => Accepted                                                                                                                                                                                 |
-| **greater than or equal** | ensure the argument is greater than, or equal to the rule value.<br>with rule `gte=3` and `call(2)` => Exception<br>with rule `gte=3` and `call(3)` => Accepted<br>with rule `gte=3` and `call(4)` => Accepted                                                                                                                                                                  |
-| **lesser than**           | ensure the argument is lesser than the rule value.<br>with rule `lt=3` and `call(2)` => Accepted<br>with rule `lt=3` and `call(3)` => Exception<br>with rule `lt=3` and `call(4)` => Exception                                                                                                                                                                                  |
-| **lesser than or equal**  | ensure the argument is lesser than, or equal to the rule value.<br>with rule `lte=3` and `call(2)` => Accepted<br>with rule `lte=3` and `call(3)` => Accepted<br>with rule `lte=3` and `call(4)` => Exception                                                                                                                                                                   |
-| **modulo**                | ensure the argument is a multiple of the rule value.<br>with rule `mod=4` and `call(6)` => Exception<br>with rule `mod=4` and `call(4)` => Accepted<br>with rule `mod=4` and `call(-4)` => Accepted<br>with rule `mod=4` and `call(0)` => Accepted                                                                                                                              |
-| **not empty**             | ensure the argument is not an empty string.<br>with rule `not_empty=True` and `call('')` => Exception<br>with rule `not_empty=True` and `call(' ')` => Accepted<br>with rule `not_empty=True` and `call('abc')` => Accepted                                                                                                                                                     |
-| **not blank**             | ensure the argument is not an empty string, or contains only whitespace characters, according to `Python String.isspace()`.<br>with rule `not_empty=True` and `call('')` => Exception<br>with rule `not_empty=True` and `call(' ')` => Exception<br>with rule `not_empty=True` and `call('\t \n   ')` => Exception<br>with rule `not_empty=True` and `call('abc')` => Accepted  |
-| **ends with**             | ensure the argument ends with the rule value, according to `Python String.endswith()`.<br>with rule `ends_with='bc'` and `call('abcd')` => Exception<br>with rule `ends_with='bc'` and `call('abc')` => Accepted<br>with rule `ends_with='1'` and `call('1')` => Accepted  <br>with rule `ends_with=''` and `call('')` => Accepted                                              |
-| **starts with**           | ensure the argument starts with the rule value, according to `Python String.startswith()`.<br>with rule `starts_with='ab'` and `call('1ab')` => Exception<br>with rule `starts_with='ab'` and `call('')` => Exception<br>with rule `starts_with='ab'` and `call('abc')` => Accepted<br>with rule `starts_with='ab'` and `call('ab123')` => Accepted                             |
-| **contains**              | ensure the argument contains the rule value, according to `Python String.find()`.<br>with rule `starts_with='ab'` and `call('a b')` => Exception<br>with rule `starts_with='ab'` and `call('a1b')` => Exception<br>with rule `contains='ab'` and `call('abcd')` => Accepted<br>with rule `starts_with='ab'` and `call('12ab34')` => Accepted                                    |
-| **is lower**              | ensure all non-whitespace characters in the argument are lowercase.<br>with rule `is_lower=True` and `call('ABC')` => Exception<br>with rule `is_lower=True` and `call('aBc')` => Exception<br>with rule `is_lower=True` and `call('abc')` => Accepted<br>with rule `is_lower=True` and `call(' ! ')` => Accepted   <br>with rule `is_lower=True` and `call('')` => Accepted    |
-| **is upper**              | ensure all non-whitespace characters in the argument are uppercase.<br>with rule `is_upper=True` and `call('abc')` => Exception<br>with rule `is_upper=True` and `call('AbC')` => Exception<br>with rule `is_upper=True` and `call('12AB34')` => Accepted<br>with rule `is_upper=True` and `call(' ! ')` => Accepted   <br>with rule `is_upper=True` and `call('')` => Accepted |
-| **regex**                 | ensure the argument matches the regex using `Python re.search()`.<br>with rule `regex='test[12]'` and `call('test3')` => Exception<br>with rule `regex='test[12]'` and `call('test2')` => Accepted<br>with rule `regex='test[12]'` and `call('test1')` => Accepted                                                                                                               |
+Rule | Description
+--- | ---
+**not_empty**(bool)|ensure the argument is not an empty string.
+**not_blank**(bool)|ensure the argument is not an empty string, or contains only whitespace characters, according to Python String.isspace().
+**ends_with**(string)|ensure the argument ends with the rule value, according to Python String.endswith().
+**starts_with**(string)|ensure the argument starts with the rule value, according to Python String.startswith().
+**contains**(string)|ensure the argument contains the rule value, according to Python String.find().
+**is_lower**(bool)|ensure all non-whitespace characters in the argument are lowercase.
+**is_upper**(bool)|ensure all non-whitespace characters in the argument are uppercase.
+**regex**(string)|ensure the argument matches the regex using Python re.search().
+
+Integer **`@sa_int`**:
+
+Rule | Description
+--- | ---
+**non_zero**(bool)|ensure the argument does not equal 0.
+**gt**(int)|ensure the argument is greater than the rule value.
+**gte**(int)|ensure the argument is greater than, or equal to the rule value.
+**lt**(int)|ensure the argument is lesser than the rule value.
+**lte**(int)|ensure the argument is lesser than, or equal to the rule value.
+**mod**(int)|ensure the argument is a multiple of the rule value.
+
+Float **`@sa_float`**:
+
+Rule | Description
+--- | ---
+**non_zero**(bool)|ensure the argument does not equal 0.0.
+**gt**(float)|ensure the argument is greater than the rule value.
+**gte**(float)|ensure the argument is greater than, or equal to the rule value.
+**lt**(float)|ensure the argument is lesser than the rule value.
+**lte**(float)|ensure the argument is lesser than, or equal to the rule value.
+**mod**(float)|ensure the argument is a multiple of the rule value.
+
+Boolean **`@sa_bool`**:
+
+there are no rules for bool available.
+
+## Rule examples
+
+### String `sa_string`
+**not_empty(bool)**: ensure the argument is not an empty string.
+```
+@sa_string('x', not_empty=True)
+call(x):
+    return x
+
+call('') => Exception
+call(' ') => Accepted
+call('abc') => Accepted
+```
+**not_blank(bool)**: ensure the argument is not an empty string, or contains only whitespace characters, according to Python String.isspace().
+```
+@sa_string('x', not_blank=True)
+call(x):
+    return x
+
+call('') => Exception
+call(' ') => Exception
+call('\t \n ') => Exception
+call('abc') => Accepted
+```
+**ends_with(string)**: ensure the argument ends with the rule value, according to Python String.endswith().
+```
+@sa_string('x', ends_with='ab')
+call(x):
+    return x
+
+call('ab1') => Exception
+call('') => Exception
+call('cab') => Accepted
+call('123ab') => Accepted
+```
+**starts_with(string)**: ensure the argument starts with the rule value, according to Python String.startswith().
+```
+@sa_string('x', starts_with='ab')
+call(x):
+    return x
+
+call('1ab') => Exception
+call('') => Exception
+call('abc') => Accepted
+call('ab123') => Accepted
+```
+**contains(string)**: ensure the argument contains the rule value, according to Python String.find().
+```
+@sa_string('x', contains='ab')
+call(x):
+    return x
+
+call('a b') => Exception
+call('a1b') => Exception
+call('abcd') => Accepted
+call('12ab34') => Accepted
+```
+**is_lower(bool)**: ensure all non-whitespace characters in the argument are lowercase.
+```
+@sa_string('x', is_lower=True)
+call(x):
+    return x
+
+call('ABC') => Exception
+call('aBc') => Exception
+call('abc') => Accepted
+call(' ! ') => Accepted 
+call('') => Accepted
+```
+**is_upper(bool)**: ensure all non-whitespace characters in the argument are uppercase.
+```
+@sa_string('x', is_upper=True)
+call(x):
+    return x
+
+call('abc') => Exception
+call('AbC') => Exception
+call('12AB34') => Accepted
+call(' ! ') => Accepted
+call('') => Accepted
+```
+**regex(string)**: ensure the argument matches the regex using Python re.search().
+```
+@sa_string('x', regex='test[12]')
+call(x):
+    return x
+
+call('test3') => Exception
+call('test2') => Accepted
+call('test1') => Accepted
+```
+
+### Boolean `sa_bool`
+there are no rules for bool available.
+
+### Integer `sa_int`
+**non_zero(bool)**: ensure the argument does not equal 0.
+```
+@sa_int('x', non_zero=True)
+call(x):
+    return x
+
+call(0) => Exception
+call(1) => Accepted
+```
+**gt(int)**: ensure the argument is greater than the rule value.
+```
+@sa_int('x', gt=3)
+call(x):
+    return x
+
+call(2) => Exception
+call(3) => Exception
+call(4) => Accepted
+```
+**gte(int)**: ensure the argument is greater than, or equal to the rule value.
+```
+@sa_int('x', gte=3)
+call(x):
+    return x
+
+call(2) => Exception
+call(3) => Accepted
+call(4) => Accepted
+```
+**lt(int)**: ensure the argument is lesser than the rule value.
+```
+@sa_int('x', lt=3)
+call(x):
+    return x
+
+call(2) => Accepted
+call(3) => Exception
+call(4) => Exception
+```
+**lte(int)**: ensure the argument is lesser than, or equal to the rule value.
+```
+@sa_int('x', lte=3)
+call(x):
+    return x
+    
+call(2) => Accepted
+call(3) => Accepted
+call(4) => Exception
+```
+**mod(int)**: ensure the argument is a multiple of the rule value.
+```
+@sa_int('x', mod=4)
+call(x):
+    return x
+    
+call(6) => Exception
+call(4) => Accepted
+call(-4) => Accepted
+call(0) => Accepted
+```
+
+### Float `sa_float`
+**non_zero(bool)**: ensure the argument does not equal 0.0.
+```
+@sa_float('x', non_zero=True)
+call(x):
+    return x
+
+call(0.0) => Exception
+call(1.0) => Accepted
+```
+**gt(float)**: ensure the argument is greater than the rule value.
+```
+@sa_float('x', gt=3.0)
+call(x):
+    return x
+
+call(2.0) => Exception
+call(3.0) => Exception
+call(4.0) => Accepted
+```
+**gte(float)**: ensure the argument is greater than, or equal to the rule value.
+```
+@sa_float('x', gte=3.0)
+call(x):
+    return x
+
+call(2.0) => Exception
+call(3.0) => Accepted
+call(4.0) => Accepted
+```
+**lt(float)**: ensure the argument is lesser than the rule value.
+```
+@sa_float('x', lt=3.0)
+call(x):
+    return x
+
+call(2.0) => Accepted
+call(3.0) => Exception
+call(4.0) => Exception
+```
+**lte(float)**: ensure the argument is lesser than, or equal to the rule value.
+```
+@sa_float('x', lte=3.0)
+call(x):
+    return x
+    
+call(2.0) => Accepted
+call(3.0) => Accepted
+call(4.0) => Exception
+```
+**mod(float)**: ensure the argument is a multiple of the rule value.
+```
+@sa_float('x', mod=4.0)
+call(x):
+    return x
+    
+call(6.0) => Exception
+call(4.0) => Accepted
+call(-4.0) => Accepted
+call(0.0) => Accepted
+```
 
 ## Demo
 Want a demo of other rules? check out the test directory, it has an example for every rule there is!
 ```
+from src.pytsa import sa_int
+
 @sa_int('val', gt=0, lte=10)
 def assign_score(val)
     ""assign an integer score higher than 0, up to 10""
@@ -51,14 +277,14 @@ def assign_score(val)
 assign_score(5)
 
 assign_score(0)
-> int argument val with value 0 was not greater than 0
+> Error: int argument val with value 0 was not greater than 0
 
 assign_score('abc')
-> int argument val with value 'abc' was of type string, not of type 'int'
+> Error: int argument val with value 'abc' was of type string, not of type 'int'
 
 assign_score(None)
-> int argument val was None
+> Error: int argument val was None
 
 assign_score(3.5)
-> int argument val with value 0 was not greater than 0
+> Error: int argument val with value 0 was not greater than 0
 ```
