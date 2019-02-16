@@ -16,10 +16,13 @@ For example,
 @sa_string('a', starts_with='a', ends_with='c', is_lower=True, contains='1')
 ```
 ```
+@sa_path('b', is_dir=True, is_abs=True)
+```
+```
 @sa_list('c', len=8, type=float)
 ```
 ```
-@sa_int('b', gt=-4, lte=4, non_zero=True, mod=2)
+@sa_int('d', gt=-4, lte=4, non_zero=True, mod=2)
 ```
 ## Demo
 Want a demo of other rules? check out the test directory, it has an example for every rule there is!
@@ -53,13 +56,13 @@ String **`@sa_string`**
 Rule | Description
 --- | ---
 **not_empty**(bool)|ensure the argument is not an empty string.
-**not_blank**(bool)|ensure the argument is not an empty string, or contains only whitespace characters, according to Python String.isspace().
-**ends_with**(string)|ensure the argument ends with the rule value, according to Python String.endswith().
-**starts_with**(string)|ensure the argument starts with the rule value, according to Python String.startswith().
-**contains**(string)|ensure the argument contains the rule value, according to Python String.find().
+**not_blank**(bool)|ensure the argument is not an empty string, or contains only whitespace characters. According to `string.isspace()`
+**ends_with**(string)|ensure the argument ends with the rule value. According to `string.endswith()`
+**starts_with**(string)|ensure the argument starts with the rule value. According to `string.startswith()`
+**contains**(string)|ensure the argument contains the rule value. According to `string.find()`
 **is_lower**(bool)|ensure all non-whitespace characters in the argument are lowercase.
 **is_upper**(bool)|ensure all non-whitespace characters in the argument are uppercase.
-**regex**(string)|ensure the argument matches the regex using Python re.search().
+**regex**(string)|ensure the argument matches the regex. According to `re.search()`
 
 Integer **`@sa_int`**:
 
@@ -96,6 +99,16 @@ Rule | Description
 **not_empty**(bool)|ensure the argument is not an empty list
 
 
+Path **`@sa_path`**:
+
+Rule | Description
+--- | ---
+**exists**(bool)|ensure that the argument is an existing path. According to `os.path.exists()`
+**is_dir**(bool)|ensure the argument is an existing path to a directory. According to `os.path.isdir()`
+**is_file**(bool)|ensure the argument is an existing path to a file. According to `os.path.isfile()`
+**is_abs**(bool)|ensure the argument is an absolute path. According to `os.path.isabs()`
+
+
 ## Rule behaviour
 
 ### String `@sa_string`
@@ -109,7 +122,7 @@ call('') => Exception
 call(' ') => Accepted
 call('abc') => Accepted
 ```
-**not_blank(bool)**: ensure the argument is not an empty string, or contains only whitespace characters, according to Python String.isspace().
+**not_blank(bool)**: ensure the argument is not an empty string, or contains only whitespace characters. According to `string.isspace()`
 ```
 @sa_string('x', not_blank=True)
 call(x):
@@ -120,7 +133,7 @@ call(' ') => Exception
 call('\t \n ') => Exception
 call('abc') => Accepted
 ```
-**ends_with(string)**: ensure the argument ends with the rule value, according to Python String.endswith().
+**ends_with(string)**: ensure the argument ends with the rule value. According to `string.endswith()`
 ```
 @sa_string('x', ends_with='ab')
 call(x):
@@ -131,7 +144,7 @@ call('') => Exception
 call('cab') => Accepted
 call('123ab') => Accepted
 ```
-**starts_with(string)**: ensure the argument starts with the rule value, according to Python String.startswith().
+**starts_with(string)**: ensure the argument starts with the rule value. According to `string.startswith()`
 ```
 @sa_string('x', starts_with='ab')
 call(x):
@@ -142,7 +155,7 @@ call('') => Exception
 call('abc') => Accepted
 call('ab123') => Accepted
 ```
-**contains(string)**: ensure the argument contains the rule value, according to Python String.find().
+**contains(string)**: ensure the argument contains the rule value. According to `string.find()`
 ```
 @sa_string('x', contains='ab')
 call(x):
@@ -177,7 +190,7 @@ call('12AB34') => Accepted
 call(' ! ') => Accepted
 call('') => Accepted
 ```
-**regex(string)**: ensure the argument matches the regex using Python re.search().
+**regex(string)**: ensure the argument matches the regex. According to `re.search()`
 ```
 @sa_string('x', regex='test[12]')
 call(x):
