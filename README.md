@@ -47,11 +47,14 @@ assign_score('abc')
 assign_score(None)
 > Error: int argument val was None
 
-assign_score(3.5)
-> Error: int argument val with value 0 was not greater than 0
+assign_score(35)
+> Error: int argument val with value 35 was not less than, or equal to 10
 ```
 ## Rules
-String **`@sa_string`**
+For a more a more detailed description on the behaviour of a rule, make sure to check out its test cases!
+Not sure how @sa_list's len handles None type? see ['test/test_sa_list.py' test_rule_len()](https://github.com/thimovss/pytsa/blob/master/test/test_sa_list.py)
+
+### String **`@sa_string`**
 
 Rule | Description
 --- | ---
@@ -64,7 +67,7 @@ Rule | Description
 **is_upper**(bool)|ensure all non-whitespace characters in the argument are uppercase.
 **regex**(string)|ensure the argument matches the regex. According to `re.search()`
 
-Integer **`@sa_int`**:
+### Integer **`@sa_int`**:
 
 Rule | Description
 --- | ---
@@ -75,7 +78,7 @@ Rule | Description
 **lte**(int)|ensure the argument is lesser than, or equal to the rule value.
 **mod**(int)|ensure the argument is a multiple of the rule value.
 
-Float **`@sa_float`**:
+### Float **`@sa_float`**:
 
 Rule | Description
 --- | ---
@@ -86,20 +89,21 @@ Rule | Description
 **lte**(float)|ensure the argument is lesser than, or equal to the rule value.
 **mod**(float)|ensure the argument is a multiple of the rule value.
 
-Boolean **`@sa_bool`**:
+### Boolean **`@sa_bool`**:
 
 there are no rules for bool available.
 
-List **`@sa_list`**:
+### List **`@sa_list`**:
+**! Warning: some tests such as type will brute-force the whole list every time the method is called, this could cause performance issues.**  
 
 Rule | Description
 --- | ---
-**type**(type)|ensure all the values in the list are of the given type.
+**type**(type)|ensure all the values in the list are of the given type. (*Tip: make sure not to call as `type=type(int)`, as this will check if everything is of type type, instead of type int*)
 **len**(int)|ensure the argument has the given length. None is counted in the length.
 **not_empty**(bool)|ensure the argument is not an empty list
 
 
-Path **`@sa_path`**:
+### Path **`@sa_path`**:
 
 Rule | Description
 --- | ---
@@ -108,259 +112,5 @@ Rule | Description
 **is_file**(bool)|ensure the argument is an existing path to a file. According to `os.path.isfile()`
 **is_abs**(bool)|ensure the argument is an absolute path. According to `os.path.isabs()`
 
-
-## Rule behaviour
-
-### String `@sa_string`
-**not_empty(bool)**: ensure the argument is not an empty string.
-```
-@sa_string('x', not_empty=True)
-call(x):
-    return x
-
-call('') => Exception
-call(' ') => Accepted
-call('abc') => Accepted
-```
-**not_blank(bool)**: ensure the argument is not an empty string, or contains only whitespace characters. According to `string.isspace()`
-```
-@sa_string('x', not_blank=True)
-call(x):
-    return x
-
-call('') => Exception
-call(' ') => Exception
-call('\t \n ') => Exception
-call('abc') => Accepted
-```
-**ends_with(string)**: ensure the argument ends with the rule value. According to `string.endswith()`
-```
-@sa_string('x', ends_with='ab')
-call(x):
-    return x
-
-call('ab1') => Exception
-call('') => Exception
-call('cab') => Accepted
-call('123ab') => Accepted
-```
-**starts_with(string)**: ensure the argument starts with the rule value. According to `string.startswith()`
-```
-@sa_string('x', starts_with='ab')
-call(x):
-    return x
-
-call('1ab') => Exception
-call('') => Exception
-call('abc') => Accepted
-call('ab123') => Accepted
-```
-**contains(string)**: ensure the argument contains the rule value. According to `string.find()`
-```
-@sa_string('x', contains='ab')
-call(x):
-    return x
-
-call('a b') => Exception
-call('a1b') => Exception
-call('abcd') => Accepted
-call('12ab34') => Accepted
-```
-**is_lower(bool)**: ensure all non-whitespace characters in the argument are lowercase.
-```
-@sa_string('x', is_lower=True)
-call(x):
-    return x
-
-call('ABC') => Exception
-call('aBc') => Exception
-call('abc') => Accepted
-call(' ! ') => Accepted 
-call('') => Accepted
-```
-**is_upper(bool)**: ensure all non-whitespace characters in the argument are uppercase.
-```
-@sa_string('x', is_upper=True)
-call(x):
-    return x
-
-call('abc') => Exception
-call('AbC') => Exception
-call('12AB34') => Accepted
-call(' ! ') => Accepted
-call('') => Accepted
-```
-**regex(string)**: ensure the argument matches the regex. According to `re.search()`
-```
-@sa_string('x', regex='test[12]')
-call(x):
-    return x
-
-call('test3') => Exception
-call('test2') => Accepted
-call('test1') => Accepted
-```
-
-### Boolean `@sa_bool`
-there are no rules for bool available.
-
-### Integer `@sa_int`
-**non_zero(bool)**: ensure the argument does not equal 0.
-```
-@sa_int('x', non_zero=True)
-call(x):
-    return x
-
-call(0) => Exception
-call(1) => Accepted
-```
-**gt(int)**: ensure the argument is greater than the rule value.
-```
-@sa_int('x', gt=3)
-call(x):
-    return x
-
-call(2) => Exception
-call(3) => Exception
-call(4) => Accepted
-```
-**gte(int)**: ensure the argument is greater than, or equal to the rule value.
-```
-@sa_int('x', gte=3)
-call(x):
-    return x
-
-call(2) => Exception
-call(3) => Accepted
-call(4) => Accepted
-```
-**lt(int)**: ensure the argument is lesser than the rule value.
-```
-@sa_int('x', lt=3)
-call(x):
-    return x
-
-call(2) => Accepted
-call(3) => Exception
-call(4) => Exception
-```
-**lte(int)**: ensure the argument is lesser than, or equal to the rule value.
-```
-@sa_int('x', lte=3)
-call(x):
-    return x
-    
-call(2) => Accepted
-call(3) => Accepted
-call(4) => Exception
-```
-**mod(int)**: ensure the argument is a multiple of the rule value.
-```
-@sa_int('x', mod=4)
-call(x):
-    return x
-    
-call(6) => Exception
-call(4) => Accepted
-call(-4) => Accepted
-call(0) => Accepted
-```
-
-### Float `@sa_float`
-**non_zero(bool)**: ensure the argument does not equal 0.0.
-```
-@sa_float('x', non_zero=True)
-call(x):
-    return x
-
-call(0.0) => Exception
-call(1.0) => Accepted
-```
-**gt(float)**: ensure the argument is greater than the rule value.
-```
-@sa_float('x', gt=3.0)
-call(x):
-    return x
-
-call(2.0) => Exception
-call(3.0) => Exception
-call(4.0) => Accepted
-```
-**gte(float)**: ensure the argument is greater than, or equal to the rule value.
-```
-@sa_float('x', gte=3.0)
-call(x):
-    return x
-
-call(2.0) => Exception
-call(3.0) => Accepted
-call(4.0) => Accepted
-```
-**lt(float)**: ensure the argument is lesser than the rule value.
-```
-@sa_float('x', lt=3.0)
-call(x):
-    return x
-
-call(2.0) => Accepted
-call(3.0) => Exception
-call(4.0) => Exception
-```
-**lte(float)**: ensure the argument is lesser than, or equal to the rule value.
-```
-@sa_float('x', lte=3.0)
-call(x):
-    return x
-    
-call(2.0) => Accepted
-call(3.0) => Accepted
-call(4.0) => Exception
-```
-**mod(float)**: ensure the argument is a multiple of the rule value.
-```
-@sa_float('x', mod=4.0)
-call(x):
-    return x
-    
-call(6.0) => Exception
-call(4.0) => Accepted
-call(-4.0) => Accepted
-call(0.0) => Accepted
-```
-
-### List `@sa_list`
-**len(int)**: ensure the argument has the given length. None is counted in the length.
-```
-@sa_list('x', len=3)
-call(x):
-    return x
-
-call([1, 2, 3]) => Accepted
-call([1, 2]) => Exception
-call([1, 2, 3, None]) => Exception
-```
-**type(type)**: ensure all the values in the list are of the given type.
-
-**! Warning: this will iterate the whole list everytime the method is called, this could cause performance issues.**  
-*Tip: make sure not to call as type=type(int), as this will check if everything is of type type, instead of int*
-```
-@sa_list('x', type=3)
-call(x):
-    return x
-
-call([1.0, 2.0]) => Exception
-call([1, None, 3]) => Exception
-call([1, 2, 3]) => Accepted
-call([]) => Accepted
-```
-**not_empty(bool)**: ensure the argument is not an empty list
-```
-@sa_list('x', not_empty=True)
-call(x):
-    return x
-
-call([]) => Exception
-call([1, 2, 3]) => Accepted
-call([None]) => Accepted
-call(['a', 1.2, 3]) => Accepted
-```
+# License
+licensed under the [MIT License](https://github.com/thimovss/pytsa/blob/master/LICENSE)
