@@ -4,6 +4,23 @@ Simple, human readable decorators to ensure your method abides to it's contract 
 ## Install
 ```$ pip install pytsa```   
 https://pypi.org/project/pytsa
+## How to use
+Pytsa provides decorators for most python types.  
+These decorators allow you to verify that the arguments passed to your method are of a certain type and/or follow the rules you specify.  
+The decorator name specifies the type you expect, for example sa_int if you expect an integer.  
+The first argument of the decorator is the name of the parameter this decorator applies to.  
+The arguments after the first one specify the rules this parameter has to follow, if any.  
+`@sa_TYPE(PARAM_NAME, RULE1=RULE1_VAL, RULE2=RULE2_VAL)`  
+For example,
+```
+@sa_string('a', starts_with='a', ends_with='c', is_lower=True, contains='1')
+```
+```
+@sa_list('c', len=8, type=float)
+```
+```
+@sa_int('b', gt=-4, lte=4, non_zero=True, mod=2)
+```
 ## Demo
 Want a demo of other rules? check out the test directory, it has an example for every rule there is!
 ```
@@ -28,13 +45,6 @@ assign_score(None)
 
 assign_score(3.5)
 > Error: int argument val with value 0 was not greater than 0
-```
-Rule examples:
-```
-@sa_string('a', starts_with='a', ends_with='c', is_lower=True, contains='1')
-@sa_int('b', gt=-4, lte=4, non_zero=True, mod=2)
-@sa_list('c', len=8, type=float)
-@sa_string('d', is_upper=True, is_lower=False, not_blank=True)
 ```
 ## Rules
 String **`@sa_string`**
@@ -85,9 +95,9 @@ Rule | Description
 **not_empty**(bool)|ensure the argument is not an empty list
 
 
-## Rule examples
+## Rule behaviour
 
-### String `sa_string`
+### String `@sa_string`
 **not_empty(bool)**: ensure the argument is not an empty string.
 ```
 @sa_string('x', not_empty=True)
@@ -177,10 +187,10 @@ call('test2') => Accepted
 call('test1') => Accepted
 ```
 
-### Boolean `sa_bool`
+### Boolean `@sa_bool`
 there are no rules for bool available.
 
-### Integer `sa_int`
+### Integer `@sa_int`
 **non_zero(bool)**: ensure the argument does not equal 0.
 ```
 @sa_int('x', non_zero=True)
@@ -242,7 +252,7 @@ call(-4) => Accepted
 call(0) => Accepted
 ```
 
-### Float `sa_float`
+### Float `@sa_float`
 **non_zero(bool)**: ensure the argument does not equal 0.0.
 ```
 @sa_float('x', non_zero=True)
@@ -304,7 +314,7 @@ call(-4.0) => Accepted
 call(0.0) => Accepted
 ```
 
-### List `sa_list`
+### List `@sa_list`
 **len(int)**: ensure the argument has the given length. None is counted in the length.
 ```
 @sa_list('x', len=3)
