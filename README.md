@@ -4,6 +4,38 @@ Simple, human readable decorators to ensure your method abides to it's contract 
 ## Install
 ```$ pip install pytsa```   
 https://pypi.org/project/pytsa
+## Demo
+Want a demo of other rules? check out the test directory, it has an example for every rule there is!
+```
+from src.pytsa import sa_int
+
+@sa_int('val', gt=0, lte=10)
+def assign_score(val)
+    ""assign an integer score higher than 0, up to 10""
+    print('set score to {val}')
+    score = val
+
+assign_score(5)
+
+assign_score(0)
+> Error: int argument val with value 0 was not greater than 0
+
+assign_score('abc')
+> Error: int argument val with value 'abc' was of type string, not of type 'int'
+
+assign_score(None)
+> Error: int argument val was None
+
+assign_score(3.5)
+> Error: int argument val with value 0 was not greater than 0
+```
+Rule examples:
+```
+@sa_string('a', starts_with='a', ends_with='c', is_lower=True, contains='1')
+@sa_int('b', gt=-4, lte=4, non_zero=True, mod=2)
+@sa_list('c', len=8, type=float)
+@sa_string('d', is_upper=True, is_lower=False, not_blank=True)
+```
 ## Rules
 String **`@sa_string`**
 
@@ -307,30 +339,4 @@ call([]) => Exception
 call([1, 2, 3]) => Accepted
 call([None]) => Accepted
 call(['a', 1.2, 3]) => Accepted
-```
-
-## Demo
-Want a demo of other rules? check out the test directory, it has an example for every rule there is!
-```
-from src.pytsa import sa_int
-
-@sa_int('val', gt=0, lte=10)
-def assign_score(val)
-    ""assign an integer score higher than 0, up to 10""
-    print('set score to {val}')
-    score = val
-
-assign_score(5)
-
-assign_score(0)
-> Error: int argument val with value 0 was not greater than 0
-
-assign_score('abc')
-> Error: int argument val with value 'abc' was of type string, not of type 'int'
-
-assign_score(None)
-> Error: int argument val was None
-
-assign_score(3.5)
-> Error: int argument val with value 0 was not greater than 0
 ```

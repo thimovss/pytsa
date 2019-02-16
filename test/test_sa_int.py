@@ -201,6 +201,7 @@ class TestSaIntMultipleRules(TestCase):
         @sa_int('a', gt=-4, lte=4, non_zero=True, mod=2)
         def _test(a):
             return a
+
         correct_ints = [-2, 2, 4]
         incorrect_ints = [-4, -3, -1, 0, 1, 3]
 
@@ -217,6 +218,7 @@ class TestSaIntMultipleRules(TestCase):
         @sa_int('a', gte=-6, lt=7, non_zero=False, mod=3)
         def _test(a):
             return a
+
         correct_ints = [-6, -3, 0, 3, 6]
         incorrect_ints = [-5, -4, -2, -1, 1, 2, 4, 5]
 

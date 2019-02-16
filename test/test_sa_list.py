@@ -1,8 +1,7 @@
 from unittest import TestCase
 
-from test.utils import test_int_parameter, test_type_parameter, test_boolean_parameter
-
 from src.pytsa import sa_list
+from test.utils import test_int_parameter, test_type_parameter, test_boolean_parameter
 
 
 class TestSaListParameters(TestCase):
@@ -16,6 +15,7 @@ class TestSaListParameters(TestCase):
 
     def test_rule_type_takes_type(self):
         test_boolean_parameter(self, sa_list, 'not_empty')
+
 
 class TestSaListRules(TestCase):
     # Test that the rules for sa_list works as specified
@@ -86,6 +86,7 @@ class TestSaListRules(TestCase):
         _test([])
         _test(list())
 
+
 class TestSaListBase(TestCase):
     # Test that the sa_list works as specified
 
@@ -108,7 +109,6 @@ class TestSaListBase(TestCase):
             @sa_list('a', unknown_rule=True)
             def _test(a):
                 return a
-
 
     def test_type(self):
         @sa_list('a')

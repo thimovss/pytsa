@@ -144,6 +144,7 @@ class TestSaFloatRules(TestCase):
         with self.assertRaises(Exception):
             _test(2)
 
+
 class TestSaIntBase(TestCase):
     # Test that the sa_float works as specified
 

@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from src.pytsa import sa_bool
 
+
 class TestSaBoolBase(TestCase):
     # Test that the sa_bool works as specified
 
@@ -24,7 +25,6 @@ class TestSaBoolBase(TestCase):
             @sa_bool('a', unknown_rule=True)
             def _test(a):
                 return a
-
 
     def test_type(self):
         @sa_bool('a')

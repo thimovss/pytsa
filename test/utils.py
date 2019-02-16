@@ -40,6 +40,7 @@ def test_int_parameter(self, deco, rule):
         def _test(a):
             return a
 
+
 def test_float_parameter(self, deco, rule):
     """Make sure the rule for this decorator only accepts a float"""
 
@@ -82,6 +83,7 @@ def test_float_parameter(self, deco, rule):
         def _test(a):
             return a
 
+
 def test_boolean_parameter(self, deco, rule):
     """Make sure the rule for this decorator only accepts a boolean"""
 
@@ -118,6 +120,7 @@ def test_boolean_parameter(self, deco, rule):
         @deco('a', **{rule: 'abc'})
         def _test(a):
             return a
+
 
 def test_string_parameter(self, deco, rule):
     """Make sure the rule for this decorator only accepts a string"""
@@ -160,6 +163,7 @@ def test_string_parameter(self, deco, rule):
         @deco('a', **{rule: True})
         def _test(a):
             return a
+
 
 def test_type_parameter(self, deco, rule):
     """Make sure the rule for this decorator only accepts a type"""

@@ -46,11 +46,11 @@ class TestSaStringRules(TestCase):
         with self.assertRaises(Exception):
             _test('')
 
-
     def test_rule_not_empty_false(self):
         @sa_string('a', not_empty=False)
         def _test(a):
             return a
+
         _test('a')
         _test('123')
         _test(' ')
@@ -77,11 +77,11 @@ class TestSaStringRules(TestCase):
         with self.assertRaises(Exception):
             _test('\t \n  ')
 
-
     def test_rule_not_blank_false(self):
         @sa_string('a', not_blank=False)
         def _test(a):
             return a
+
         _test('a')
         _test('123')
         _test('')
@@ -290,6 +290,7 @@ class TestSaStringBase(TestCase):
         # not list
         with self.assertRaises(Exception):
             _test([1, 'a'])
+
 
 class TestSaStringMultipleRules(TestCase):
 

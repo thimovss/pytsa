@@ -14,7 +14,8 @@ def sa_string(arg_name, **rules):
 
     def _sa_string(func):
         args_spec = inspect.getfullargspec(func).args
-        assert arg_name in args_spec, 'string argument name \'{arg_name}\' not found in argument specification'.format(arg_name)
+        assert arg_name in args_spec, 'string argument name \'{arg_name}\' not found in argument specification'.format(
+            arg_name)
 
         arg_index = args_spec.index(arg_name)
 
@@ -22,7 +23,8 @@ def sa_string(arg_name, **rules):
             val = args[arg_index]
             assert val is not None, 'string argument \'{}\' was None'.format(arg_name)
             assert isinstance(val,
-                              str), 'string argument \'{}\' with value \'{}\' was of type {}, not of type \'str\''.format(arg_name, val, type(val))
+                              str), 'string argument \'{}\' with value \'{}\' was of type {}, not of type \'str\''.format(
+                arg_name, val, type(val))
 
             return func(*args, **kwargs)
 
@@ -41,7 +43,8 @@ def _string_not_empty(arg_name, rule_val, func):
 
     def _check(val):
         assert not rule_val or len(val) > 0, \
-            'string argument \'{}\' with value \'{}\' did not contain at least one non-whitespace character'.format(arg_name, val)
+            'string argument \'{}\' with value \'{}\' did not contain at least one non-whitespace character'.format(
+                arg_name, val)
         func(val)
 
     return _check
@@ -124,8 +127,9 @@ def _string_regex(arg_name, rule_val, func):
     """ensure the string matches the provided regex"""
     try:
         compiled_regex = re.compile(rule_val)
+
         def _check(val):
-            assert compiled_regex.search(val),\
+            assert compiled_regex.search(val), \
                 'string argument \'{}\' with value \'{}\' did not match regex \'{}\''.format(arg_name, val, rule_val)
             func(val)
     except re.error as err:
