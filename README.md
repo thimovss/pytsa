@@ -44,6 +44,15 @@ Boolean **`@sa_bool`**:
 
 there are no rules for bool available.
 
+List **`@sa_list`**:
+
+Rule | Description
+--- | ---
+**type**(type)|ensure all the values in the list are of the given type.
+**len**(int)|ensure the argument has the given length. None is counted in the length.
+**not_empty**(bool)|ensure the argument is not an empty list
+
+
 ## Rule examples
 
 ### String `sa_string`
