@@ -10,6 +10,15 @@ class TestSaPathParameters(TestCase):
     def test_rule_exists_takes_boolean(self):
         test_boolean_parameter(self, sa_path, 'exists')
 
+    def test_rule_is_dir_takes_boolean(self):
+        test_boolean_parameter(self, sa_path, 'is_dir')
+
+    def test_rule_is_file_takes_boolean(self):
+        test_boolean_parameter(self, sa_path, 'is_file')
+
+    def test_rule_is_file_takes_boolean(self):
+        test_boolean_parameter(self, sa_path, 'is_abs')
+
 
 class TestSaPathRules(TestCase):
     # Test that the rules for sa_path works as specified
@@ -26,11 +35,7 @@ class TestSaPathRules(TestCase):
 
         # Incorrect usage
         with self.assertRaises(Exception):
-            _test('/files')
-        with self.assertRaises(Exception):
-            _test('/files/')
-        with self.assertRaises(Exception):
-            _test('/files/non-existent.txt')
+            _test('./files/non-existent.txt')
 
     def test_rule_exists_false(self):
         @sa_path('a', exists=False)
@@ -41,9 +46,92 @@ class TestSaPathRules(TestCase):
         _test('./files')
         _test('./files/')
         _test('./files/test.txt')
-        _test('/files')
-        _test('/files/')
-        _test('/files/non-existent.txt')
+        _test('./files/non-existent.txt')
+
+    def test_rule_is_dir_true(self):
+        @sa_path('a', is_dir=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('.')
+        _test('./')
+        _test('./files')
+        _test('./files/')
+
+        # Incorrect usage, is file
+        with self.assertRaises(Exception):
+            _test('./files/test.txt')
+        # Incorrect usage, does not exist
+        with self.assertRaises(Exception):
+            _test('./non-existent')
+
+    def test_rule_is_dir_false(self):
+        @sa_path('a', is_dir=False)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('.')
+        _test('./')
+        _test('./files')
+        _test('./files/')
+        _test('./files/test.txt')
+        _test('./non-existent')
+
+    def test_rule_is_file_true(self):
+        @sa_path('a', is_file=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('./files/test.txt')
+
+        # Incorrect usage, is dir
+        with self.assertRaises(Exception):
+            _test('./files')
+        # Incorrect usage, does not exist
+        with self.assertRaises(Exception):
+            _test('./non-existent.txt')
+
+    def test_rule_is_file_false(self):
+        @sa_path('a', is_file=False)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('./files/test.txt')
+        _test('./files')
+        _test('./non-existent.txt')
+
+    def test_rule_is_abs_true(self):
+        @sa_path('a', is_abs=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('/files/test.txt')
+        _test('/non-existent.txt')
+        _test('/non-existent/test.txt')
+
+        # Incorrect usage, is not absolute
+        with self.assertRaises(Exception):
+            _test('./files/test.txt')
+        # Incorrect usage, does not exist
+        with self.assertRaises(Exception):
+            _test('./non-existent.txt')
+
+    def test_rule_is_abs_false(self):
+        @sa_path('a', is_abs=False)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test('/files/test.txt')
+        _test('/non-existent.txt')
+        _test('/non-existent/test.txt')
+        _test('./files/test.txt')
+        _test('./non-existent.txt')
 
 
 class TestSaPathBase(TestCase):
