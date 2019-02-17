@@ -119,6 +119,15 @@ Rule | Description
 **is_dir**(bool)|ensure the argument is an existing path to a directory. According to `os.path.isdir()`
 **is_file**(bool)|ensure the argument is an existing path to a file. According to `os.path.isfile()`
 **is_abs**(bool)|ensure the argument is an absolute path. According to `os.path.isabs()`
+**can_owner_read**(bool)|ensure the owner has read permission.
+**can_group_read**(bool)|ensure the group has read permission.
+**can_others_read**(bool)|ensure the others has read permission.
+**can_owner_write**(bool)|ensure the owner has write permission.
+**can_group_write**(bool)|ensure the group has write permission.
+**can_others_write**(bool)|ensure the others has write permission.
+**can_owner_execute**(bool)|ensure the owner has execute permission.
+**can_group_execute**(bool)|ensure the group has execute permission.
+**can_others_execute**(bool)|ensure the others has execute permission.
 
 # License
 licensed under the [MIT License](https://github.com/thimovss/pytsa/blob/master/LICENSE)
