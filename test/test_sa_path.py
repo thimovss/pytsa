@@ -1,4 +1,4 @@
-from os import path
+from os import path, chmod, stat
 from unittest import TestCase
 
 from src.pytsa import sa_path
@@ -26,12 +26,18 @@ class TestSaPathRules(TestCase):
     # Test that the rules for sa_path works as specified
 
     def _create_test_file_structure(self):
+        """
+        Create a simple file structure for testing where group, user and other all have full permissions.
+        /temp_dir [777]
+            /test.txt [777]
+        """
         self.test_dir = tempfile.mkdtemp()
         self.test_file = path.join(self.test_dir, 'test.txt')
         with open(self.test_file, 'w') as f:
             f.write('Temp test.txt file')
             f.close()
-
+        chmod(self.test_dir, 0o0777)
+        chmod(self.test_file, 0o0777)
 
     def test_rule_exists_true(self):
         self._create_test_file_structure()
