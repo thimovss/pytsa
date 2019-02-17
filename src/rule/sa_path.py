@@ -127,6 +127,84 @@ def _path_can_others_write(arg_name, rule_val, func):
     return _check
 
 
+@sa_bool('rule_val')
+def _path_can_owner_read(arg_name, rule_val, func):
+    """ensure the path has permission for owner to read using stat.S_IRUSR"""
+    if not rule_val:
+        return func
+
+    def _check(val):
+        assert bool(os.stat(val).st_mode & stat.S_IRUSR), 'path argument \'{}\' with value \'{}\' was not readable for owner'.format(arg_name, val)
+        func(val)
+
+    return _check
+
+
+@sa_bool('rule_val')
+def _path_can_group_read(arg_name, rule_val, func):
+    """ensure the path has permission for group to read using stat.S_IRGRP"""
+    if not rule_val:
+        return func
+
+    def _check(val):
+        assert bool(os.stat(val).st_mode & stat.S_IRGRP), 'path argument \'{}\' with value \'{}\' was not readable for group'.format(arg_name, val)
+        func(val)
+
+    return _check
+
+
+@sa_bool('rule_val')
+def _path_can_others_read(arg_name, rule_val, func):
+    """ensure the path has permission for others to read using stat.S_IROTH"""
+    if not rule_val:
+        return func
+
+    def _check(val):
+        assert bool(os.stat(val).st_mode & stat.S_IROTH), 'path argument \'{}\' with value \'{}\' was not readable for others'.format(arg_name, val)
+        func(val)
+
+    return _check
+
+
+@sa_bool('rule_val')
+def _path_can_owner_execute(arg_name, rule_val, func):
+    """ensure the path has permission for owner to execute using stat.S_IXUSR"""
+    if not rule_val:
+        return func
+
+    def _check(val):
+        assert bool(os.stat(val).st_mode & stat.S_IXUSR), 'path argument \'{}\' with value \'{}\' was not executeable for owner'.format(arg_name, val)
+        func(val)
+
+    return _check
+
+
+@sa_bool('rule_val')
+def _path_can_group_execute(arg_name, rule_val, func):
+    """ensure the path has permission for group to execute using stat.S_IXGRP"""
+    if not rule_val:
+        return func
+
+    def _check(val):
+        assert bool(os.stat(val).st_mode & stat.S_IXGRP), 'path argument \'{}\' with value \'{}\' was not executeable for group'.format(arg_name, val)
+        func(val)
+
+    return _check
+
+
+@sa_bool('rule_val')
+def _path_can_others_execute(arg_name, rule_val, func):
+    """ensure the path has permission for others to execute using stat.S_IXOTH"""
+    if not rule_val:
+        return func
+
+    def _check(val):
+        assert bool(os.stat(val).st_mode & stat.S_IXOTH), 'path argument \'{}\' with value \'{}\' was not executeable for others'.format(arg_name, val)
+        func(val)
+
+    return _check
+
+
 PATH_RULES = {
     'exists': _path_exists,
     'is_dir': _path_is_dir,
@@ -135,4 +213,10 @@ PATH_RULES = {
     'can_owner_write': _path_can_owner_write,
     'can_group_write': _path_can_group_write,
     'can_others_write': _path_can_others_write,
+    'can_owner_read': _path_can_owner_read,
+    'can_group_read': _path_can_group_read,
+    'can_others_read': _path_can_others_read,
+    'can_owner_execute': _path_can_owner_execute,
+    'can_group_execute': _path_can_group_execute,
+    'can_others_execute': _path_can_others_execute,
 }

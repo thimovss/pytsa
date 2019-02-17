@@ -30,6 +30,24 @@ class TestSaPathParameters(TestCase):
     def test_rule_can_others_write_takes_boolean(self):
         test_boolean_parameter(self, sa_path, 'can_others_write')
 
+    def test_rule_can_owner_read_takes_boolean(self):
+        test_boolean_parameter(self, sa_path, 'can_owner_read')
+
+    def test_rule_can_group_read_takes_boolean(self):
+        test_boolean_parameter(self, sa_path, 'can_group_read')
+
+    def test_rule_can_others_read_takes_boolean(self):
+        test_boolean_parameter(self, sa_path, 'can_others_read')
+
+    def test_rule_can_owner_execute_takes_boolean(self):
+        test_boolean_parameter(self, sa_path, 'can_owner_execute')
+
+    def test_rule_can_group_execute_takes_boolean(self):
+        test_boolean_parameter(self, sa_path, 'can_group_execute')
+
+    def test_rule_can_others_execute_takes_boolean(self):
+        test_boolean_parameter(self, sa_path, 'can_others_execute')
+
 
 class TestSaPathRules(TestCase):
     # Test that the rules for sa_path works as specified
@@ -206,8 +224,8 @@ class TestSaPathRules(TestCase):
         _test(self.test_file)
 
         # Now remove the permissions
-        chmod(self.test_dir, permission_removed_mode)
         chmod(self.test_file, permission_removed_mode)
+        chmod(self.test_dir, permission_removed_mode)
 
         # Incorrect usage, permission was removed
         with self.assertRaises(Exception):
@@ -233,6 +251,24 @@ class TestSaPathRules(TestCase):
 
     def test_rule_can_others_write_true(self):
         self._test_permissions('can_others_write', 0o0775)
+
+    def test_rule_can_owner_read_true(self):
+        self._test_permissions('can_owner_read', 0o0377)
+
+    def test_rule_can_group_read_true(self):
+        self._test_permissions('can_group_read', 0o0737)
+
+    def test_rule_can_others_read_true(self):
+        self._test_permissions('can_others_read', 0o0773)
+
+    def test_rule_can_owner_execute_true(self):
+        self._test_permissions('can_owner_execute', 0o0677)
+
+    def test_rule_can_group_execute_true(self):
+        self._test_permissions('can_group_execute', 0o0767)
+
+    def test_rule_can_others_execute_true(self):
+        self._test_permissions('can_others_execute', 0o0776)
 
 
 class TestSaPathBase(TestCase):
