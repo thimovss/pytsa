@@ -197,6 +197,25 @@ class TestSaIntBase(TestCase):
         with self.assertRaises(Exception):
             _test(int)
 
+    def test_kwargs(self):
+        # rules should properly handle parameters passed through **kwargs
+        @sa_int('a')
+        def _test(a):
+            return a
+
+        _test(a=3)
+        _test(**{'a': 3})
+        _test(**{'b': 'cd', 'a': 1})
+
+        # Incorrect usage, parameter a was None
+        with self.assertRaises(Exception):
+            _test(**{'a': None})
+        with self.assertRaises(Exception):
+            _test(**{'b': 2})
+
+        # Incorrect usage, param passed as kwarg and arg
+        with self.assertRaises(Exception):
+            _test(a=3, **{'a': 2})
 
 class TestSaIntMultipleRules(TestCase):
 
