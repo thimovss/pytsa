@@ -1,8 +1,10 @@
+from os import path
 from unittest import TestCase
 
 from src.pytsa import sa_path
 from test.utils import test_boolean_parameter
 
+import tempfile
 
 class TestSaPathParameters(TestCase):
     # Test that the decorator only accepts the correct parameters
@@ -24,18 +26,22 @@ class TestSaPathRules(TestCase):
     # Test that the rules for sa_path works as specified
 
     def test_rule_exists_true(self):
+        test_dir = tempfile.mkdtemp()
+        with open(path.join(test_dir, 'test.txt'), 'w') as f:
+            f.write('Temp test.txt file')
+            f.close()
+
         @sa_path('a', exists=True)
         def _test(a):
             return a
 
         # Correct usage
-        _test('./files')
-        _test('./files/')
-        _test('./files/test.txt')
+        _test(test_dir)
+        _test(path.join(test_dir, 'test.txt'))
 
         # Incorrect usage
         with self.assertRaises(Exception):
-            _test('./files/non-existent.txt')
+            _test(path.join(test_dir, 'non-existent.txt'))
 
     def test_rule_exists_false(self):
         @sa_path('a', exists=False)
