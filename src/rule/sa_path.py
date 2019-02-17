@@ -101,10 +101,38 @@ def _path_can_owner_write(arg_name, rule_val, func):
     return _check
 
 
+@sa_bool('rule_val')
+def _path_can_group_write(arg_name, rule_val, func):
+    """ensure the path has permission for group to write using stat.S_IWGRP"""
+    if not rule_val:
+        return func
+
+    def _check(val):
+        assert bool(os.stat(val).st_mode & stat.S_IWGRP), 'path argument \'{}\' with value \'{}\' was not writeable for group'.format(arg_name, val)
+        func(val)
+
+    return _check
+
+
+@sa_bool('rule_val')
+def _path_can_others_write(arg_name, rule_val, func):
+    """ensure the path has permission for others to write using stat.S_IWOTH"""
+    if not rule_val:
+        return func
+
+    def _check(val):
+        assert bool(os.stat(val).st_mode & stat.S_IWOTH), 'path argument \'{}\' with value \'{}\' was not writeable for others'.format(arg_name, val)
+        func(val)
+
+    return _check
+
+
 PATH_RULES = {
     'exists': _path_exists,
     'is_dir': _path_is_dir,
     'is_file': _path_is_file,
     'is_abs': _path_is_abs,
     'can_owner_write': _path_can_owner_write,
+    'can_group_write': _path_can_group_write,
+    'can_others_write': _path_can_others_write,
 }
