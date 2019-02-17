@@ -1,5 +1,6 @@
 import inspect
-from os import path
+import os
+import stat
 
 from src.pytsa import sa_bool
 
@@ -42,7 +43,7 @@ def _path_exists(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert path.exists(val), 'path argument \'{}\' with value \'{}\' did not exist'.format(arg_name, val)
+        assert os.path.exists(val), 'path argument \'{}\' with value \'{}\' did not exist'.format(arg_name, val)
         func(val)
 
     return _check
@@ -55,7 +56,7 @@ def _path_is_dir(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert path.isdir(val), 'path argument \'{}\' with value \'{}\' was not a directory'.format(arg_name, val)
+        assert os.path.isdir(val), 'path argument \'{}\' with value \'{}\' was not a directory'.format(arg_name, val)
         func(val)
 
     return _check
@@ -68,7 +69,7 @@ def _path_is_file(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert path.isfile(val), 'path argument \'{}\' with value \'{}\' was not a file'.format(arg_name, val)
+        assert os.path.isfile(val), 'path argument \'{}\' with value \'{}\' was not a file'.format(arg_name, val)
         func(val)
 
     return _check
@@ -81,7 +82,20 @@ def _path_is_abs(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert path.isabs(val), 'path argument \'{}\' with value \'{}\' was not absolute'.format(arg_name, val)
+        assert os.path.isabs(val), 'path argument \'{}\' with value \'{}\' was not absolute'.format(arg_name, val)
+        func(val)
+
+    return _check
+
+
+@sa_bool('rule_val')
+def _path_can_owner_write(arg_name, rule_val, func):
+    """ensure the path has permission for owner to write using stat.S_IWUSR"""
+    if not rule_val:
+        return func
+
+    def _check(val):
+        assert bool(os.stat(val).st_mode & stat.S_IWUSR), 'path argument \'{}\' with value \'{}\' was not writeable for owner'.format(arg_name, val)
         func(val)
 
     return _check
@@ -92,4 +106,5 @@ PATH_RULES = {
     'is_dir': _path_is_dir,
     'is_file': _path_is_file,
     'is_abs': _path_is_abs,
+    'can_owner_write': _path_can_owner_write,
 }

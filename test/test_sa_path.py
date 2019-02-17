@@ -21,6 +21,9 @@ class TestSaPathParameters(TestCase):
     def test_rule_is_file_takes_boolean(self):
         test_boolean_parameter(self, sa_path, 'is_abs')
 
+    def test_rule_can_owner_write_takes_boolean(self):
+        test_boolean_parameter(self, sa_path, 'can_owner_write')
+
 
 class TestSaPathRules(TestCase):
     # Test that the rules for sa_path works as specified
@@ -153,6 +156,37 @@ class TestSaPathRules(TestCase):
         _test('/non-existent/test.txt')
         _test('./files/test.txt')
         _test('./non-existent.txt')
+
+
+    def test_rule_can_owner_write_true(self):
+        self._create_test_file_structure()
+        @sa_path('a', can_owner_write=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(self.test_dir)
+        _test(self.test_file)
+
+        # Now remove the permissions
+        chmod(self.test_dir, 0o0577)
+        chmod(self.test_file, 0o0577)
+
+        # Incorrect usage, permission was removed
+        with self.assertRaises(Exception):
+            _test(self.test_dir)
+
+        # Incorrect usage, permission was removed
+        with self.assertRaises(Exception):
+            _test(self.test_file)
+
+        # Incorrect usage, non existent file
+        with self.assertRaises(Exception):
+            _test(path.join(self.test_dir, 'non-existent.txt'))
+
+        # Incorrect usage, non existent dir
+        with self.assertRaises(Exception):
+            _test('/non-existent')
 
 
 class TestSaPathBase(TestCase):
