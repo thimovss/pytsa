@@ -221,7 +221,6 @@ class TestSaNumberRules(TestCase):
         _test(4)
         _test(-2)
         _test(0.0)
-        _test(0.5)
         _test(2.0)
         _test(4.0)
         _test(-2.0)
@@ -233,20 +232,17 @@ class TestSaNumberRules(TestCase):
             _test(3.0)
 
     def test_rule_mod_float(self):
-        @sa_number('a', mod=2.0)
+        @sa_number('a', mod=2.5)
         def _test(a):
             return a
 
         # Correct usage
         _test(0)
-        _test(2)
-        _test(4)
-        _test(-2)
+        _test(5)
         _test(0.0)
-        _test(0.5)
-        _test(2.0)
-        _test(4.0)
-        _test(-2.0)
+        _test(2.5)
+        _test(7.5)
+        _test(-2.5)
 
         # Incorrect usage, 3 % 2 results in 1
         with self.assertRaises(Exception):

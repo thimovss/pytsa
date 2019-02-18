@@ -1,5 +1,6 @@
 import inspect
 
+from decimal import Decimal
 from src.pytsa import sa_bool
 
 
@@ -91,7 +92,7 @@ def _number_nonzero(arg_name, rule_val, func):
 @sa_number('rule_val')
 def _number_modulo(arg_name, rule_val, func):
     def _check(val):
-        assert val % rule_val == 0.0, 'number argument \'{}\' with value {} was not a multiple of {}'.format(arg_name,
+        assert Decimal(val) % Decimal(rule_val) == Decimal('0.0'), 'number argument \'{}\' with value {} was not a multiple of {}'.format(arg_name,
                                                                                                            val,
                                                                                                            rule_val)
         func(val)
