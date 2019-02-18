@@ -191,12 +191,14 @@ class TestSaNumberRules(TestCase):
         # Correct usage
         _test(1)
         _test(-1)
+        _test(1.0)
+        _test(-1.0)
 
         # Incorrect usage, is 0
         with self.assertRaises(Exception):
             _test(0)
 
-        # Incorrect usage, float given instead of number
+        # Incorrect usage, is 0
         with self.assertRaises(Exception):
             _test(0.0)
 
@@ -209,6 +211,9 @@ class TestSaNumberRules(TestCase):
         _test(1)
         _test(0)
         _test(-1)
+        _test(1.0)
+        _test(0.0)
+        _test(-1.0)
 
     def test_rule_mod_int(self):
         @sa_number('a', mod=2)

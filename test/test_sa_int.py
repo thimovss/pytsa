@@ -77,7 +77,7 @@ class TestSaIntRules(TestCase):
         with self.assertRaises(Exception):
             _test(1.9)
 
-    def test_rule_lte_int(self):
+    def test_rule_lte_float(self):
         @sa_int('a', lte=2.0)
         def _test(a):
             return a
