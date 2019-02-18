@@ -291,12 +291,12 @@ class TestSaFloatBase(TestCase):
 class TestSaFloatMultipleRules(TestCase):
 
     def test_multiple_rules_case1(self):
-        @sa_float('a', gt=-4, lte=4, non_zero=True, mod=2)
+        @sa_float('a', gt=-4.0, lte=4, non_zero=True, mod=2)
         def _test(a):
             return a
 
-        correct_floats = [-2, 2, 4]
-        incorrect_floats = [-4, -3, -1, 0, 1, 3]
+        correct_floats = [-2.0, 2.0, 4.0]
+        incorrect_floats = [-4.0, -3.0, -1.0, 0.0, 1.0, 3.0]
 
         # correct floats should not throw exception
         for correct_float in correct_floats:
@@ -308,12 +308,12 @@ class TestSaFloatMultipleRules(TestCase):
                 _test(incorrect_float)
 
     def test_multiple_rules_case2(self):
-        @sa_float('a', gte=-6, lt=7, non_zero=False, mod=3)
+        @sa_float('a', gte=-6, lt=7.0, non_zero=False, mod=3.0)
         def _test(a):
             return a
 
-        correct_floats = [-6, -3, 0, 3, 6]
-        incorrect_floats = [-5, -4, -2, -1, 1, 2, 4, 5]
+        correct_floats = [-6.0, -3.0, 0.0, 3.0, 6.0]
+        incorrect_floats = [-5.0, -4.0, -2.0, -1.0, 1.0, 2.0, 4.0, 5.0]
 
         # correct floats should not throw exception
         for correct_float in correct_floats:

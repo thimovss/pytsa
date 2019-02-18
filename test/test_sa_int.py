@@ -287,7 +287,7 @@ class TestSaIntBase(TestCase):
 class TestSaIntMultipleRules(TestCase):
 
     def test_multiple_rules_case1(self):
-        @sa_int('a', gt=-4, lte=4, non_zero=True, mod=2)
+        @sa_int('a', gt=-4, lte=4.0, non_zero=True, mod=2.0)
         def _test(a):
             return a
 
@@ -304,7 +304,7 @@ class TestSaIntMultipleRules(TestCase):
                 _test(incorrect_int)
 
     def test_multiple_rules_case2(self):
-        @sa_int('a', gte=-6, lt=7, non_zero=False, mod=3)
+        @sa_int('a', gte=-6.0, lt=7, non_zero=False, mod=3)
         def _test(a):
             return a
 
