@@ -1,6 +1,6 @@
 import inspect
 
-from src.pytsa import sa_bool
+from src.pytsa import sa_bool, sa_number
 
 
 def sa_int(arg_name, **rules):
@@ -32,7 +32,7 @@ def sa_int(arg_name, **rules):
     return _sa_int
 
 
-@sa_int('rule_val')
+@sa_number('rule_val')
 def _int_gte(arg_name, rule_val, func):
     def _check(val):
         assert val >= rule_val, 'int argument \'{}\' with value {} was not greater than or equal to {}'.format(arg_name,
@@ -43,7 +43,7 @@ def _int_gte(arg_name, rule_val, func):
     return _check
 
 
-@sa_int('rule_val')
+@sa_number('rule_val')
 def _int_lte(arg_name, rule_val, func):
     def _check(val):
         assert val <= rule_val, 'int argument \'{}\' with value {} was not lesser than or equal to {}'.format(arg_name,
@@ -54,7 +54,7 @@ def _int_lte(arg_name, rule_val, func):
     return _check
 
 
-@sa_int('rule_val')
+@sa_number('rule_val')
 def _int_gt(arg_name, rule_val, func):
     def _check(val):
         assert val > rule_val, 'int argument \'{}\' with value {} was not greater than {}'.format(arg_name, val,
@@ -64,7 +64,7 @@ def _int_gt(arg_name, rule_val, func):
     return _check
 
 
-@sa_int('rule_val')
+@sa_number('rule_val')
 def _int_lt(arg_name, rule_val, func):
     def _check(val):
         assert val < rule_val, 'int argument \'{}\' with value {} was not larger than {}'.format(arg_name, val,
@@ -85,7 +85,7 @@ def _int_nonzero(arg_name, rule_val, func):
     return _check
 
 
-@sa_int('rule_val')
+@sa_number('rule_val')
 def _int_modulo(arg_name, rule_val, func):
     def _check(val):
         assert val % rule_val == 0, 'int argument \'{}\' with value {} was not a multiple of {}'.format(arg_name, val,

@@ -1,6 +1,6 @@
 import inspect
 
-from src.pytsa import sa_bool
+from src.pytsa import sa_bool, sa_number
 
 
 def sa_float(arg_name, **rules):
@@ -32,7 +32,7 @@ def sa_float(arg_name, **rules):
     return _sa_float
 
 
-@sa_float('rule_val')
+@sa_number('rule_val')
 def _float_gte(arg_name, rule_val, func):
     def _check(val):
         assert val >= rule_val, 'float argument \'{}\' with value {} was not greater than or equal to {}'.format(
@@ -42,7 +42,7 @@ def _float_gte(arg_name, rule_val, func):
     return _check
 
 
-@sa_float('rule_val')
+@sa_number('rule_val')
 def _float_lte(arg_name, rule_val, func):
     def _check(val):
         assert val <= rule_val, 'float argument \'{}\' with value {} was not lesser than or equal to {}'.format(
@@ -52,7 +52,7 @@ def _float_lte(arg_name, rule_val, func):
     return _check
 
 
-@sa_float('rule_val')
+@sa_number('rule_val')
 def _float_gt(arg_name, rule_val, func):
     def _check(val):
         assert val > rule_val, 'float argument \'{}\' with value {} was not greater than {}'.format(arg_name, val,
@@ -62,7 +62,7 @@ def _float_gt(arg_name, rule_val, func):
     return _check
 
 
-@sa_float('rule_val')
+@sa_number('rule_val')
 def _float_lt(arg_name, rule_val, func):
     def _check(val):
         assert val < rule_val, 'float argument \'{}\' with value {} was not larger than {}'.format(arg_name, val,
@@ -83,7 +83,7 @@ def _float_nonzero(arg_name, rule_val, func):
     return _check
 
 
-@sa_float('rule_val')
+@sa_number('rule_val')
 def _float_modulo(arg_name, rule_val, func):
     def _check(val):
         assert val % rule_val == 0, 'float argument \'{}\' with value {} was not a multiple of {}'.format(arg_name, val,
