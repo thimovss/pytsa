@@ -75,27 +75,19 @@ Rule | Description
 **is_upper**(bool)|ensure all non-whitespace characters in the argument are uppercase.
 **regex**(string)|ensure the argument matches the regex. According to `re.search()`
 
-### Integer **`@sa_int`**:
+### Number (Float, Integer) **`@sa_number`** **`@sa_float`** **`@sa_int`**:
+The rule @sa_number accepts both integer and float values.  
+The rules @sa_number, @sa_int, and @sa_float share the same rule set.  
+The rules @sa_int and @sa_float only accept arguments of their respective types, but accept both floats and integers as values to their rules.  
 
 Rule | Description
 --- | ---
-**non_zero**(bool)|ensure the argument does not equal 0.
-**gt**(int)|ensure the argument is greater than the rule value.
-**gte**(int)|ensure the argument is greater than, or equal to the rule value.
-**lt**(int)|ensure the argument is lesser than the rule value.
-**lte**(int)|ensure the argument is lesser than, or equal to the rule value.
-**mod**(int)|ensure the argument is a multiple of the rule value.
-
-### Float **`@sa_float`**:
-
-Rule | Description
---- | ---
-**non_zero**(bool)|ensure the argument does not equal 0.0.
-**gt**(float)|ensure the argument is greater than the rule value.
-**gte**(float)|ensure the argument is greater than, or equal to the rule value.
-**lt**(float)|ensure the argument is lesser than the rule value.
-**lte**(float)|ensure the argument is lesser than, or equal to the rule value.
-**mod**(float)|ensure the argument is a multiple of the rule value.
+**non_zero**(bool)|ensure the argument does not equal 0 or 0.0.
+**gt**(number)|ensure the argument is greater than the rule value.
+**gte**(number)|ensure the argument is greater than, or equal to the rule value.
+**lt**(number)|ensure the argument is lesser than the rule value.
+**lte**(number)|ensure the argument is lesser than, or equal to the rule value.
+**mod**(number)|ensure the argument is a multiple of the rule value.
 
 ### Boolean **`@sa_bool`**:
 
