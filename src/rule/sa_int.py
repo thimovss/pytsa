@@ -16,14 +16,18 @@ def sa_int(arg_name, **rules):
 
         def _checker(*args, **kwargs):
             val = args[arg_index]
-            assert val is not None, 'int argument \'{}\' was None'.format(arg_name)
-            assert isinstance(val, int) and not isinstance(val,
-                                                           bool), 'int argument \'{}\' with value {} was of type {}, not of type \'int\''.format(
-                arg_name, val, type(val))
+            allow_none = rules.get('allow_none', False)
+            assert allow_none or val is not None, 'int argument \'{}\' was None'.format(arg_name)
+            assert (allow_none and val is None) or (isinstance(val, int) and not isinstance(val,bool)), 'int argument \'{}\' with value {} was of type {}, not of type \'int\''.format(
+                    arg_name, val, type(val))
+
+
 
             return func(*args, **kwargs)
 
         for rule in rules:
+            if rule == 'allow_none':
+                continue
             assert rule in INT_RULES, 'rule \'{}\' is unknown for sa_int'.format(rule)
             _checker = INT_RULES[rule](arg_name, rules[rule], _checker)
 
