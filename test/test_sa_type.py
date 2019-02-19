@@ -37,6 +37,8 @@ class TestSaTypeRules(TestCase):
         # Incorrect usage, got float
         with self.assertRaises(Exception):
             _test(2.5)
+
+
 class TestSaTypeBase(TestCase):
     # Test that the sa_type works as specified
 

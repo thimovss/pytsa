@@ -260,7 +260,6 @@ class TestSaStringRules(TestCase):
             return a
 
         # Correct usage
-        _test(None)
         _test('test1')
         _test('test2')
 
@@ -270,6 +269,20 @@ class TestSaStringRules(TestCase):
         # Incorrect usage, got float
         with self.assertRaises(Exception):
             _test(2.5)
+
+    def test_rule_allow_none_other_rules(self):
+        @sa_string('a', allow_none=True, contains='es')
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test('test1')
+        _test('test2')
+
+        # Incorrect usage, did not contain 'es'
+        with self.assertRaises(Exception):
+            _test('abc')
 
 
 class TestSaStringBase(TestCase):

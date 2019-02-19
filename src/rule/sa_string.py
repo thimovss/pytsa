@@ -21,14 +21,17 @@ def sa_string(arg_name, **rules):
 
         def _checker(*args, **kwargs):
             val = args[arg_index]
-            assert val is not None, 'string argument \'{}\' was None'.format(arg_name)
-            assert isinstance(val,
+            allow_none = rules.get('allow_none', False)
+            assert allow_none or val is not None, 'string argument \'{}\' was None'.format(arg_name)
+            assert (allow_none and val is None) or isinstance(val,
                               str), 'string argument \'{}\' with value \'{}\' was of type {}, not of type \'str\''.format(
                 arg_name, val, type(val))
 
             return func(*args, **kwargs)
 
         for rule in rules:
+            if rule == 'allow_none':
+                continue
             assert rule in STRING_RULES, 'rule \'{}\' is unknown for sa_string'.format(rule)
             _checker = STRING_RULES[rule](arg_name, rules[rule], _checker)
 

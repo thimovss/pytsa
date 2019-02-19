@@ -296,6 +296,24 @@ class TestSaPathRules(TestCase):
         with self.assertRaises(Exception):
             _test(None)
 
+    def test_rule_allow_none_other_rules(self):
+        @sa_path('a', allow_none=True, is_abs=True)
+        def _test(a):
+            return a
+
+        # Correct
+        _test(None)
+        _test('/files/test.txt')
+        _test('/non-existent.txt')
+        _test('/non-existent/test.txt')
+
+        # Incorrect usage, is not absolute
+        with self.assertRaises(Exception):
+            _test('./files/test.txt')
+        # Incorrect usage, does not exist
+        with self.assertRaises(Exception):
+            _test('./non-existent.txt')
+
 
 class TestSaPathBase(TestCase):
     # Test that the sa_path works as specified

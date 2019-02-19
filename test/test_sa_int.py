@@ -260,6 +260,20 @@ class TestSaIntRules(TestCase):
         with self.assertRaises(Exception):
             _test(2.5)
 
+    def test_rule_allow_none_other_rules(self):
+        @sa_int('a', allow_none=True, gte=2)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test(5)
+        _test(4)
+
+        # Incorrect usage, not greather than or equal to 2
+        with self.assertRaises(Exception):
+            _test(1)
+
 
 class TestSaIntBase(TestCase):
     # Test that the sa_int works as specified

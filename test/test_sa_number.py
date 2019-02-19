@@ -283,6 +283,23 @@ class TestSaNumberRules(TestCase):
         with self.assertRaises(Exception):
             _test(None)
 
+    def test_rule_allow_none_other_rules(self):
+        @sa_number('a', allow_none=True, gte=2)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test(5.0)
+        _test(4)
+
+        # Incorrect usage, not greather than or equal to 2
+        with self.assertRaises(Exception):
+            _test(1)
+        with self.assertRaises(Exception):
+            _test(1.5)
+
+
 
 class TestSaNumberBase(TestCase):
     # Test that the sa_number works as specified
