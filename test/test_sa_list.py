@@ -86,6 +86,62 @@ class TestSaListRules(TestCase):
         _test([])
         _test(list())
 
+    def test_rule_allow_none_true(self):
+        @sa_list('a', allow_none=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test([1, 2, 3])
+        _test(['a', 1.2, 3])
+        _test([None])
+        _test([])
+        _test(list())
+
+        # Incorrect usage, got int
+        with self.assertRaises(Exception):
+            _test(2)
+
+    def test_rule_allow_none_false(self):
+        @sa_list('a', allow_none=False)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test([1, 2, 3])
+        _test(['a', 1.2, 3])
+        _test([None])
+        _test([])
+        _test(list())
+
+        # Incorrect usage, got None
+        with self.assertRaises(Exception):
+            _test(None)
+        # Incorrect usage, got int
+        with self.assertRaises(Exception):
+            _test(2)
+
+    def test_rule_allow_none_other_rules(self):
+        @sa_list('a', allow_none=True, not_empty=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test([1, 2, 3])
+        _test(['a', 1.2, 3])
+        _test([None])
+
+        # Incorrect usage, empty list
+        with self.assertRaises(Exception):
+            _test([])
+        # Incorrect usage, empty list
+        with self.assertRaises(Exception):
+            _test(list())
+
+
 
 class TestSaListBase(TestCase):
     # Test that the sa_list works as specified
