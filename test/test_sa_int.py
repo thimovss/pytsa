@@ -230,6 +230,36 @@ class TestSaIntRules(TestCase):
         with self.assertRaises(Exception):
             _test(2.5)
 
+    def test_rule_allow_none_true(self):
+        @sa_int('a', allow_none=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test(0)
+        _test(5)
+
+        # Incorrect usage, got float
+        with self.assertRaises(Exception):
+            _test(2.5)
+
+    def test_rule_allow_none_false(self):
+        @sa_int('a', allow_none=False)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(0)
+        _test(5)
+
+        # Incorrect usage, got None
+        with self.assertRaises(Exception):
+            _test(None)
+        # Incorrect usage, got float
+        with self.assertRaises(Exception):
+            _test(2.5)
+
 
 class TestSaIntBase(TestCase):
     # Test that the sa_int works as specified
