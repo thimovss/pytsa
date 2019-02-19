@@ -22,7 +22,6 @@ def sa_int(arg_name, **rules):
                     arg_name, val, type(val))
 
 
-
             return func(*args, **kwargs)
 
         for rule in rules:

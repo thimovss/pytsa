@@ -234,6 +234,36 @@ class TestSaFloatRules(TestCase):
         with self.assertRaises(Exception):
             _test(5)
 
+    def test_rule_allow_none_true(self):
+        @sa_float('a', allow_none=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test(0.0)
+        _test(5.0)
+
+        # Incorrect usage, got int
+        with self.assertRaises(Exception):
+            _test(2)
+
+    def test_rule_allow_none_false(self):
+        @sa_float('a', allow_none=False)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(0.0)
+        _test(5.0)
+
+        # Incorrect usage, got None
+        with self.assertRaises(Exception):
+            _test(None)
+        # Incorrect usage, got int
+        with self.assertRaises(Exception):
+            _test(2)
+
 
 class TestSaFloatBase(TestCase):
     # Test that the sa_float works as specified

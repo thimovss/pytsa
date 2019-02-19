@@ -3,6 +3,40 @@ from unittest import TestCase
 from src.pytsa import sa_type
 
 
+class TestSaTypeRules(TestCase):
+    # Test that the rules for sa_type works as specified
+
+    def test_rule_allow_none_true(self):
+        @sa_type('a', allow_none=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test(int)
+        _test(type(int))
+        _test(bool)
+
+        # Incorrect usage, got float
+        with self.assertRaises(Exception):
+            _test(2.5)
+
+    def test_rule_allow_none_false(self):
+        @sa_type('a', allow_none=False)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(int)
+        _test(type(int))
+        _test(bool)
+
+        # Incorrect usage, got None
+        with self.assertRaises(Exception):
+            _test(None)
+        # Incorrect usage, got float
+        with self.assertRaises(Exception):
+            _test(2.5)
 class TestSaTypeBase(TestCase):
     # Test that the sa_type works as specified
 

@@ -240,6 +240,37 @@ class TestSaStringRules(TestCase):
             def _test(a):
                 return a
 
+    def test_rule_allow_none_true(self):
+        @sa_string('a', allow_none=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test('test1')
+        _test('test2')
+
+        # Incorrect usage, got float
+        with self.assertRaises(Exception):
+            _test(2.5)
+
+    def test_rule_allow_none_false(self):
+        @sa_string('a', allow_none=False)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test('test1')
+        _test('test2')
+
+        # Incorrect usage, got None
+        with self.assertRaises(Exception):
+            _test(None)
+        # Incorrect usage, got float
+        with self.assertRaises(Exception):
+            _test(2.5)
+
 
 class TestSaStringBase(TestCase):
     # Test that the sa_string works as specified

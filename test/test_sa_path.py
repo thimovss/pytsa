@@ -270,6 +270,32 @@ class TestSaPathRules(TestCase):
     def test_rule_can_others_execute_true(self):
         self._test_permissions('can_others_execute', 0o0776)
 
+    def test_rule_allow_none_true(self):
+        self._create_test_file_structure()
+        @sa_path('a', allow_none=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test(self.test_dir)
+        _test(self.test_file)
+
+    def test_rule_allow_none_false(self):
+        self._create_test_file_structure()
+        @sa_path('a', allow_none=True)
+        def _test(a):
+            return a
+
+        # Correct usage
+        _test(None)
+        _test(self.test_dir)
+        _test(self.test_file)
+
+        # Incorrect usage, got None
+        with self.assertRaises(Exception):
+            _test(None)
+
 
 class TestSaPathBase(TestCase):
     # Test that the sa_path works as specified
