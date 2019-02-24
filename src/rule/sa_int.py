@@ -2,6 +2,18 @@ import inspect
 
 from src.pytsa import sa_bool, sa_number
 
+def none_checker(check_none, func):
+    if check_none:
+        def _checker(val):
+            if val is not None:
+                func(val)
+        return _checker
+    else:
+        def _checker(val):
+            func(val)
+        return _checker
+
+
 
 def sa_int(arg_name, **rules):
     """
@@ -14,9 +26,11 @@ def sa_int(arg_name, **rules):
 
         arg_index = args_spec.index(arg_name)
 
+        allow_none = rules.get('allow_none', False)
+        rules.pop('allow_none', None)
+
         def _checker(*args, **kwargs):
             val = args[arg_index]
-            allow_none = rules.get('allow_none', False)
             assert allow_none or val is not None, 'int argument \'{}\' was None'.format(arg_name)
             assert (allow_none and val is None) or (isinstance(val, int) and not isinstance(val,bool)), 'int argument \'{}\' with value {} was of type {}, not of type \'int\''.format(
                     arg_name, val, type(val))
@@ -25,10 +39,8 @@ def sa_int(arg_name, **rules):
             return func(*args, **kwargs)
 
         for rule in rules:
-            if rule == 'allow_none':
-                continue
             assert rule in INT_RULES, 'rule \'{}\' is unknown for sa_int'.format(rule)
-            _checker = INT_RULES[rule](arg_name, rules[rule], _checker)
+            _checker = none_checker(allow_none, INT_RULES[rule](arg_name, rules[rule], _checker))
 
         return _checker
 
