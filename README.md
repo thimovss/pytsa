@@ -126,5 +126,10 @@ Rule | Description
 **can_group_execute**(bool)|ensure the group has execute permission.
 **can_others_execute**(bool)|ensure the others has execute permission.
 
+# Production
+
+You might want to disable the processing of Pytsa decorators for your production deployments cause of performance reasons.  
+Pytsa can be disabled by setting the environment variable 'PYTSA_DISABLED' to 'True'
+
 # License
 licensed under the [MIT License](https://github.com/thimovss/pytsa/blob/master/LICENSE)
