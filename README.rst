@@ -98,7 +98,7 @@ Rule                   Description
 **allow_none**\ (bool) By default, no rule allows a value of None. This can be circumvented with the rule **``allow_none``**\ (bool), which is available for every rule. **important!**: If the value provided is None, all other checks will not be executed!
 ====================== =======================================================================================================================================================================================================================================
 
-String **``@sa_string``**
+String ``@sa_string``
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ========================= =====================================================================================================================
@@ -114,7 +114,7 @@ Rule                      Description
 **regex**\ (string)       ensure the argument matches the regex. According to ``re.search()``
 ========================= =====================================================================================================================
 
-Number (Float, Integer) **``@sa_number``** **``@sa_float``** **``@sa_int``**:
+Number (Float, Integer) ``@sa_number`` ``@sa_float`` ``@sa_int``:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 | The rule @sa_number accepts both integer and float values.
@@ -134,12 +134,12 @@ Rule                 Description
 **mod**\ (number)    ensure the argument is a multiple of the rule value.
 ==================== ================================================================
 
-Boolean **``@sa_bool``**:
+Boolean ``@sa_bool``:
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 there are no rules for bool available.
 
-List **``@sa_list``**:
+List ``@sa_list``:
 ~~~~~~~~~~~~~~~~~~~~~~
 
 **! Warning: some tests such as type will brute-force the whole list
@@ -153,7 +153,7 @@ Rule                  Description
 **not_empty**\ (bool) ensure the argument is not an empty list
 ===================== ====================================================================================================================================================================================
 
-Path **``@sa_path``**:
+Path ``@sa_path``:
 ~~~~~~~~~~~~~~~~~~~~~~
 
 ============================== ========================================================================================
