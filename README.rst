@@ -1,5 +1,10 @@
-|Build Status|\ |Python 3.7|\ |Python 3.6|\ |Python 3.5|\ |Python 3.4|
 
+.. image:: https://img.shields.io/pypi/pyversions/pytsa.svg
+   :target: https://github.com/thimovss/pytsa/
+.. image:: http://img.shields.io/badge/license-MIT-green.svg
+   :target: https://github.com/thimovss/pytsa/blob/master/LICENSE.txt
+.. image:: http://img.shields.io/travis/thimovss/pytsa.svg
+   :target: https://travis-ci.org/thimovss/pytsa
 PYThon StrictArguments
 ======================
 
