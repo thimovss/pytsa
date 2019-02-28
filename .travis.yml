@@ -9,14 +9,20 @@ python:
 - '3.5'
 - '3.6'
 - '3.7'
+
 script:
 - python -m unittest discover -s test/
-deploy:
-  provider: pypi
-  user: thimovss
-  password:
-    secure: Fi6ABZoVY4xApquS/Tzo1/p3pa9Ej1homAthm48s2UJlRTzgu1DUyysDOiyHkJj7bDYhN/VjToCK2R0j+SaWhJWXTBqI9tFsvCJbzLwn4oeDA6L4adt5luQMhU2zJPNkKRs+Iyt6vVY81s6SFUc/ArqhuSO0j/EVrFQmG9JXnUi6rAVVwe5exNugFbc3xIwf5qK0zMJ1iQs5X+l+WYJERem21cqEVe7gE7xYJUuvCHUQ4KvHHaEynrU5vIRXoILDDWpN/VWhWURQr9hzYfvNfEhFLcXpaka6OlYkD9qV0+tR23mWHKq0Eu06b/NF9YOrCeFjYL9XWI5a9Hj8ZQlhfAR00BLaXYTvA1hjkCdchkw8mZFhWgC8OVALnaetyV6dgLhiaNEhcBeWFA0g2qnNDK2fqpUzXm0AMxVekcYgl9aVVqsQhjXxLff6ipmYxFxyChaiWzU/qV40AWe9TSYErFk6MO1HyMJPiNvpcCPLRjjQUD6JPqEo3w+6Sg5iYrYKx5RGaRd3vDPm68CZPGyStecV1Z2rNurUeJaMUXzOjcMqunadVkFbEbyyQdcvRmDBaatFra1Ij+iWAezQ4lOadcDoRogKLMHv7FHAJfuhSB1ZhLLfmblvhG8wKYPM/q5y78sCpRaSJm3eep+QrYu4GfcKoQAa6+BEqSSSez4U+Pk=
-  on:
-    tags: true
-  skip_cleanup: true
-  skip_existing: true
+
+jobs:
+  include:
+    - stage: pypi release
+      node_js: '3.7'
+      script: echo "Deploying to Pypi ..."
+      deploy:
+        provider: pypi
+        user: thimovss
+        password:
+          secure: Fi6ABZoVY4xApquS/Tzo1/p3pa9Ej1homAthm48s2UJlRTzgu1DUyysDOiyHkJj7bDYhN/VjToCK2R0j+SaWhJWXTBqI9tFsvCJbzLwn4oeDA6L4adt5luQMhU2zJPNkKRs+Iyt6vVY81s6SFUc/ArqhuSO0j/EVrFQmG9JXnUi6rAVVwe5exNugFbc3xIwf5qK0zMJ1iQs5X+l+WYJERem21cqEVe7gE7xYJUuvCHUQ4KvHHaEynrU5vIRXoILDDWpN/VWhWURQr9hzYfvNfEhFLcXpaka6OlYkD9qV0+tR23mWHKq0Eu06b/NF9YOrCeFjYL9XWI5a9Hj8ZQlhfAR00BLaXYTvA1hjkCdchkw8mZFhWgC8OVALnaetyV6dgLhiaNEhcBeWFA0g2qnNDK2fqpUzXm0AMxVekcYgl9aVVqsQhjXxLff6ipmYxFxyChaiWzU/qV40AWe9TSYErFk6MO1HyMJPiNvpcCPLRjjQUD6JPqEo3w+6Sg5iYrYKx5RGaRd3vDPm68CZPGyStecV1Z2rNurUeJaMUXzOjcMqunadVkFbEbyyQdcvRmDBaatFra1Ij+iWAezQ4lOadcDoRogKLMHv7FHAJfuhSB1ZhLLfmblvhG8wKYPM/q5y78sCpRaSJm3eep+QrYu4GfcKoQAa6+BEqSSSez4U+Pk=
+        on:
+          tags: true
+        skip_cleanup: true
