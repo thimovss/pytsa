@@ -62,6 +62,11 @@ assign_score(35)
 For a more a more detailed description on the behaviour of a rule, make sure to check out its test cases!
 Not sure how @sa_list's len handles None type? see ['test/test_sa_list.py' test_rule_len()](https://github.com/thimovss/pytsa/blob/master/test/test_sa_list.py)
 
+### All rules
+Rule | Description
+--- | ---
+**allow_none**(bool)|By default, no rule allows a value of None. This can be circumvented with the rule **`allow_none`**(bool), which is available for every rule. **important!**: If the value provided is None, all other checks will not be executed!
+
 ### String **`@sa_string`**
 
 Rule | Description
