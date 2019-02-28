@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from src.pytsa import sa_list
-from test.utils import test_int_parameter, test_type_parameter, test_boolean_parameter
+from src.utils import test_int_parameter, test_type_parameter, test_boolean_parameter
 
 
 class TestSaListParameters(TestCase):
@@ -109,7 +109,6 @@ class TestSaListRules(TestCase):
             return a
 
         # Correct usage
-        _test(None)
         _test([1, 2, 3])
         _test(['a', 1.2, 3])
         _test([None])

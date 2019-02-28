@@ -1,3 +1,14 @@
+def none_checker(check_none, func):
+    if check_none:
+        def _checker(val):
+            if val is not None:
+                func(val)
+        return _checker
+    else:
+        def _checker(val):
+            func(val)
+        return _checker
+
 def test_number_parameter(self, deco, rule):
     """Make sure the rule for this decorator only accepts floats and ints"""
 

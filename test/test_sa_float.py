@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from src.pytsa import sa_float
-from test.utils import test_boolean_parameter, test_number_parameter
+from src.utils import test_boolean_parameter, test_number_parameter
 
 
 class TestSaFloatParameters(TestCase):

@@ -2,6 +2,7 @@ import inspect
 import re
 
 from src.pytsa import sa_bool
+from src.utils import none_checker
 
 LOWER_CASE = re.compile('.*[a-z].*')
 UPPER_CASE = re.compile('.*[A-Z].*')
@@ -19,9 +20,11 @@ def sa_string(arg_name, **rules):
 
         arg_index = args_spec.index(arg_name)
 
+        allow_none = rules.get('allow_none', False)
+        rules.pop('allow_none', None)
+
         def _checker(*args, **kwargs):
             val = args[arg_index]
-            allow_none = rules.get('allow_none', False)
             assert allow_none or val is not None, 'string argument \'{}\' was None'.format(arg_name)
             assert (allow_none and val is None) or isinstance(val,
                               str), 'string argument \'{}\' with value \'{}\' was of type {}, not of type \'str\''.format(
@@ -33,7 +36,7 @@ def sa_string(arg_name, **rules):
             if rule == 'allow_none':
                 continue
             assert rule in STRING_RULES, 'rule \'{}\' is unknown for sa_string'.format(rule)
-            _checker = STRING_RULES[rule](arg_name, rules[rule], _checker)
+            _checker = none_checker(allow_none, STRING_RULES[rule](arg_name, rules[rule], _checker))
 
         return _checker
 

@@ -2,6 +2,7 @@ import inspect
 
 from decimal import Decimal
 from src.pytsa import sa_bool
+from src.utils import none_checker
 
 
 def sa_number(arg_name, **rules):
@@ -15,10 +16,13 @@ def sa_number(arg_name, **rules):
 
         arg_index = args_spec.index(arg_name)
 
+        allow_none = rules.get('allow_none', False)
+        rules.pop('allow_none', None)
+
         def _checker(*args, **kwargs):
             val = args[arg_index]
-            assert val is not None, 'number argument \'{}\' was None'.format(arg_name)
-            assert (isinstance(val, int) or isinstance(val, float)) and not isinstance(val, bool), \
+            assert allow_none or val is not None, 'number argument \'{}\' was None'.format(arg_name)
+            assert (allow_none and val is None) or (isinstance(val, int) or isinstance(val, float)) and not isinstance(val, bool), \
                 'number argument \'{}\' with value {} was of type {}, not one of number types \'int\' or \'float\'' \
                     .format(arg_name, val, type(val))
 
@@ -26,7 +30,7 @@ def sa_number(arg_name, **rules):
 
         for rule in rules:
             assert rule in NUMBER_RULES, 'rule \'{}\' is unknown for sa_number'.format(rule)
-            _checker = NUMBER_RULES[rule](arg_name, rules[rule], _checker)
+            _checker = none_checker(allow_none, NUMBER_RULES[rule](arg_name, rules[rule], _checker))
 
         return _checker
 

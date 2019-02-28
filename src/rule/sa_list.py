@@ -1,6 +1,7 @@
 import inspect
 
 from src.pytsa import sa_int, sa_bool, sa_type
+from src.utils import none_checker
 
 
 def _format_list(val):
@@ -20,17 +21,20 @@ def sa_list(arg_name, **rules):
 
         arg_index = args_spec.index(arg_name)
 
+        allow_none = rules.get('allow_none', False)
+        rules.pop('allow_none', None)
+
         def _checker(*args, **kwargs):
             val = args[arg_index]
-            assert val is not None, 'list argument \'{}\' was None'.format(arg_name)
-            assert isinstance(val,
+            assert allow_none or val is not None, 'list argument \'{}\' was None'.format(arg_name)
+            assert (allow_none and val is None) or isinstance(val,
                               list), 'list argument \'{}\' with value {} was of type {)}, not of type \'list\''.format(
                 arg_name, val, type(val))
             return func(*args, **kwargs)
 
         for rule in rules:
             assert rule in LIST_RULES, 'rule \'{}\' is unknown for sa_list'.format(rule)
-            _checker = LIST_RULES[rule](arg_name, rules[rule], _checker)
+            _checker = none_checker(allow_none, LIST_RULES[rule](arg_name, rules[rule], _checker))
 
         return _checker
 

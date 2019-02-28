@@ -1,5 +1,7 @@
 import inspect
 
+from src.utils import none_checker
+
 
 def sa_type(arg_name, **rules):
     """
@@ -12,17 +14,20 @@ def sa_type(arg_name, **rules):
 
         arg_index = args_spec.index(arg_name)
 
+        allow_none = rules.get('allow_none', False)
+        rules.pop('allow_none', None)
+
         def _checker(*args, **kwargs):
             val = args[arg_index]
-            assert val is not None, 'type argument \'{}\' was None'.format(arg_name)
-            assert isinstance(val,
+            assert allow_none or val is not None, 'type argument \'{}\' was None'.format(arg_name)
+            assert (allow_none and val is None) or isinstance(val,
                               type), 'type argument \'{}\' with value {} was of type {}, not of type \'type\''.format(
                 arg_name, val, type(val))
             return func(*args, **kwargs)
 
         for rule in rules:
             assert rule in TYPE_RULES, 'rule \'{}\' is unknown for sa_type'.format(rule)
-            _checker = TYPE_RULES[rule](arg_name, rules[rule], _checker)
+            _checker = none_checker(allow_none, TYPE_RULES[rule](arg_name, rules[rule], _checker))
 
         return _checker
 

@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from src.pytsa import sa_number
-from test.utils import test_number_parameter, test_boolean_parameter
+from src.utils import test_number_parameter, test_boolean_parameter
 
 
 class TestSaNumberParameters(TestCase):

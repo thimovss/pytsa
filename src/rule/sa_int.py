@@ -1,18 +1,7 @@
 import inspect
 
 from src.pytsa import sa_bool, sa_number
-
-def none_checker(check_none, func):
-    if check_none:
-        def _checker(val):
-            if val is not None:
-                func(val)
-        return _checker
-    else:
-        def _checker(val):
-            func(val)
-        return _checker
-
+from src.utils import none_checker
 
 
 def sa_int(arg_name, **rules):

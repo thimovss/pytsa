@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from src.pytsa import sa_string
-from test.utils import test_boolean_parameter, test_string_parameter
+from src.utils import test_boolean_parameter, test_string_parameter
 
 
 class TestSaStringParameters(TestCase):

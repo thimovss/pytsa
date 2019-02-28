@@ -1,6 +1,7 @@
 import inspect
 
 from src.pytsa import sa_bool, sa_number
+from src.utils import none_checker
 
 
 def sa_float(arg_name, **rules):
@@ -14,18 +15,21 @@ def sa_float(arg_name, **rules):
 
         arg_index = args_spec.index(arg_name)
 
+        allow_none = rules.get('allow_none', False)
+        rules.pop('allow_none', None)
+
         def _checker(*args, **kwargs):
             val = args[arg_index]
-            assert val is not None, 'float argument \'{}\' was None'.format(arg_name)
-            assert isinstance(val,
+            assert allow_none or val is not None, 'float argument \'{}\' was None'.format(arg_name)
+            assert (allow_none and val is None) or isinstance(val,
                               float), 'float argument \'{}\' with value {} was of type {}, not of type \'float\''.format(
                 arg_name, val, type(val))
 
             return func(*args, **kwargs)
 
         for rule in rules:
-            assert rule in INT_RULES, 'rule \'{}\' is unknown for sa_float'.format(rule)
-            _checker = INT_RULES[rule](arg_name, rules[rule], _checker)
+            assert rule in FLOAT_RULES, 'rule \'{}\' is unknown for sa_float'.format(rule)
+            _checker = none_checker(allow_none, FLOAT_RULES[rule](arg_name, rules[rule], _checker))
 
         return _checker
 
@@ -93,7 +97,7 @@ def _float_modulo(arg_name, rule_val, func):
     return _check
 
 
-INT_RULES = {
+FLOAT_RULES = {
     'gte': _float_gte,
     'lte': _float_lte,
     'gt': _float_gt,

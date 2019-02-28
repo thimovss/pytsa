@@ -2,7 +2,7 @@ from os import path, chmod, stat
 from unittest import TestCase
 
 from src.pytsa import sa_path
-from test.utils import test_boolean_parameter
+from src.utils import test_boolean_parameter
 
 import tempfile
 
@@ -283,12 +283,11 @@ class TestSaPathRules(TestCase):
 
     def test_rule_allow_none_false(self):
         self._create_test_file_structure()
-        @sa_path('a', allow_none=True)
+        @sa_path('a', allow_none=False)
         def _test(a):
             return a
 
         # Correct usage
-        _test(None)
         _test(self.test_dir)
         _test(self.test_file)
 
