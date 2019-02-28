@@ -1,9 +1,10 @@
-
 .. image:: https://img.shields.io/pypi/pyversions/pytsa.svg
    :target: https://github.com/thimovss/pytsa/
 .. image:: http://img.shields.io/badge/license-MIT-green.svg
    :target: https://github.com/thimovss/pytsa/blob/master/LICENSE
 .. image:: http://img.shields.io/travis/thimovss/pytsa.svg
+   :target: https://travis-ci.org/thimovss/pytsa
+.. image:: https://img.shields.io/coveralls/github/thimovss/pytsa.svg
    :target: https://travis-ci.org/thimovss/pytsa
 PYThon StrictArguments
 ======================
