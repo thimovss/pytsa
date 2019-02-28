@@ -3,8 +3,7 @@
 PYThon StrictArguments
 ======================
 
-Simple, human readable decorators to ensure your method abides to it's
-contract for Python
+Simple, dependency-less, human-readable, fully tested Python decorators to ensure your method abides to its contract
 
 Install
 -------
