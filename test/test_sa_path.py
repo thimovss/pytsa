@@ -1,6 +1,6 @@
 import tempfile
 from os import path, chmod
-from unittest import TestCase
+from unittest import TestCase, mock
 
 from src.pytsa import sa_path
 from src.utils import test_boolean_parameter
@@ -341,6 +341,23 @@ class TestSaPathBase(TestCase):
             @sa_path('a', unknown_rule=True)
             def _test(a):
                 return a
+
+    def test_global_disable(self):
+        # if the environment variable 'PYTSA_DISABLED' is set to True, the decorator should be ignored
+        def _test(a):
+            return a
+
+        with mock.patch.dict('os.environ', {'PYTSA_DISABLED': 'True'}):
+            _test_true = sa_path('a')(_test)
+            assert _test_true == _test
+
+        with mock.patch.dict('os.environ', {'PYTSA_DISABLED': 'False'}):
+            _test_false = sa_path('a')(_test)
+            assert _test_false != _test
+
+        with mock.patch.dict('os.environ', {}):
+            _test_false = sa_path('a')(_test)
+            assert _test_false != _test
 
     def test_type(self):
         @sa_path('a')

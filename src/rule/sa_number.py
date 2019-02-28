@@ -1,4 +1,5 @@
 import inspect
+import os
 from decimal import Decimal
 
 from src.pytsa import sa_bool
@@ -11,6 +12,9 @@ def sa_number(arg_name, **rules):
     """
 
     def _sa_number(func):
+        if os.environ.get('PYTSA_DISABLED', 'False') == 'True':
+            return func
+
         args_spec = inspect.getfullargspec(func).args
         assert arg_name in args_spec, 'number argument name \'{}\' not found in argument specification'.format(arg_name)
 

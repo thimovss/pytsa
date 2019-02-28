@@ -1,4 +1,5 @@
 import inspect
+import os
 
 from src.pytsa import sa_int, sa_bool, sa_type
 from src.utils import none_checker
@@ -16,6 +17,9 @@ def sa_list(arg_name, **rules):
     """
 
     def _sa_list(func):
+        if os.environ.get('PYTSA_DISABLED', 'False') == 'True':
+            return func
+
         args_spec = inspect.getfullargspec(func).args
         assert arg_name in args_spec, 'list argument name \'{}\' not found in argument specification'.format(arg_name)
 

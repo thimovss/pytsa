@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, mock
 
 from src.pytsa import sa_number
 from src.utils import test_number_parameter, test_boolean_parameter
@@ -321,6 +321,23 @@ class TestSaNumberBase(TestCase):
             @sa_number('a', unknown_rule=True)
             def _test(a):
                 return a
+
+    def test_global_disable(self):
+        # if the environment variable 'PYTSA_DISABLED' is set to True, the decorator should be ignored
+        def _test(a):
+            return a
+
+        with mock.patch.dict('os.environ', {'PYTSA_DISABLED': 'True'}):
+            _test_true = sa_number('a')(_test)
+            assert _test_true == _test
+
+        with mock.patch.dict('os.environ', {'PYTSA_DISABLED': 'False'}):
+            _test_false = sa_number('a')(_test)
+            assert _test_false != _test
+
+        with mock.patch.dict('os.environ', {}):
+            _test_false = sa_number('a')(_test)
+            assert _test_false != _test
 
     def test_type(self):
         @sa_number('a')

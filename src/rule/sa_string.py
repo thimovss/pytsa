@@ -1,4 +1,5 @@
 import inspect
+import os
 import re
 
 from src.pytsa import sa_bool
@@ -14,6 +15,9 @@ def sa_string(arg_name, **rules):
     """
 
     def _sa_string(func):
+        if os.environ.get('PYTSA_DISABLED', 'False') == 'True':
+            return func
+
         args_spec = inspect.getfullargspec(func).args
         assert arg_name in args_spec, 'string argument name \'{arg_name}\' not found in argument specification'.format(
             arg_name)
