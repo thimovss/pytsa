@@ -4,8 +4,9 @@
    :target: https://github.com/thimovss/pytsa/blob/master/LICENSE
 .. image:: http://img.shields.io/travis/thimovss/pytsa.svg
    :target: https://travis-ci.org/thimovss/pytsa
-.. image:: https://img.shields.io/coveralls/github/thimovss/pytsa.svg
-   :target: https://travis-ci.org/thimovss/pytsa
+.. image:: https://coveralls.io/repos/github/thimovss/pytsa/badge.svg
+   :target: https://coveralls.io/github/thimovss/pytsa
+
 PYThon StrictArguments
 ======================
 
