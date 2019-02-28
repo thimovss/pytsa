@@ -279,7 +279,6 @@ class TestSaFloatRules(TestCase):
             _test(1.0)
 
 
-
 class TestSaFloatBase(TestCase):
     # Test that the sa_float works as specified
 

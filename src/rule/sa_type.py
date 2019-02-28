@@ -21,7 +21,7 @@ def sa_type(arg_name, **rules):
             val = args[arg_index]
             assert allow_none or val is not None, 'type argument \'{}\' was None'.format(arg_name)
             assert (allow_none and val is None) or isinstance(val,
-                              type), 'type argument \'{}\' with value {} was of type {}, not of type \'type\''.format(
+                                                              type), 'type argument \'{}\' with value {} was of type {}, not of type \'type\''.format(
                 arg_name, val, type(val))
             return func(*args, **kwargs)
 

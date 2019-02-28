@@ -22,7 +22,7 @@ def sa_float(arg_name, **rules):
             val = args[arg_index]
             assert allow_none or val is not None, 'float argument \'{}\' was None'.format(arg_name)
             assert (allow_none and val is None) or isinstance(val,
-                              float), 'float argument \'{}\' with value {} was of type {}, not of type \'float\''.format(
+                                                              float), 'float argument \'{}\' with value {} was of type {}, not of type \'float\''.format(
                 arg_name, val, type(val))
 
             return func(*args, **kwargs)
@@ -80,6 +80,7 @@ def _float_lt(arg_name, rule_val, func):
 def _float_nonzero(arg_name, rule_val, func):
     if not rule_val:
         return func
+
     def _check(val):
         assert val != 0, 'float argument \'{}\' with value {} was 0'.format(arg_name, val)
         func(val)

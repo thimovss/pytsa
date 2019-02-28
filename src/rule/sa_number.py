@@ -1,6 +1,6 @@
 import inspect
-
 from decimal import Decimal
+
 from src.pytsa import sa_bool
 from src.utils import none_checker
 
@@ -22,7 +22,8 @@ def sa_number(arg_name, **rules):
         def _checker(*args, **kwargs):
             val = args[arg_index]
             assert allow_none or val is not None, 'number argument \'{}\' was None'.format(arg_name)
-            assert (allow_none and val is None) or (isinstance(val, int) or isinstance(val, float)) and not isinstance(val, bool), \
+            assert (allow_none and val is None) or (isinstance(val, int) or isinstance(val, float)) and not isinstance(
+                val, bool), \
                 'number argument \'{}\' with value {} was of type {}, not one of number types \'int\' or \'float\'' \
                     .format(arg_name, val, type(val))
 
@@ -96,9 +97,10 @@ def _number_nonzero(arg_name, rule_val, func):
 @sa_number('rule_val')
 def _number_modulo(arg_name, rule_val, func):
     def _check(val):
-        assert Decimal(val) % Decimal(rule_val) == Decimal('0.0'), 'number argument \'{}\' with value {} was not a multiple of {}'.format(arg_name,
-                                                                                                           val,
-                                                                                                           rule_val)
+        assert Decimal(val) % Decimal(rule_val) == Decimal(
+            '0.0'), 'number argument \'{}\' with value {} was not a multiple of {}'.format(arg_name,
+                                                                                           val,
+                                                                                           rule_val)
         func(val)
 
     return _check

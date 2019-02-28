@@ -26,7 +26,7 @@ def sa_path(arg_name, **rules):
             val = args[arg_index]
             assert allow_none or val is not None, 'path argument \'{}\' was None'.format(arg_name)
             assert (allow_none and val is None) or isinstance(val,
-                              str), 'path argument \'{}\' with value \'{}\' was of type {}, not of type \'str\''.format(
+                                                              str), 'path argument \'{}\' with value \'{}\' was of type {}, not of type \'str\''.format(
                 arg_name, val, type(val))
 
             return func(*args, **kwargs)
@@ -99,7 +99,9 @@ def _path_can_owner_write(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert bool(os.stat(val).st_mode & stat.S_IWUSR), 'path argument \'{}\' with value \'{}\' was not writeable for owner'.format(arg_name, val)
+        assert bool(os.stat(
+            val).st_mode & stat.S_IWUSR), 'path argument \'{}\' with value \'{}\' was not writeable for owner'.format(
+            arg_name, val)
         func(val)
 
     return _check
@@ -112,7 +114,9 @@ def _path_can_group_write(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert bool(os.stat(val).st_mode & stat.S_IWGRP), 'path argument \'{}\' with value \'{}\' was not writeable for group'.format(arg_name, val)
+        assert bool(os.stat(
+            val).st_mode & stat.S_IWGRP), 'path argument \'{}\' with value \'{}\' was not writeable for group'.format(
+            arg_name, val)
         func(val)
 
     return _check
@@ -125,7 +129,9 @@ def _path_can_others_write(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert bool(os.stat(val).st_mode & stat.S_IWOTH), 'path argument \'{}\' with value \'{}\' was not writeable for others'.format(arg_name, val)
+        assert bool(os.stat(
+            val).st_mode & stat.S_IWOTH), 'path argument \'{}\' with value \'{}\' was not writeable for others'.format(
+            arg_name, val)
         func(val)
 
     return _check
@@ -138,7 +144,9 @@ def _path_can_owner_read(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert bool(os.stat(val).st_mode & stat.S_IRUSR), 'path argument \'{}\' with value \'{}\' was not readable for owner'.format(arg_name, val)
+        assert bool(os.stat(
+            val).st_mode & stat.S_IRUSR), 'path argument \'{}\' with value \'{}\' was not readable for owner'.format(
+            arg_name, val)
         func(val)
 
     return _check
@@ -151,7 +159,9 @@ def _path_can_group_read(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert bool(os.stat(val).st_mode & stat.S_IRGRP), 'path argument \'{}\' with value \'{}\' was not readable for group'.format(arg_name, val)
+        assert bool(os.stat(
+            val).st_mode & stat.S_IRGRP), 'path argument \'{}\' with value \'{}\' was not readable for group'.format(
+            arg_name, val)
         func(val)
 
     return _check
@@ -164,7 +174,9 @@ def _path_can_others_read(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert bool(os.stat(val).st_mode & stat.S_IROTH), 'path argument \'{}\' with value \'{}\' was not readable for others'.format(arg_name, val)
+        assert bool(os.stat(
+            val).st_mode & stat.S_IROTH), 'path argument \'{}\' with value \'{}\' was not readable for others'.format(
+            arg_name, val)
         func(val)
 
     return _check
@@ -177,7 +189,9 @@ def _path_can_owner_execute(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert bool(os.stat(val).st_mode & stat.S_IXUSR), 'path argument \'{}\' with value \'{}\' was not executeable for owner'.format(arg_name, val)
+        assert bool(os.stat(
+            val).st_mode & stat.S_IXUSR), 'path argument \'{}\' with value \'{}\' was not executeable for owner'.format(
+            arg_name, val)
         func(val)
 
     return _check
@@ -190,7 +204,9 @@ def _path_can_group_execute(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert bool(os.stat(val).st_mode & stat.S_IXGRP), 'path argument \'{}\' with value \'{}\' was not executeable for group'.format(arg_name, val)
+        assert bool(os.stat(
+            val).st_mode & stat.S_IXGRP), 'path argument \'{}\' with value \'{}\' was not executeable for group'.format(
+            arg_name, val)
         func(val)
 
     return _check
@@ -203,7 +219,9 @@ def _path_can_others_execute(arg_name, rule_val, func):
         return func
 
     def _check(val):
-        assert bool(os.stat(val).st_mode & stat.S_IXOTH), 'path argument \'{}\' with value \'{}\' was not executeable for others'.format(arg_name, val)
+        assert bool(os.stat(
+            val).st_mode & stat.S_IXOTH), 'path argument \'{}\' with value \'{}\' was not executeable for others'.format(
+            arg_name, val)
         func(val)
 
     return _check

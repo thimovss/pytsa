@@ -27,7 +27,7 @@ def sa_string(arg_name, **rules):
             val = args[arg_index]
             assert allow_none or val is not None, 'string argument \'{}\' was None'.format(arg_name)
             assert (allow_none and val is None) or isinstance(val,
-                              str), 'string argument \'{}\' with value \'{}\' was of type {}, not of type \'str\''.format(
+                                                              str), 'string argument \'{}\' with value \'{}\' was of type {}, not of type \'str\''.format(
                 arg_name, val, type(val))
 
             return func(*args, **kwargs)

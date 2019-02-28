@@ -20,7 +20,6 @@ class TestSaBoolRules(TestCase):
         with self.assertRaises(Exception):
             _test(2.5)
 
-
     def test_rule_allow_none_false(self):
         @sa_bool('a', allow_none=False)
         def _test(a):
@@ -36,6 +35,7 @@ class TestSaBoolRules(TestCase):
         # Incorrect usage, got float
         with self.assertRaises(Exception):
             _test(2.5)
+
 
 class TestSaBoolBase(TestCase):
     # Test that the sa_bool works as specified

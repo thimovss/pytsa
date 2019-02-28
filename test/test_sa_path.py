@@ -1,10 +1,10 @@
-from os import path, chmod, stat
+import tempfile
+from os import path, chmod
 from unittest import TestCase
 
 from src.pytsa import sa_path
 from src.utils import test_boolean_parameter
 
-import tempfile
 
 class TestSaPathParameters(TestCase):
     # Test that the decorator only accepts the correct parameters
@@ -68,6 +68,7 @@ class TestSaPathRules(TestCase):
 
     def test_rule_exists_true(self):
         self._create_test_file_structure()
+
         @sa_path('a', exists=True)
         def _test(a):
             return a
@@ -97,6 +98,7 @@ class TestSaPathRules(TestCase):
 
     def test_rule_is_dir_true(self):
         self._create_test_file_structure()
+
         @sa_path('a', is_dir=True)
         def _test(a):
             return a
@@ -127,6 +129,7 @@ class TestSaPathRules(TestCase):
 
     def test_rule_is_file_true(self):
         self._create_test_file_structure()
+
         @sa_path('a', is_file=True)
         def _test(a):
             return a
@@ -181,9 +184,9 @@ class TestSaPathRules(TestCase):
         _test('./files/test.txt')
         _test('./non-existent.txt')
 
-
     def test_rule_can_owner_write_true(self):
         self._create_test_file_structure()
+
         @sa_path('a', can_owner_write=True)
         def _test(a):
             return a
@@ -212,9 +215,9 @@ class TestSaPathRules(TestCase):
         with self.assertRaises(Exception):
             _test('/non-existent')
 
-
     def _test_permissions(self, rule, permission_removed_mode):
         self._create_test_file_structure()
+
         @sa_path('a', **{rule: True})
         def _test(a):
             return a
@@ -272,6 +275,7 @@ class TestSaPathRules(TestCase):
 
     def test_rule_allow_none_true(self):
         self._create_test_file_structure()
+
         @sa_path('a', allow_none=True)
         def _test(a):
             return a
@@ -283,6 +287,7 @@ class TestSaPathRules(TestCase):
 
     def test_rule_allow_none_false(self):
         self._create_test_file_structure()
+
         @sa_path('a', allow_none=False)
         def _test(a):
             return a

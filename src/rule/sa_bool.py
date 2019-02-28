@@ -21,7 +21,7 @@ def sa_bool(arg_name, **rules):
             val = args[arg_index]
             assert allow_none or val is not None, 'bool argument \'{}\' was None'.format(arg_name)
             assert (allow_none and val is None) or isinstance(val,
-                              bool), 'bool argument \'{}\' with value {} was of type {}, not of type \'bool\''.format(
+                                                              bool), 'bool argument \'{}\' with value {} was of type {}, not of type \'bool\''.format(
                 arg_name, val, type(val))
             return func(*args, **kwargs)
 

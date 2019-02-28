@@ -141,7 +141,6 @@ class TestSaListRules(TestCase):
             _test(list())
 
 
-
 class TestSaListBase(TestCase):
     # Test that the sa_list works as specified
 

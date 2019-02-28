@@ -267,7 +267,6 @@ class TestSaNumberRules(TestCase):
         _test(0.0)
         _test(5.0)
 
-
     def test_rule_allow_none_false(self):
         @sa_number('a', allow_none=False)
         def _test(a):
@@ -298,7 +297,6 @@ class TestSaNumberRules(TestCase):
             _test(1)
         with self.assertRaises(Exception):
             _test(1.5)
-
 
 
 class TestSaNumberBase(TestCase):

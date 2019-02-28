@@ -28,7 +28,7 @@ def sa_list(arg_name, **rules):
             val = args[arg_index]
             assert allow_none or val is not None, 'list argument \'{}\' was None'.format(arg_name)
             assert (allow_none and val is None) or isinstance(val,
-                              list), 'list argument \'{}\' with value {} was of type {)}, not of type \'list\''.format(
+                                                              list), 'list argument \'{}\' with value {} was of type {)}, not of type \'list\''.format(
                 arg_name, val, type(val))
             return func(*args, **kwargs)
 
@@ -67,6 +67,7 @@ def _list_type(arg_name, rule_val, func):
 def _list_not_empty(arg_name, rule_val, func):
     if not rule_val:
         return func
+
     def _check(val):
         assert len(val) != 0, 'list argument \'{}\' was an empty array'.format(arg_name)
         func(val)
