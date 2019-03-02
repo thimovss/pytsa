@@ -166,6 +166,7 @@ class TestSaListBase(TestCase):
             @sa_list('b')
             def _test(a):
                 return a
+            _test([])
 
     def test_incorrect_rule(self):
         # if an unknown rule is provided, throw an exception

@@ -316,6 +316,7 @@ class TestSaNumberBase(TestCase):
             @sa_number('b')
             def _test(a):
                 return a
+            _test(1)
 
     def test_incorrect_rule(self):
         # if an unknown rule is provided, throw an exception
