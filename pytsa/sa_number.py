@@ -4,7 +4,7 @@ from decimal import Decimal
 
 from decorator import decorator
 
-from src.pytsa import sa_bool
+from pytsa import sa_bool
 
 
 def sa_number(arg_name, **rules):

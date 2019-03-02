@@ -2,8 +2,8 @@ from unittest import TestCase, mock
 
 import decorator
 
-from src.pytsa import sa_string
-from src.utils import test_boolean_parameter, test_string_parameter
+from pytsa import sa_string
+from pytsa import test_boolean_parameter, test_string_parameter
 
 
 class TestSaStringParameters(TestCase):

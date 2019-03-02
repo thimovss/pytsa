@@ -2,7 +2,7 @@ from unittest import TestCase, mock
 
 import decorator
 
-from src.pytsa import sa_bool
+from pytsa import sa_bool
 
 
 class TestSaBoolRules(TestCase):

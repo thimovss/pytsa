@@ -2,7 +2,7 @@ from unittest import TestCase, mock
 
 import decorator
 
-from src.pytsa import sa_type
+from pytsa import sa_type
 
 
 class TestSaTypeRules(TestCase):

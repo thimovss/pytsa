@@ -4,7 +4,7 @@ import re
 
 from decorator import decorator
 
-from src.pytsa import sa_bool
+from pytsa import sa_bool
 
 LOWER_CASE = re.compile('.*[a-z].*')
 UPPER_CASE = re.compile('.*[A-Z].*')

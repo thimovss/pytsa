@@ -4,7 +4,7 @@ import stat
 
 from decorator import decorator
 
-from src.pytsa import sa_bool
+from pytsa import sa_bool
 
 
 def sa_path(arg_name, **rules):

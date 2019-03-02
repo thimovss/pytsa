@@ -3,7 +3,7 @@ import os
 
 from decorator import decorator
 
-from src.pytsa import sa_int, sa_bool, sa_type
+from pytsa import sa_int, sa_bool, sa_type
 
 
 def _format_list(val):

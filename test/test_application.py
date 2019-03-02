@@ -1,7 +1,7 @@
 import itertools
 from unittest import TestCase
 
-from src.pytsa import sa_int, sa_number, sa_string, sa_type
+from pytsa import sa_int, sa_number, sa_string, sa_type
 
 
 class TestMultipleRules(TestCase):

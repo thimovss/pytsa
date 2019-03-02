@@ -3,7 +3,7 @@ import os
 
 from decorator import decorator
 
-from src.pytsa import sa_bool, sa_number
+from pytsa import sa_bool, sa_number
 
 def sa_float(arg_name, **rules):
     """

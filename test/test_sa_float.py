@@ -2,8 +2,8 @@ from unittest import TestCase, mock
 
 import decorator
 
-from src.pytsa import sa_float
-from src.utils import test_boolean_parameter, test_number_parameter
+from pytsa import sa_float
+from pytsa import test_boolean_parameter, test_number_parameter
 
 
 class TestSaFloatParameters(TestCase):
