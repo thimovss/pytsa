@@ -5,7 +5,6 @@ from decorator import decorator
 
 from src.pytsa import sa_bool, sa_number
 
-
 def sa_float(arg_name, **rules):
     """
     Ensures the given parameter is of type float and not None, and abides by all given rules
