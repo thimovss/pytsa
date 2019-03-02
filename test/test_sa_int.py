@@ -1,5 +1,7 @@
 from unittest import TestCase, mock
 
+import decorator
+
 from src.pytsa import sa_int
 from src.utils import test_boolean_parameter, test_number_parameter
 
@@ -314,6 +316,14 @@ class TestSaIntBase(TestCase):
         with mock.patch.dict('os.environ', {}):
             _test_false = sa_int('a')(_test)
             assert _test_false != _test
+
+    def test_should_keep_signature(self):
+        # After the decorator is applied, the returned function should have the exact same signature as before
+        def _test(a, b, c, d):
+            return a
+
+        _test_signature = sa_int('a')(_test)
+        assert decorator.getfullargspec(_test) == decorator.getfullargspec(_test_signature)
 
     def test_type(self):
         @sa_int('a')
