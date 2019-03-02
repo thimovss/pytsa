@@ -319,7 +319,7 @@ class TestSaIntBase(TestCase):
 
     def test_should_keep_signature(self):
         # After the decorator is applied, the returned function should have the exact same signature as before
-        def _test(a, b, c, d):
+        def _test(a, b, c):
             return a
 
         _test_signature = sa_int('a')(_test)

@@ -1,5 +1,7 @@
 from unittest import TestCase, mock
 
+import decorator
+
 from src.pytsa import sa_list
 from src.utils import test_int_parameter, test_type_parameter, test_boolean_parameter
 
@@ -39,6 +41,14 @@ class TestSaListRules(TestCase):
         # Incorrect usage, None should be counted
         with self.assertRaises(Exception):
             _test([None, 1, 2, 3])
+
+    def test_should_keep_signature(self):
+        # After the decorator is applied, the returned function should have the exact same signature as before
+        def _test(a, b, c):
+            return a
+
+        _test_signature = sa_list('a')(_test)
+        assert decorator.getfullargspec(_test) == decorator.getfullargspec(_test_signature)
 
     def test_rule_type(self):
         @sa_list('a', type=int)
