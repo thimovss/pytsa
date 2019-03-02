@@ -4,12 +4,13 @@ from unittest import TestCase
 from src.pytsa import sa_int, sa_number, sa_string, sa_type
 
 
-class TestSaMultipleRules(TestCase):
+class TestMultipleRules(TestCase):
 
-    def test_multiple_rules_case1(self):
+    def test_multiple_rules_case(self):
+
 
         @sa_int('a', gt=-4, lte=4.0)
-        @sa_string('b', starts_with='ab', lower_case=True)
+        @sa_string('b', starts_with='ab', is_lower=True)
         @sa_type('c')
         @sa_number('d', gte=-5, lte=6.5, allow_none=True)
         def _test(a, b, c, d):
@@ -25,4 +26,32 @@ class TestSaMultipleRules(TestCase):
         incorrect_d = ['3', -7.2, 11]
 
         # Test all possible combinations
-        print(itertools.product(correct_a, correct_b))
+
+        # - All correct
+        for a, b, c, d in itertools.product(correct_a, correct_b, correct_c, correct_d):
+            _test(a, b, c, d)
+
+        # - A Incorrect
+        for a, b, c, d in itertools.product(incorrect_a, correct_b, correct_c, correct_d):
+            with self.assertRaises(Exception):
+                _test(a, b, c, d)
+
+        # - B Incorrect
+        for a, b, c, d in itertools.product(correct_a, incorrect_b, correct_c, correct_d):
+            with self.assertRaises(Exception):
+                _test(a, b, c, d)
+
+        # - C Incorrect
+        for a, b, c, d in itertools.product(correct_a, correct_b, incorrect_c, correct_d):
+            with self.assertRaises(Exception):
+                _test(a, b, c, d)
+
+        # - D Incorrect
+        for a, b, c, d in itertools.product(correct_a, correct_b, correct_c, incorrect_d):
+            with self.assertRaises(Exception):
+                _test(a, b, c, d)
+
+        # - All Incorrect
+        for a, b, c, d in itertools.product(incorrect_a, incorrect_b, incorrect_c, incorrect_d):
+            with self.assertRaises(Exception):
+                _test(a, b, c, d)
