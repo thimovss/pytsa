@@ -3,7 +3,7 @@ from unittest import TestCase, mock
 import decorator
 
 from pytsa import sa_number
-from pytsa import test_number_parameter, test_boolean_parameter
+from test.test_utils import test_number_parameter, test_boolean_parameter
 
 
 class TestSaNumberParameters(TestCase):

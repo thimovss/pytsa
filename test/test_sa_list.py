@@ -3,7 +3,7 @@ from unittest import TestCase, mock
 import decorator
 
 from pytsa import sa_list
-from pytsa import test_int_parameter, test_type_parameter, test_boolean_parameter
+from test.test_utils import test_int_parameter, test_type_parameter, test_boolean_parameter
 
 
 class TestSaListParameters(TestCase):

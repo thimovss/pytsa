@@ -5,7 +5,7 @@ from unittest import TestCase, mock
 import decorator
 
 from pytsa import sa_path
-from pytsa import test_boolean_parameter
+from test.test_utils import test_boolean_parameter
 
 
 class TestSaPathParameters(TestCase):
