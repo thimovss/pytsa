@@ -387,7 +387,8 @@ class TestSaStringBase(TestCase):
         @sa_string('b', allow_none=True)
         def _test_none_kwarg_allow_none(a, b=None):
             return
-        _test_none_kwarg(1.1)
+
+        _test_none_kwarg_allow_none(1.1)
 
     def test_type(self):
         @sa_string('a')
