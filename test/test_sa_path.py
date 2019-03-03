@@ -364,7 +364,7 @@ class TestSaPathBase(TestCase):
 
     def test_should_keep_signature(self):
         # After the decorator is applied, the returned function should have the exact same signature as before
-        def _test(a, b, c):
+        def _test(a, *, b, c=3):
             return a
 
         _test_signature = sa_path('a')(_test)
