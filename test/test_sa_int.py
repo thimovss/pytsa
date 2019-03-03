@@ -326,6 +326,20 @@ class TestSaIntBase(TestCase):
         _test_signature = sa_int('a')(_test)
         assert decorator.getfullargspec(_test) == decorator.getfullargspec(_test_signature)
 
+    def test_call_with_kwargs(self):
+        @sa_int('b')
+        def _test(a, *, b, c=0):
+            return a
+
+        _test(1, **{'b': 3})
+        _test(1, **{'b': 3, 'c': 1})
+
+        with self.assertRaises(Exception):
+            _test(1, **{'b': 3.3})
+        with self.assertRaises(Exception):
+            _test(1, **{'a': 1, 'c': 3})
+
+
     def test_type(self):
         @sa_int('a')
         def _test(a):
