@@ -19,8 +19,8 @@ class TestMultipleRules(TestCase):
         incorrect_a = [-4, 5, 2.2, None]
         correct_b = ['abcd', 'ab', 'ab\t3']
         incorrect_b = ['bcd', 'AB', '', None]
-        correct_c = [int, str, type(int), None]
-        incorrect_c = ['int', 'bool']
+        correct_c = [int, str, type(int)]
+        incorrect_c = ['int', 'bool', None]
         correct_d = [-5.0, 6.5, None, 0]
         incorrect_d = ['3', -7.2, 11]
 
