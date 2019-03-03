@@ -11,7 +11,8 @@
 PYThon StrictArguments
 ======================
 
-Simple, dependency-less, human-readable, fully tested Python decorators to ensure your method abides to its contract
+Simple, human-readable, fully tested, signature-preserving Python decorators to ensure your method abides to its contract.
+Get rid of testing all those edge cases for passed arguments, by making the method's contract more strict!
 
 Install
 -------
@@ -66,7 +67,7 @@ example for every rule there is!
 
 ::
 
-   from src.pytsa import sa_int
+   from pytsa import sa_int
 
    @sa_int('val', gt=0, lte=10)
    def assign_score(val)
@@ -195,14 +196,3 @@ License
 
 licensed under the `MIT
 License <https://github.com/thimovss/pytsa/blob/master/LICENSE>`__
-
-.. |Build Status| image:: https://travis-ci.org/thimovss/pytsa.svg?branch=master
-   :target: https://travis-ci.org/thimovss/pytsa
-.. |Python 3.7| image:: https://img.shields.io/badge/python-3.7-green.svg
-   :target: https://www.python.org/downloads/release/python-370/
-.. |Python 3.6| image:: https://img.shields.io/badge/python-3.6-green.svg
-   :target: https://www.python.org/downloads/release/python-360/
-.. |Python 3.5| image:: https://img.shields.io/badge/python-3.5-green.svg
-   :target: https://www.python.org/downloads/release/python-350/
-.. |Python 3.4| image:: https://img.shields.io/badge/python-3.4-green.svg
-   :target: https://www.python.org/downloads/release/python-340/
