@@ -336,6 +336,7 @@ class TestSaPathBase(TestCase):
             @sa_path('b')
             def _test(a):
                 return a
+
             _test('./')
 
     def test_incorrect_rule(self):

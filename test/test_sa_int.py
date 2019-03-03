@@ -292,6 +292,7 @@ class TestSaIntBase(TestCase):
             @sa_int('b')
             def _test(a):
                 return a
+
             _test(1)
 
     def test_incorrect_rule(self):
@@ -338,7 +339,6 @@ class TestSaIntBase(TestCase):
             _test(1, **{'b': 3.3})
         with self.assertRaises(Exception):
             _test(1, **{'a': 1, 'c': 3})
-
 
     def test_type(self):
         @sa_int('a')

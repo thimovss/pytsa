@@ -296,6 +296,7 @@ class TestSaFloatBase(TestCase):
             @sa_float('b')
             def _test(a):
                 return a
+
             _test(1.1)
 
     def test_incorrect_rule(self):

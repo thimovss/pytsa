@@ -8,7 +8,6 @@ class TestMultipleRules(TestCase):
 
     def test_multiple_rules_case(self):
 
-
         @sa_int('a', gt=-4, lte=4.0)
         @sa_string('b', starts_with='ab', is_lower=True)
         @sa_type('c')

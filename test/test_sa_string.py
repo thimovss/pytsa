@@ -302,6 +302,7 @@ class TestSaStringBase(TestCase):
             @sa_string('b')
             def _test(a):
                 return a
+
             _test('a')
 
     def test_incorrect_rule(self):

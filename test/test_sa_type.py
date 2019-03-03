@@ -56,6 +56,7 @@ class TestSaTypeBase(TestCase):
             @sa_type('b')
             def _test(a):
                 return a
+
             _test(int)
 
     def test_incorrect_rule(self):

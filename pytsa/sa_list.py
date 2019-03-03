@@ -35,11 +35,17 @@ def sa_list(arg_name, **rules):
     @decorator
     def _sa_list(func, *args, **kw):
 
-        args_spec = inspect.getfullargspec(func).args
-        assert arg_name in args_spec, 'list argument name \'{}\' not found in argument specification'.format(arg_name)
-
-        arg_index = args_spec.index(arg_name)
-        val = args[arg_index]
+        func_spec = inspect.getfullargspec(func)
+        args_spec = func_spec.args
+        kwargs_spec = func_spec.kwonlyargs
+        val = None
+        if arg_name in args_spec:
+            arg_index = args_spec.index(arg_name)
+            val = args[arg_index]
+        elif arg_name in kwargs_spec:
+            val = kw[arg_name]
+        else:
+            raise AssertionError('int argument name \'{}\' not found in argument specification'.format(arg_name))
 
         assert allow_none or val is not None, 'list argument \'{}\' was None'.format(arg_name)
         assert (allow_none and val is None) or isinstance(val, list), \

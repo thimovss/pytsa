@@ -54,6 +54,7 @@ class TestSaBoolBase(TestCase):
             @sa_bool('b')
             def _test(a):
                 return a
+
             _test(True)
 
     def test_incorrect_rule(self):
