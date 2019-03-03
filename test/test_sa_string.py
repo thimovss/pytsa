@@ -350,6 +350,45 @@ class TestSaStringBase(TestCase):
         with self.assertRaises(Exception):
             _test(1, **{'a': 1, 'c': 3})
 
+    def test_use_default_if_none(self):
+        # If a default value is specified, and the default is not None, the rules should check the default value
+
+        # No exception should be thrown as the default value 1 is used as no value for a is passed
+        @sa_string('a')
+        def _test_c(a='c'):
+            return
+
+        _test_c()
+
+        # When it is a required kwarg as well
+        @sa_string('b')
+        def _test_c_kwarg(a, b='c'):
+            return
+
+        _test_c_kwarg(1.1)
+
+        # Exception should be thrown as the default value None is used and no value for a is passed
+        @sa_string('a')
+        def _test_none(a=None):
+            return
+
+        with self.assertRaises(Exception):
+            _test_none()
+
+        # When it is a required kwarg as well
+        @sa_string('b')
+        def _test_none_kwarg(a, b=None):
+            return
+
+        with self.assertRaises(Exception):
+            _test_none_kwarg(1.1)
+
+        # Not when allow_none is True
+        @sa_string('b', allow_none=True)
+        def _test_none_kwarg_allow_none(a, b=None):
+            return
+        _test_none_kwarg(1.1)
+
     def test_type(self):
         @sa_string('a')
         def _test(a):

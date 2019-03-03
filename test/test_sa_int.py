@@ -373,6 +373,12 @@ class TestSaIntBase(TestCase):
         with self.assertRaises(Exception):
             _test_none_kwarg(1.1)
 
+        # Not when allow_none is True
+        @sa_int('b', allow_none=True)
+        def _test_none_kwarg_allow_none(a, b=None):
+            return
+        _test_none_kwarg(1.1)
+
     def test_type(self):
         @sa_int('a')
         def _test(a):
