@@ -50,6 +50,19 @@ class TestSaListRules(TestCase):
         _test_signature = sa_list('a')(_test)
         assert decorator.getfullargspec(_test) == decorator.getfullargspec(_test_signature)
 
+    def test_call_with_kwargs(self):
+        @sa_list('b')
+        def _test(a, *, b, c=0):
+            return a
+
+        _test(1, **{'b': []})
+        _test(1, **{'b': [1, 2], 'c': 1})
+
+        with self.assertRaises(Exception):
+            _test(1, **{'b': {}})
+        with self.assertRaises(Exception):
+            _test(1, **{'a': 1, 'c': 3})
+
     def test_rule_type(self):
         @sa_list('a', type=int)
         def _test(a):

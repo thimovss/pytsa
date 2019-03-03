@@ -330,6 +330,19 @@ class TestSaFloatBase(TestCase):
         _test_signature = sa_float('a')(_test)
         assert decorator.getfullargspec(_test) == decorator.getfullargspec(_test_signature)
 
+    def test_call_with_kwargs(self):
+        @sa_float('b')
+        def _test(a, *, b, c=0):
+            return a
+
+        _test(1, **{'b': 3.3})
+        _test(1, **{'b': 3.2, 'c': 1})
+
+        with self.assertRaises(Exception):
+            _test(1, **{'b': 3})
+        with self.assertRaises(Exception):
+            _test(1, **{'a': 1, 'c': 3})
+
     def test_type(self):
         @sa_float('a')
         def _test(a):

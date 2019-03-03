@@ -90,6 +90,19 @@ class TestSaTypeBase(TestCase):
         _test_signature = sa_type('a')(_test)
         assert decorator.getfullargspec(_test) == decorator.getfullargspec(_test_signature)
 
+    def test_call_with_kwargs(self):
+        @sa_type('b')
+        def _test(a, *, b, c=0):
+            return a
+
+        _test(1, **{'b': int})
+        _test(1, **{'b': str, 'c': 1})
+
+        with self.assertRaises(Exception):
+            _test(1, **{'b': 3})
+        with self.assertRaises(Exception):
+            _test(1, **{'a': 1, 'c': 3})
+
     def test_type(self):
         @sa_type('a')
         def _test(a):
