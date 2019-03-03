@@ -104,6 +104,46 @@ class TestSaTypeBase(TestCase):
         with self.assertRaises(Exception):
             _test(1, **{'a': 1, 'c': 3})
 
+    def test_use_default_if_none(self):
+        # If a default value is specified, and the default is not None, the rules should check the default value
+
+        # No exception should be thrown as the default value 1 is used as no value for a is passed
+        @sa_type('a')
+        def _test_bool(a=bool):
+            return
+
+        _test_bool()
+
+        # When it is a required kwarg as well
+        @sa_type('b')
+        def _test_bool_kwarg(a, b=bool):
+            return
+
+        _test_bool_kwarg(1.1)
+
+        # Exception should be thrown as the default value None is used and no value for a is passed
+        @sa_type('a')
+        def _test_none(a=None):
+            return
+
+        with self.assertRaises(Exception):
+            _test_none()
+
+        # When it is a required kwarg as well
+        @sa_type('b')
+        def _test_none_kwarg(a, b=None):
+            return
+
+        with self.assertRaises(Exception):
+            _test_none_kwarg(1.1)
+
+        # Not when allow_none is True
+        @sa_type('b', allow_none=True)
+        def _test_none_kwarg_allow_none(a, b=None):
+            return
+
+        _test_none_kwarg_allow_none(1.1)
+
     def test_type(self):
         @sa_type('a')
         def _test(a):
