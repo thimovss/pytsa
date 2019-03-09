@@ -150,7 +150,7 @@ class TestSaFloatRules(TestCase):
             _test(2.0)
         # Incorrect usage, int given instead of float
         with self.assertRaises(TypeError):
-            _test(2.1)
+            _test(1)
 
     def test_rule_lt_float(self):
         @sa_float('a', lt=2.0)
@@ -169,7 +169,7 @@ class TestSaFloatRules(TestCase):
             _test(2.0)
         # Incorrect usage, int given instead of float
         with self.assertRaises(TypeError):
-            _test(2.1)
+            _test(1)
 
     def test_rule_non_zero_true(self):
         @sa_float('a', non_zero=True)
