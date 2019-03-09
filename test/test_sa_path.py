@@ -217,7 +217,9 @@ class TestSaPathRules(TestCase):
         with self.assertRaises(ValueError):
             _test('/non-existent')
 
-    def _test_permissions(self, rule, permission_removed_mode):
+    def _test_permissions(self, rule, permission_removed_mode, test_permission=True):
+        # Note: test_permission can be disabled as in a one off test case python
+        # loses permissions on the OS to test the file, which throws a PermissionError instead of a ValueError
         self._create_test_file_structure()
 
         @sa_path('a', **{rule: True})
@@ -237,15 +239,17 @@ class TestSaPathRules(TestCase):
             _test(self.test_dir)
 
         # Incorrect usage, permission was removed
-        with self.assertRaises(ValueError):
-            _test(self.test_file)
+        if test_permission:
+            with self.assertRaises(ValueError):
+                _test(self.test_file)
 
         # Incorrect usage, non existent file
-        with self.assertRaises(ValueError):
-            _test(path.join(self.test_dir, 'non-existent.txt'))
+        if test_permission:
+            with self.assertRaises(FileNotFoundError):
+                _test(path.join(self.test_dir, 'non-existent.txt'))
 
         # Incorrect usage, non existent dir
-        with self.assertRaises(ValueError):
+        with self.assertRaises(FileNotFoundError):
             _test('/non-existent')
 
     def test_rule_can_owner_write_true(self):
@@ -267,7 +271,7 @@ class TestSaPathRules(TestCase):
         self._test_permissions('can_others_read', 0o0773)
 
     def test_rule_can_owner_execute_true(self):
-        self._test_permissions('can_owner_execute', 0o0677)
+        self._test_permissions('can_owner_execute', 0o0677, test_permission=False)
 
     def test_rule_can_group_execute_true(self):
         self._test_permissions('can_group_execute', 0o0767)
