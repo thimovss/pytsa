@@ -20,7 +20,7 @@ class TestSaTypeRules(TestCase):
         _test(bool)
 
         # Incorrect usage, got float
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(2.5)
 
     def test_rule_allow_none_false(self):
@@ -34,10 +34,10 @@ class TestSaTypeRules(TestCase):
         _test(bool)
 
         # Incorrect usage, got None
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(None)
         # Incorrect usage, got float
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(2.5)
 
 
@@ -52,7 +52,7 @@ class TestSaTypeBase(TestCase):
 
     def test_args_name_missing(self):
         # the annotation should throw an exception if the name passed in the decorator is not present in the argument
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             @sa_type('b')
             def _test(a):
                 return a
@@ -61,7 +61,7 @@ class TestSaTypeBase(TestCase):
 
     def test_incorrect_rule(self):
         # if an unknown rule is provided, throw an exception
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             @sa_type('a', unknown_rule=True)
             def _test(a):
                 return a
@@ -99,10 +99,10 @@ class TestSaTypeBase(TestCase):
         _test(1, **{'b': int})
         _test(1, **{'b': str, 'c': 1})
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(1, **{'b': 3})
-        with self.assertRaises(Exception):
-            _test(1, **{'a': 1, 'c': 3})
+        with self.assertRaises(ValueError):
+            _test(1, **{'b': None, 'c': 3})
 
     def test_use_default_if_none(self):
         # If a default value is specified, and the default is not None, the rules should check the default value
@@ -126,7 +126,7 @@ class TestSaTypeBase(TestCase):
         def _test_none(a=None):
             return
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test_none()
 
         # When it is a required kwarg as well
@@ -134,7 +134,7 @@ class TestSaTypeBase(TestCase):
         def _test_none_kwarg(a, b=None):
             return
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test_none_kwarg(1.1)
 
         # Not when allow_none is True

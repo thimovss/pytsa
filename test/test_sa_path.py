@@ -80,11 +80,11 @@ class TestSaPathRules(TestCase):
         _test(path.join(self.test_dir, 'test.txt'))
 
         # Incorrect usage, non existent file
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(path.join(self.test_dir, 'non-existent.txt'))
 
         # Incorrect usage, non existent dir
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('/non-existent')
 
     def test_rule_exists_false(self):
@@ -109,11 +109,11 @@ class TestSaPathRules(TestCase):
         _test(self.test_dir)
 
         # Incorrect usage, is file
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(self.test_file)
 
         # Incorrect usage, non existent dir
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('/non-existent')
 
     def test_rule_is_dir_false(self):
@@ -140,11 +140,11 @@ class TestSaPathRules(TestCase):
         _test(self.test_file)
 
         # Incorrect usage, is dir
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(self.test_dir)
 
         # Incorrect usage, non existent dir
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('/non-existent.txt')
 
     def test_rule_is_file_false(self):
@@ -168,10 +168,10 @@ class TestSaPathRules(TestCase):
         _test('/non-existent/test.txt')
 
         # Incorrect usage, is not absolute
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('./files/test.txt')
         # Incorrect usage, does not exist
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('./non-existent.txt')
 
     def test_rule_is_abs_false(self):
@@ -202,19 +202,19 @@ class TestSaPathRules(TestCase):
         chmod(self.test_file, 0o0577)
 
         # Incorrect usage, permission was removed
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(self.test_dir)
 
         # Incorrect usage, permission was removed
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(self.test_file)
 
         # Incorrect usage, non existent file
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(path.join(self.test_dir, 'non-existent.txt'))
 
         # Incorrect usage, non existent dir
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('/non-existent')
 
     def _test_permissions(self, rule, permission_removed_mode):
@@ -233,19 +233,19 @@ class TestSaPathRules(TestCase):
         chmod(self.test_dir, permission_removed_mode)
 
         # Incorrect usage, permission was removed
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(self.test_dir)
 
         # Incorrect usage, permission was removed
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(self.test_file)
 
         # Incorrect usage, non existent file
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(path.join(self.test_dir, 'non-existent.txt'))
 
         # Incorrect usage, non existent dir
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('/non-existent')
 
     def test_rule_can_owner_write_true(self):
@@ -299,7 +299,7 @@ class TestSaPathRules(TestCase):
         _test(self.test_file)
 
         # Incorrect usage, got None
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(None)
 
     def test_rule_allow_none_other_rules(self):
@@ -314,10 +314,10 @@ class TestSaPathRules(TestCase):
         _test('/non-existent/test.txt')
 
         # Incorrect usage, is not absolute
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('./files/test.txt')
         # Incorrect usage, does not exist
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('./non-existent.txt')
 
 
@@ -332,7 +332,7 @@ class TestSaPathBase(TestCase):
 
     def test_args_name_missing(self):
         # the annotation should throw an exception if the name passed in the decorator is not present in the argument
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             @sa_path('b')
             def _test(a):
                 return a
@@ -341,7 +341,7 @@ class TestSaPathBase(TestCase):
 
     def test_incorrect_rule(self):
         # if an unknown rule is provided, throw an exception
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             @sa_path('a', unknown_rule=True)
             def _test(a):
                 return a
@@ -379,10 +379,10 @@ class TestSaPathBase(TestCase):
         _test(1, **{'b': './'})
         _test(1, **{'b': './', 'c': 1})
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(1, **{'b': 3})
-        with self.assertRaises(Exception):
-            _test(1, **{'a': 1, 'c': 3})
+        with self.assertRaises(ValueError):
+            _test(1, **{'b': None, 'c': 3})
 
     def test_use_default_if_none(self):
         # If a default value is specified, and the default is not None, the rules should check the default value
@@ -406,7 +406,7 @@ class TestSaPathBase(TestCase):
         def _test_none(a=None):
             return
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test_none()
 
         # When it is a required kwarg as well
@@ -414,7 +414,7 @@ class TestSaPathBase(TestCase):
         def _test_none_kwarg(a, b=None):
             return
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test_none_kwarg(1.1)
 
         # Not when allow_none is True

@@ -48,7 +48,7 @@ class TestSaStringRules(TestCase):
         _test(' ')
 
         # Incorrect usage, no characters in string
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('')
 
     def test_rule_not_empty_false(self):
@@ -71,15 +71,15 @@ class TestSaStringRules(TestCase):
         _test('123')
 
         # Incorrect usage, no characters in string
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('')
 
         # Incorrect usage, whitespace characters in string
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(' ')
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('\t')
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('\t \n  ')
 
     def test_rule_not_blank_false(self):
@@ -106,9 +106,9 @@ class TestSaStringRules(TestCase):
         _test(' \n bc')
 
         # Incorrect usage, doesn't end with 'bc'
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('abcd')
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('')
 
     def test_rule_starts_with(self):
@@ -123,9 +123,9 @@ class TestSaStringRules(TestCase):
         _test('ab \n ')
 
         # Incorrect usage, doesn't start with 'bc'
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('1ab')
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('')
 
     def test_rule_contains(self):
@@ -140,11 +140,11 @@ class TestSaStringRules(TestCase):
         _test('\n \t ab \n ')
 
         # Incorrect usage, doesn't contain 'bc'
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('a1b')
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('a b')
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('')
 
     def test_rule_is_lower_true(self):
@@ -162,11 +162,11 @@ class TestSaStringRules(TestCase):
         _test(' ! ')
 
         # Incorrect usage, doesn't end with 'bc'
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('ABC')
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('A')
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('aBc')
 
     def test_rule_is_lower_false(self):
@@ -201,11 +201,11 @@ class TestSaStringRules(TestCase):
         _test(' ! ')
 
         # Incorrect usage, doesn't end with 'bc'
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('abc')
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('a')
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('AbC')
 
     def test_rule_is_upper_false(self):
@@ -235,12 +235,12 @@ class TestSaStringRules(TestCase):
         _test('test2')
 
         # Incorrect usage, doesn't match regex
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('test3')
 
     def test_rule_regex_incorrect(self):
         # incorrect regex should raise exception
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             @sa_string('a', regex='[')
             def _test(a):
                 return a
@@ -256,7 +256,7 @@ class TestSaStringRules(TestCase):
         _test('test2')
 
         # Incorrect usage, got float
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(2.5)
 
     def test_rule_allow_none_false(self):
@@ -269,10 +269,10 @@ class TestSaStringRules(TestCase):
         _test('test2')
 
         # Incorrect usage, got None
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(None)
         # Incorrect usage, got float
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(2.5)
 
     def test_rule_allow_none_other_rules(self):
@@ -286,7 +286,7 @@ class TestSaStringRules(TestCase):
         _test('test2')
 
         # Incorrect usage, did not contain 'es'
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test('abc')
 
 
@@ -301,7 +301,7 @@ class TestSaStringBase(TestCase):
 
     def test_args_name_missing(self):
         # the annotation should throw an exception if the name passed in the decorator is not present in the argument
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             @sa_string('b')
             def _test(a):
                 return a
@@ -310,7 +310,7 @@ class TestSaStringBase(TestCase):
 
     def test_incorrect_rule(self):
         # if an unknown rule is provided, throw an exception
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             @sa_string('a', unknown_rule=True)
             def _test(a):
                 return a
@@ -348,10 +348,10 @@ class TestSaStringBase(TestCase):
         _test(1, **{'b': 'abc'})
         _test(1, **{'b': 'def', 'c': 1})
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(1, **{'b': 3})
-        with self.assertRaises(Exception):
-            _test(1, **{'a': 1, 'c': 3})
+        with self.assertRaises(ValueError):
+            _test(1, **{'b': None, 'c': 3})
 
     def test_use_default_if_none(self):
         # If a default value is specified, and the default is not None, the rules should check the default value
@@ -375,7 +375,7 @@ class TestSaStringBase(TestCase):
         def _test_none(a=None):
             return
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test_none()
 
         # When it is a required kwarg as well
@@ -383,7 +383,7 @@ class TestSaStringBase(TestCase):
         def _test_none_kwarg(a, b=None):
             return
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test_none_kwarg(1.1)
 
         # Not when allow_none is True
@@ -440,7 +440,7 @@ class TestSaStringMultipleRules(TestCase):
 
         # incorrect strings should all throw exception
         for incorrect_string in incorrect_strings:
-            with self.assertRaises(Exception):
+            with self.assertRaises(ValueError):
                 _test(incorrect_string)
 
     def test_multiple_rules_case2(self):
@@ -457,7 +457,7 @@ class TestSaStringMultipleRules(TestCase):
 
         # incorrect strings should all throw exception
         for incorrect_string in incorrect_strings:
-            with self.assertRaises(Exception):
+            with self.assertRaises(ValueError):
                 _test(incorrect_string)
 
     def test_multiple_rules_case3(self):
@@ -474,5 +474,5 @@ class TestSaStringMultipleRules(TestCase):
 
         # incorrect strings should all throw exception
         for incorrect_string in incorrect_strings:
-            with self.assertRaises(Exception):
+            with self.assertRaises(ValueError):
                 _test(incorrect_string)

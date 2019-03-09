@@ -46,19 +46,19 @@ def test_number_parameter(self, deco, rule):
         return a
 
     # should not accept None
-    with self.assertRaises(Exception):
+    with self.assertRaises(ValueError):
         @deco('a', **{rule: None})
         def _test(a):
             return a
 
     # should not accept Boolean
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: True})
         def _test(a):
             return a
 
     # should not accept string
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 'abc'})
         def _test(a):
             return a
@@ -83,25 +83,25 @@ def test_int_parameter(self, deco, rule):
         return a
 
     # should not accept None
-    with self.assertRaises(Exception):
+    with self.assertRaises(ValueError):
         @deco('a', **{rule: None})
         def _test(a):
             return a
 
     # should not accept Boolean
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: True})
         def _test(a):
             return a
 
     # should not accept float
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 4.3})
         def _test(a):
             return a
 
     # should not accept string
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 'abc'})
         def _test(a):
             return a
@@ -126,25 +126,25 @@ def test_float_parameter(self, deco, rule):
         return a
 
     # should not accept None
-    with self.assertRaises(Exception):
+    with self.assertRaises(ValueError):
         @deco('a', **{rule: None})
         def _test(a):
             return a
 
     # should not accept boolean
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: True})
         def _test(a):
             return a
 
     # should not accept int
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 4})
         def _test(a):
             return a
 
     # should not accept string
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 'abc'})
         def _test(a):
             return a
@@ -164,25 +164,25 @@ def test_boolean_parameter(self, deco, rule):
         return a
 
     # should not accept None
-    with self.assertRaises(Exception):
+    with self.assertRaises(ValueError):
         @deco('a', **{rule: None})
         def _test(a):
             return a
 
     # should not accept float
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 4.3})
         def _test(a):
             return a
 
     # should not accept int
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 4})
         def _test(a):
             return a
 
     # should not accept string
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 'abc'})
         def _test(a):
             return a
@@ -207,25 +207,25 @@ def test_string_parameter(self, deco, rule):
         return a
 
     # should not accept None
-    with self.assertRaises(Exception):
+    with self.assertRaises(ValueError):
         @deco('a', **{rule: None})
         def _test(a):
             return a
 
     # should not accept float
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 4.3})
         def _test(a):
             return a
 
     # should not accept int
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 4})
         def _test(a):
             return a
 
     # should not accept bool
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: True})
         def _test(a):
             return a
@@ -245,31 +245,31 @@ def test_type_parameter(self, deco, rule):
         return a
 
     # should not accepts string
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 'abc'})
         def _test(a):
             return a
 
     # should not accept None
-    with self.assertRaises(Exception):
+    with self.assertRaises(ValueError):
         @deco('a', **{rule: None})
         def _test(a):
             return a
 
     # should not accept float
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 4.3})
         def _test(a):
             return a
 
     # should not accept int
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: 4})
         def _test(a):
             return a
 
     # should not accept bool
-    with self.assertRaises(Exception):
+    with self.assertRaises(TypeError):
         @deco('a', **{rule: True})
         def _test(a):
             return a

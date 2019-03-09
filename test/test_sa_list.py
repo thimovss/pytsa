@@ -33,13 +33,13 @@ class TestSaListRules(TestCase):
         _test([None, None, None])
 
         # Incorrect usage, length is 2
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test([1, 2])
         # Incorrect usage, length is 4
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test([1, 2, 3, 4])
         # Incorrect usage, None should be counted
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test([None, 1, 2, 3])
 
     def test_should_keep_signature(self):
@@ -58,10 +58,10 @@ class TestSaListRules(TestCase):
         _test(1, **{'b': []})
         _test(1, **{'b': [1, 2], 'c': 1})
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(1, **{'b': {}})
-        with self.assertRaises(Exception):
-            _test(1, **{'a': 1, 'c': 3})
+        with self.assertRaises(ValueError):
+            _test(1, **{'b': None, 'c': 3})
 
     def test_use_default_if_none(self):
         # If a default value is specified, and the default is not None, the rules should check the default value
@@ -85,7 +85,7 @@ class TestSaListRules(TestCase):
         def _test_none(a=None):
             return
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test_none()
 
         # When it is a required kwarg as well
@@ -93,7 +93,7 @@ class TestSaListRules(TestCase):
         def _test_none_kwarg(a, b=None):
             return
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test_none_kwarg(1.1)
 
         # Not when allow_none is True
@@ -114,10 +114,10 @@ class TestSaListRules(TestCase):
         _test([-19])
 
         # Incorrect usage, should not accept None
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test([1, None, 3])
         # Incorrect usage, got floats
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test([1.0, 2.0, 3.0])
 
     def test_rule_not_empty_true(self):
@@ -131,10 +131,10 @@ class TestSaListRules(TestCase):
         _test([None])
 
         # Incorrect usage, empty list
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test([])
         # Incorrect usage, empty list
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(list())
 
     def test_rule_not_empty_false(self):
@@ -163,7 +163,7 @@ class TestSaListRules(TestCase):
         _test(list())
 
         # Incorrect usage, got int
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(2)
 
     def test_rule_allow_none_false(self):
@@ -179,10 +179,10 @@ class TestSaListRules(TestCase):
         _test(list())
 
         # Incorrect usage, got None
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(None)
         # Incorrect usage, got int
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(2)
 
     def test_rule_allow_none_other_rules(self):
@@ -197,10 +197,10 @@ class TestSaListRules(TestCase):
         _test([None])
 
         # Incorrect usage, empty list
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test([])
         # Incorrect usage, empty list
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(list())
 
 
@@ -215,7 +215,7 @@ class TestSaListBase(TestCase):
 
     def test_args_name_missing(self):
         # the annotation should throw an exception if the name passed in the decorator is not present in the argument
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             @sa_list('b')
             def _test(a):
                 return a
@@ -224,7 +224,7 @@ class TestSaListBase(TestCase):
 
     def test_incorrect_rule(self):
         # if an unknown rule is provided, throw an exception
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             @sa_list('a', unknown_rule=True)
             def _test(a):
                 return a
@@ -245,6 +245,27 @@ class TestSaListBase(TestCase):
         with mock.patch.dict('os.environ', {}):
             _test_false = sa_list('a')(_test)
             assert _test_false != _test
+
+    def test_should_keep_signature(self):
+        # After the decorator is applied, the returned function should have the exact same signature as before
+        def _test(a, *, b, c=3):
+            return a
+
+        _test_signature = sa_list('a')(_test)
+        assert decorator.getfullargspec(_test) == decorator.getfullargspec(_test_signature)
+
+    def test_call_with_kwargs(self):
+        @sa_list('b')
+        def _test(a, *, b, c=0):
+            return a
+
+        _test(1, **{'b': [3, 2]})
+        _test(1, **{'b': [], 'c': 1})
+
+        with self.assertRaises(TypeError):
+            _test(1, **{'b': 3})
+        with self.assertRaises(ValueError):
+            _test(1, **{'b': None, 'c': 3})
 
     def test_type(self):
         @sa_list('a')
