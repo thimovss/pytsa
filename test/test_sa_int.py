@@ -391,22 +391,22 @@ class TestSaIntBase(TestCase):
         _test(-1)
 
         # not None
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(None)
         # not bool
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(True)
         # not float
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(3.0)
         # not string
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test('abc')
         # not list
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test([1, 'a'])
         # not type
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(int)
 
 

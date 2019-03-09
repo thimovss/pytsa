@@ -151,24 +151,24 @@ class TestSaBoolBase(TestCase):
         _test(True)
         _test(False)
 
-        # not zero
-        with self.assertRaises(Exception):
-            _test(0)
         # not None
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(None)
+        # not zero
+        with self.assertRaises(TypeError):
+            _test(0)
         # not int
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(1)
         # not float
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(3.0)
         # not string
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test('abc')
         # not list
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test([1, 'a'])
         # not type
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(bool)

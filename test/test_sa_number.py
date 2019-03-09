@@ -418,19 +418,19 @@ class TestSaNumberBase(TestCase):
         _test(-1.1)
 
         # not None
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(None)
         # not bool
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(True)
         # not string
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test('abc')
         # not list
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test([1, 'a'])
         # not type
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(int)
 
 

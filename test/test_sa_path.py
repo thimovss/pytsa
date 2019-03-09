@@ -435,20 +435,20 @@ class TestSaPathBase(TestCase):
         _test('completely incorrect path, because on it\'s own it does nothing')
 
         # not None
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(None)
         # not bool
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(True)
         # not float
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(3.0)
         # not int
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(2)
         # not list
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test([1, 'a'])
         # not type
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(str)

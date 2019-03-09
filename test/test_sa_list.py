@@ -257,25 +257,25 @@ class TestSaListBase(TestCase):
         _test([1])
         _test(['b', 1, True])
 
-        # not zero
-        with self.assertRaises(Exception):
-            _test(0)
         # not None
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             _test(None)
+        # not zero
+        with self.assertRaises(TypeError):
+            _test(0)
         # not int
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(1)
         # not float
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(3.0)
         # not string
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test('abc')
             _test(3.0)
         # not bool
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(True)
         # not type
-        with self.assertRaises(Exception):
+        with self.assertRaises(TypeError):
             _test(list)
