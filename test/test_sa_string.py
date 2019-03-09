@@ -30,6 +30,9 @@ class TestSaStringParameters(TestCase):
     def test_rule_is_upper_takes_boolean(self):
         test_boolean_parameter(self, sa_string, 'is_upper')
 
+    def test_rule_regex_takes_string(self):
+        test_string_parameter(self, sa_string, 'regex')
+
 
 class TestSaStringRules(TestCase):
     # Test that the rules for sa_string works as specified

@@ -6,6 +6,8 @@ from pytsa._base_rule import new_rule
 LOWER_CASE = re.compile('.*[a-z].*')
 UPPER_CASE = re.compile('.*[A-Z].*')
 
+def is_type_string(val):
+    return isinstance(val, str)
 
 @sa_bool('rule_val')
 def _string_not_empty(arg_name, rule_val):
@@ -40,9 +42,9 @@ def _string_not_blank(arg_name, rule_val):
     return _check
 
 
-# @sa_string('rule_val')
 def _string_ends_with(arg_name, rule_val):
     """ensure the string ends with the given string"""
+    assert is_type_string(rule_val)
 
     def _check(val):
         assert val.endswith(rule_val), \
@@ -51,8 +53,8 @@ def _string_ends_with(arg_name, rule_val):
     return _check
 
 
-# @sa_string('rule_val')
 def _string_starts_with(arg_name, rule_val):
+    assert is_type_string(rule_val)
     """ensure the string starts with the given string"""
 
     def _check(val):
@@ -62,9 +64,9 @@ def _string_starts_with(arg_name, rule_val):
     return _check
 
 
-# @sa_string('rule_val')
 def _string_contains(arg_name, rule_val):
     """ensure the string contains the given string at least once"""
+    assert is_type_string(rule_val)
 
     def _check(val):
         assert val.find(rule_val) != -1, \
@@ -105,9 +107,9 @@ def _string_is_upper(arg_name, rule_val):
     return _check
 
 
-# @sa_string('rule_val')
 def _string_regex(arg_name, rule_val):
     """ensure the string matches the provided regex"""
+    assert is_type_string(rule_val)
     try:
         compiled_regex = re.compile(rule_val)
 
