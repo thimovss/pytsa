@@ -11,8 +11,9 @@ def _format_list(val):
 @sa_int('rule_val')
 def _list_len(arg_name, rule_val):
     def _check(val):
-        assert len(val) == rule_val, 'list argument \'{}\' with value {} and length of {} was not equal to {}'.format(
-            arg_name, _format_list(val), len(val), rule_val)
+        if len(val) != rule_val:
+            raise ValueError('list argument \'{}\' with value {} and length of {} was not equal to {}'.format(
+                arg_name, _format_list(val), len(val), rule_val))
 
     return _check
 
@@ -21,9 +22,13 @@ def _list_len(arg_name, rule_val):
 def _list_type(arg_name, rule_val):
     def _check(val):
         for i, v in enumerate(val):
-            assert isinstance(v,
-                              rule_val), 'list argument \'{}\' with type {} had value with type {} on index {}'.format(
-                arg_name, rule_val, type(v), i)
+            if v is None:
+                raise ValueError('list argument \'{}\' with type {} was None on index {}'.format(
+                    arg_name, rule_val, type(v), i))
+            if not isinstance(v,
+                              rule_val):
+                raise TypeError('list argument \'{}\' with type {} had value with type {} on index {}'.format(
+                    arg_name, rule_val, type(v), i))
 
     return _check
 
@@ -37,7 +42,8 @@ def _list_not_empty(arg_name, rule_val):
         return _check
 
     def _check(val):
-        assert len(val) != 0, 'list argument \'{}\' was an empty array'.format(arg_name)
+        if len(val) == 0:
+            raise ValueError('list argument \'{}\' was an empty array'.format(arg_name))
 
     return _check
 
