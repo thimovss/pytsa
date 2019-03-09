@@ -6,11 +6,13 @@ from pytsa._base_rule import new_rule
 LOWER_CASE = re.compile('.*[a-z].*')
 UPPER_CASE = re.compile('.*[A-Z].*')
 
+
 def _check_type_string(val):
     if val is None:
         raise ValueError('rule value was None, expected a string')
     if not isinstance(val, str):
         raise TypeError('rule value was of type {} with value {}, expected type string'.format(type(val), val))
+
 
 @sa_bool('rule_val')
 def _string_not_empty(arg_name, rule_val):
@@ -23,8 +25,9 @@ def _string_not_empty(arg_name, rule_val):
 
     def _check(val):
         if len(val) == 0:
-            raise ValueError('string argument \'{}\' with value \'{}\' did not contain at least one non-whitespace character'.format(
-                arg_name, val))
+            raise ValueError(
+                'string argument \'{}\' with value \'{}\' did not contain at least one non-whitespace character'.format(
+                    arg_name, val))
 
     return _check
 
@@ -40,7 +43,8 @@ def _string_not_blank(arg_name, rule_val):
 
     def _check(val):
         if len(val) == 0 or val.isspace():
-            raise ValueError('string argument \'{}\' with value \'{}\' did not contain at least one character'.format(arg_name, val))
+            raise ValueError(
+                'string argument \'{}\' with value \'{}\' did not contain at least one character'.format(arg_name, val))
 
     return _check
 
@@ -51,7 +55,8 @@ def _string_ends_with(arg_name, rule_val):
 
     def _check(val):
         if not val.endswith(rule_val):
-            raise ValueError('string argument \'{}\' with value \'{}\' did not end with \'{}\''.format(arg_name, val, rule_val))
+            raise ValueError(
+                'string argument \'{}\' with value \'{}\' did not end with \'{}\''.format(arg_name, val, rule_val))
 
     return _check
 
@@ -62,7 +67,8 @@ def _string_starts_with(arg_name, rule_val):
 
     def _check(val):
         if not val.startswith(rule_val):
-            raise ValueError('string argument \'{}\' with value \'{}\' did not start with \'{}\''.format(arg_name, val, rule_val))
+            raise ValueError(
+                'string argument \'{}\' with value \'{}\' did not start with \'{}\''.format(arg_name, val, rule_val))
 
     return _check
 
@@ -73,7 +79,8 @@ def _string_contains(arg_name, rule_val):
 
     def _check(val):
         if val.find(rule_val) == -1:
-            raise ValueError('string argument \'{}\' with value \'{}\' did not contain \'{}\''.format(arg_name, val, rule_val))
+            raise ValueError(
+                'string argument \'{}\' with value \'{}\' did not contain \'{}\''.format(arg_name, val, rule_val))
 
     return _check
 
@@ -89,8 +96,9 @@ def _string_is_lower(arg_name, rule_val):
 
     def _check(val):
         if UPPER_CASE.match(
-            val):
-            raise ValueError('not all characters in string argument \'{}\' with value \'{}\' are lowercase'.format(arg_name, val))
+                val):
+            raise ValueError(
+                'not all characters in string argument \'{}\' with value \'{}\' are lowercase'.format(arg_name, val))
 
     return _check
 
@@ -106,8 +114,9 @@ def _string_is_upper(arg_name, rule_val):
 
     def _check(val):
         if LOWER_CASE.match(
-            val):
-            raise ValueError('not all characters in string argument \'{}\' with value \'{}\' are uppercase'.format(arg_name, val))
+                val):
+            raise ValueError(
+                'not all characters in string argument \'{}\' with value \'{}\' are uppercase'.format(arg_name, val))
 
     return _check
 
@@ -120,7 +129,9 @@ def _string_regex(arg_name, rule_val):
 
         def _check(val):
             if not compiled_regex.search(val):
-                raise ValueError('string argument \'{}\' with value \'{}\' did not match regex \'{}\''.format(arg_name, val, rule_val))
+                raise ValueError(
+                    'string argument \'{}\' with value \'{}\' did not match regex \'{}\''.format(arg_name, val,
+                                                                                                 rule_val))
     except re.error as err:
         raise ValueError('regex could not compile, got exception: {}'.format(err))
 

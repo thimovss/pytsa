@@ -80,9 +80,9 @@ def _path_can_owner_write(arg_name, rule_val):
 
     def _check(val):
         if not bool(os.stat(
-            val).st_mode & stat.S_IWUSR):
+                val).st_mode & stat.S_IWUSR):
             raise ValueError('path argument \'{}\' with value \'{}\' was not writeable for owner'.format(
-            arg_name, val))
+                arg_name, val))
 
     return _check
 
@@ -98,9 +98,9 @@ def _path_can_group_write(arg_name, rule_val):
 
     def _check(val):
         if not bool(os.stat(
-            val).st_mode & stat.S_IWGRP):
+                val).st_mode & stat.S_IWGRP):
             raise ValueError('path argument \'{}\' with value \'{}\' was not writeable for group'.format(
-            arg_name, val))
+                arg_name, val))
 
     return _check
 
@@ -116,9 +116,9 @@ def _path_can_others_write(arg_name, rule_val):
 
     def _check(val):
         if not bool(os.stat(
-            val).st_mode & stat.S_IWOTH):
+                val).st_mode & stat.S_IWOTH):
             raise ValueError('path argument \'{}\' with value \'{}\' was not writeable for others'.format(
-            arg_name, val))
+                arg_name, val))
 
     return _check
 
@@ -134,9 +134,9 @@ def _path_can_owner_read(arg_name, rule_val):
 
     def _check(val):
         if not bool(os.stat(
-            val).st_mode & stat.S_IRUSR):
+                val).st_mode & stat.S_IRUSR):
             raise ValueError('path argument \'{}\' with value \'{}\' was not readable for owner'.format(
-            arg_name, val))
+                arg_name, val))
 
     return _check
 
@@ -152,9 +152,9 @@ def _path_can_group_read(arg_name, rule_val):
 
     def _check(val):
         if not bool(os.stat(
-            val).st_mode & stat.S_IRGRP):
+                val).st_mode & stat.S_IRGRP):
             raise ValueError('path argument \'{}\' with value \'{}\' was not readable for group'.format(
-            arg_name, val))
+                arg_name, val))
 
     return _check
 
@@ -170,9 +170,9 @@ def _path_can_others_read(arg_name, rule_val):
 
     def _check(val):
         if not bool(os.stat(
-            val).st_mode & stat.S_IROTH):
+                val).st_mode & stat.S_IROTH):
             raise ValueError('path argument \'{}\' with value \'{}\' was not readable for others'.format(
-            arg_name, val))
+                arg_name, val))
 
     return _check
 
@@ -188,9 +188,9 @@ def _path_can_owner_execute(arg_name, rule_val):
 
     def _check(val):
         if not bool(os.stat(
-            val).st_mode & stat.S_IXUSR):
+                val).st_mode & stat.S_IXUSR):
             raise ValueError('path argument \'{}\' with value \'{}\' was not executable for owner'.format(
-            arg_name, val))
+                arg_name, val))
 
     return _check
 
@@ -206,9 +206,9 @@ def _path_can_group_execute(arg_name, rule_val):
 
     def _check(val):
         if not bool(os.stat(
-            val).st_mode & stat.S_IXGRP):
+                val).st_mode & stat.S_IXGRP):
             raise ValueError('path argument \'{}\' with value \'{}\' was not executable for group'.format(
-            arg_name, val))
+                arg_name, val))
 
     return _check
 
@@ -224,9 +224,9 @@ def _path_can_others_execute(arg_name, rule_val):
 
     def _check(val):
         if not bool(os.stat(
-            val).st_mode & stat.S_IXOTH):
+                val).st_mode & stat.S_IXOTH):
             raise ValueError('path argument \'{}\' with value \'{}\' was not executable for others'.format(
-            arg_name, val))
+                arg_name, val))
 
     return _check
 

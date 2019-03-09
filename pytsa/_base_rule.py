@@ -47,7 +47,11 @@ def new_rule(rule_name, rule_types_name, rule_rules, type_checker):
 
             if val is not None:
                 if not type_checker(val):
-                    raise TypeError('{} argument \'{}\' with value {} was of type {}, not of type \'{}\''.format(rule_types_name, arg_name, val, type(val), rule_types_name))
+                    raise TypeError(
+                        '{} argument \'{}\' with value {} was of type {}, not of type \'{}\''.format(rule_types_name,
+                                                                                                     arg_name, val,
+                                                                                                     type(val),
+                                                                                                     rule_types_name))
                 for rule_func in rule_funcs:
                     rule_func(val)
 
