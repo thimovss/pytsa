@@ -1,62 +1,10 @@
-import inspect
-import os
 import re
 
-from decorator import decorator
-
 from pytsa import sa_bool
+from pytsa._base_rule import new_rule
 
 LOWER_CASE = re.compile('.*[a-z].*')
 UPPER_CASE = re.compile('.*[A-Z].*')
-
-
-def sa_string(arg_name, **rules):
-    """
-    Ensures the given parameter is of type string and not None, and abides by all given rules
-    """
-    allow_none = rules.get('allow_none', False)
-    rules.pop('allow_none', None)
-
-    rule_funcs = []
-    for rule in rules:
-        assert rule in STRING_RULES, 'rule \'{}\' is unknown for sa_string'.format(rule)
-        rule_funcs.append(STRING_RULES[rule](arg_name, rules[rule]))
-
-    # If environment variable PYTSA_DISABLED is set, return the original function
-    if os.environ.get('PYTSA_DISABLED', 'False') == 'True':
-        # Don't use @decorator as it creates a copy of the method with the same signature
-        def _a(func):
-            return func
-
-        return _a
-
-    @decorator
-    def _sa_string(func, *args, **kw):
-
-        func_spec = inspect.getfullargspec(func)
-        args_spec = func_spec.args
-        kwargs_spec = func_spec.kwonlyargs
-        val = None
-        if arg_name in args_spec:
-            arg_index = args_spec.index(arg_name)
-            val = args[arg_index]
-        elif arg_name in kwargs_spec:
-            val = kw[arg_name]
-        else:
-            raise AssertionError('int argument name \'{}\' not found in argument specification'.format(arg_name))
-
-        assert allow_none or val is not None, 'string argument \'{}\' was None'.format(arg_name)
-        assert (allow_none and val is None) or isinstance(val, str), \
-            'string argument \'{}\' with value {} was of type {}, not of type \'string\''.format(arg_name, val,
-                                                                                                 type(val))
-
-        if val is not None:
-            for rule_func in rule_funcs:
-                rule_func(val)
-
-        return func(*args, **kw)
-
-    return _sa_string
 
 
 @sa_bool('rule_val')
@@ -92,7 +40,7 @@ def _string_not_blank(arg_name, rule_val):
     return _check
 
 
-@sa_string('rule_val')
+# @sa_string('rule_val')
 def _string_ends_with(arg_name, rule_val):
     """ensure the string ends with the given string"""
 
@@ -103,7 +51,7 @@ def _string_ends_with(arg_name, rule_val):
     return _check
 
 
-@sa_string('rule_val')
+# @sa_string('rule_val')
 def _string_starts_with(arg_name, rule_val):
     """ensure the string starts with the given string"""
 
@@ -114,7 +62,7 @@ def _string_starts_with(arg_name, rule_val):
     return _check
 
 
-@sa_string('rule_val')
+# @sa_string('rule_val')
 def _string_contains(arg_name, rule_val):
     """ensure the string contains the given string at least once"""
 
@@ -157,7 +105,7 @@ def _string_is_upper(arg_name, rule_val):
     return _check
 
 
-@sa_string('rule_val')
+# @sa_string('rule_val')
 def _string_regex(arg_name, rule_val):
     """ensure the string matches the provided regex"""
     try:
@@ -172,13 +120,18 @@ def _string_regex(arg_name, rule_val):
     return _check
 
 
-STRING_RULES = {
-    'not_empty': _string_not_empty,
-    'not_blank': _string_not_blank,
-    'ends_with': _string_ends_with,
-    'starts_with': _string_starts_with,
-    'contains': _string_contains,
-    'is_lower': _string_is_lower,
-    'is_upper': _string_is_upper,
-    'regex': _string_regex
-}
+sa_string = new_rule(
+    rule_name='sa_string',
+    rule_types_name='string',
+    rule_rules={
+        'not_empty': _string_not_empty,
+        'not_blank': _string_not_blank,
+        'ends_with': _string_ends_with,
+        'starts_with': _string_starts_with,
+        'contains': _string_contains,
+        'is_lower': _string_is_lower,
+        'is_upper': _string_is_upper,
+        'regex': _string_regex
+    },
+    type_checker=lambda val: isinstance(val, str)
+)

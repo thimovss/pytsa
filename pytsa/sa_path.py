@@ -1,60 +1,8 @@
-import inspect
 import os
 import stat
 
-from decorator import decorator
-
 from pytsa import sa_bool
-
-
-def sa_path(arg_name, **rules):
-    """
-    Ensures the given parameter is of type string and not None, and abides by all given rules
-    On its own this rule does nothing, except validate that the argument is a string
-    """
-    allow_none = rules.get('allow_none', False)
-    rules.pop('allow_none', None)
-
-    rule_funcs = []
-    for rule in rules:
-        assert rule in PATH_RULES, 'rule \'{}\' is unknown for sa_path'.format(rule)
-        rule_funcs.append(PATH_RULES[rule](arg_name, rules[rule]))
-
-    # If environment variable PYTSA_DISABLED is set, return the original function
-    if os.environ.get('PYTSA_DISABLED', 'False') == 'True':
-        # Don't use @decorator as it creates a copy of the method with the same signature
-        def _a(func):
-            return func
-
-        return _a
-
-    @decorator
-    def _sa_path(func, *args, **kw):
-
-        func_spec = inspect.getfullargspec(func)
-        args_spec = func_spec.args
-        kwargs_spec = func_spec.kwonlyargs
-        val = None
-        if arg_name in args_spec:
-            arg_index = args_spec.index(arg_name)
-            val = args[arg_index]
-        elif arg_name in kwargs_spec:
-            val = kw[arg_name]
-        else:
-            raise AssertionError('int argument name \'{}\' not found in argument specification'.format(arg_name))
-
-        assert allow_none or val is not None, 'path argument \'{}\' was None'.format(arg_name)
-        assert (allow_none and val is None) or isinstance(val,
-                                                          str), 'path argument \'{}\' with value \'{}\' was of type {}, not of type \'str\''.format(
-            arg_name, val, type(val))
-
-        if val is not None:
-            for rule_func in rule_funcs:
-                rule_func(val)
-
-        return func(*args, **kw)
-
-    return _sa_path
+from pytsa._base_rule import new_rule
 
 
 @sa_bool('rule_val')
@@ -270,18 +218,23 @@ def _path_can_others_execute(arg_name, rule_val):
     return _check
 
 
-PATH_RULES = {
-    'exists': _path_exists,
-    'is_dir': _path_is_dir,
-    'is_file': _path_is_file,
-    'is_abs': _path_is_abs,
-    'can_owner_write': _path_can_owner_write,
-    'can_group_write': _path_can_group_write,
-    'can_others_write': _path_can_others_write,
-    'can_owner_read': _path_can_owner_read,
-    'can_group_read': _path_can_group_read,
-    'can_others_read': _path_can_others_read,
-    'can_owner_execute': _path_can_owner_execute,
-    'can_group_execute': _path_can_group_execute,
-    'can_others_execute': _path_can_others_execute,
-}
+sa_path = new_rule(
+    rule_name='sa_path',
+    rule_types_name='path',
+    rule_rules={
+        'exists': _path_exists,
+        'is_dir': _path_is_dir,
+        'is_file': _path_is_file,
+        'is_abs': _path_is_abs,
+        'can_owner_write': _path_can_owner_write,
+        'can_group_write': _path_can_group_write,
+        'can_others_write': _path_can_others_write,
+        'can_owner_read': _path_can_owner_read,
+        'can_group_read': _path_can_group_read,
+        'can_others_read': _path_can_others_read,
+        'can_owner_execute': _path_can_owner_execute,
+        'can_group_execute': _path_can_group_execute,
+        'can_others_execute': _path_can_others_execute,
+    },
+    type_checker=lambda val: isinstance(val, str)
+)
