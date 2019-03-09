@@ -14,7 +14,8 @@ def new_rule(rule_name, rule_types_name, rule_rules, type_checker):
 
         rule_funcs = []
         for rule in rules:
-            assert rule in rule_rules, 'rule \'{}\' is unknown for {}'.format(rule, rule_name)
+            if not rule in rule_rules:
+                raise ValueError('rule \'{}\' is unknown for {}'.format(rule, rule_name))
             rule_funcs.append(rule_rules[rule](arg_name, rules[rule]))
 
         # If environment variable PYTSA_DISABLED is set, return the original function
@@ -38,15 +39,15 @@ def new_rule(rule_name, rule_types_name, rule_rules, type_checker):
             elif arg_name in kwargs_spec:
                 val = kw[arg_name]
             else:
-                raise AssertionError(
+                raise ValueError(
                     '{} argument name \'{}\' not found in argument specification'.format(rule_types_name, arg_name))
 
-            if not allow_none:
-                assert val is not None, '{} argument \'{}\' was None'.format(rule_types_name, arg_name)
+            if not allow_none and val is None:
+                raise ValueError('{} argument \'{}\' was None'.format(rule_types_name, arg_name))
 
             if val is not None:
-                assert type_checker(val), '{} argument \'{}\' with value {} was of type {}, not of type \'{}\'' \
-                    .format(rule_types_name, arg_name, val, type(val), rule_types_name)
+                if not type_checker(val):
+                    raise TypeError('{} argument \'{}\' with value {} was of type {}, not of type \'{}\''.format(rule_types_name, arg_name, val, type(val), rule_types_name))
                 for rule_func in rule_funcs:
                     rule_func(val)
 
